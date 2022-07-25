@@ -17,7 +17,7 @@ class DeclarationFactory extends Factory
         return [
             'user_id' => $this->faker->numberBetween(1,100),
             'title' => $this->faker->realText(10),
-            'body' => $this->faker->realText(50),
+            'body' => $this->faker->realText(500),
             'start_date' => $this->faker->dateTimeBetween($startDate = '2022/01/01', $endDate = '2022/07/01'),
             'end_date' => $this->faker->dateTimeBetween($startDate = 'now', $endDate = '+2 week'),
         ];

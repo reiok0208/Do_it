@@ -1,0 +1,37 @@
+$gray: rgb(220, 220, 220);
+
+body{
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+p, h2{
+    margin: 0;
+    padding: 0;
+}
+
+.dec_box{
+    border: 1px solid $gray;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    div:first-child{
+        font-size: 15px;
+        + p{
+            font-size: 16px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 5;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+    }
+    h2{
+        font-size: 20px;
+    }
+    div:last-child{
+        font-size: 15px;
+        div{
+            line-height: 20px;
+        }
+    }
+}

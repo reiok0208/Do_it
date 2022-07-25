@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);
+@import url(https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap);
 @charset "UTF-8"; /*!
  * Bootstrap  v5.2.0 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
@@ -10902,4 +10903,39 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+}
+body {
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+p, h2, .h2 {
+  margin: 0;
+  padding: 0;
+}
+
+.dec_box {
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+.dec_box div:first-child {
+  font-size: 15px;
+}
+.dec_box div:first-child + p {
+  font-size: 16px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+  margin: 10px 0;
+}
+.dec_box h2, .dec_box .h2 {
+  font-size: 20px;
+}
+.dec_box div:last-child {
+  font-size: 15px;
+}
+.dec_box div:last-child div {
+  line-height: 20px;
 }
