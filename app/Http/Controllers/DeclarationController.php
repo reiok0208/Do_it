@@ -22,10 +22,10 @@ class DeclarationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $declarations = Declaration::with('user')->get()->paginate(20);;
-        return view('declaration.index', compact('declarations','request'));
+        $declarations = Declaration::with('user')->paginate(20);
+        return view('declaration.index', compact('declarations'));
     }
 
     /**

@@ -18,7 +18,7 @@
                         <div class="dec_box">
                             <div class="row">
                                 <h2 class="col-md-5">{{ $dec->title }}</h2>
-                                <p class="col-md-3 text-end">宣言者：{{ $dec->user->name }}</p>
+                                <p class="col-md-3 text-end">宣言者：<a href="#">{{ $dec->user->name }}</a></p>
                                 <p class="col-md-4 text-end">宣言日：{{ $dec->created_at->format('Y年m月d日') }}</p>
                             </div>
                             <p>{{ $dec->body }}</p>
@@ -29,6 +29,7 @@
                                     <p class="text-end"> 〜 {{ $dec->end_date->format('Y年m月d日H時i分') }}</p>
                                 </div>
                             </div>
+                            <a href="#" class="link_box"></a>
                         </div>
                     @endforeach
                 </div>

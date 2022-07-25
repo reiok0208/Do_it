@@ -10913,29 +10913,50 @@ p, h2, .h2 {
   padding: 0;
 }
 
+a {
+  color: gray;
+}
+
 .dec_box {
+  position: relative;
   border: 1px solid rgb(220, 220, 220);
   border-radius: 10px;
   margin-bottom: 20px;
   padding: 10px;
 }
 .dec_box div:first-child {
-  font-size: 15px;
+  font-size: 12px;
+}
+.dec_box div:first-child p {
+  color: gray;
+}
+.dec_box div:first-child p a {
+  position: relative;
+  z-index: 100;
 }
 .dec_box div:first-child + p {
-  font-size: 16px;
+  font-size: 15px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 3;
   overflow: hidden;
-  margin: 10px 0;
+  margin: 5px 0;
 }
 .dec_box h2, .dec_box .h2 {
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 900;
 }
 .dec_box div:last-child {
-  font-size: 15px;
+  color: gray;
+  font-size: 12px;
 }
 .dec_box div:last-child div {
   line-height: 20px;
+}
+.dec_box > a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
 }
