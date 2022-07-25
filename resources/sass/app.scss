@@ -8,7 +8,8 @@
 @import '~bootstrap/scss/bootstrap';
 
 // My SCSS
-@import 'declaration';
+@import 'declaration/index';
+@import 'declaration/show';
 
 // fonts
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');

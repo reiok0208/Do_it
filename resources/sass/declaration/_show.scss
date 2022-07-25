@@ -1,0 +1,24 @@
+
+.dec_show{
+    padding: 0 20px;
+    div:first-child{
+        + p{
+            display: block;
+            margin: 30px 10px;
+        }
+    }
+}
+
+.comment_box{
+    border-bottom: 1px solid $gray;
+    div{
+        margin: 20px 0 0 0;
+        + p{
+            margin: 20px 10px;
+        }
+    }
+}
+
+.comment_box:last-child{
+    border: none;
+}

@@ -13,10 +13,14 @@ a{
     color: gray;
 }
 
+.card{
+    margin-bottom: 30px;
+}
+
 .dec_box{
     position: relative;
-    border: 1px solid $gray;
-    border-radius: 10px;
+    border-bottom: 1px solid $gray;
+    border-radius: 5px;
     margin-bottom: 20px;
     padding: 10px;
     div:first-child{
@@ -34,7 +38,7 @@ a{
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 3;
             overflow: hidden;
-            margin: 5px 0;
+            margin: 10px;
         }
     }
     h2{
@@ -55,4 +59,8 @@ a{
         height:100%;
         width: 100%;
     }
+}
+
+.dec_box:last-child{
+    border: none;
 }

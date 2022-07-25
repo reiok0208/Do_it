@@ -17,4 +17,8 @@ class Declaration extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function declaration_comment() {
+        return $this->hasMany(Declaration_comment::class);
+    }
 }

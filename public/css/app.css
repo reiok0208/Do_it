@@ -10917,10 +10917,14 @@ a {
   color: gray;
 }
 
+.card {
+  margin-bottom: 30px;
+}
+
 .dec_box {
   position: relative;
-  border: 1px solid rgb(220, 220, 220);
-  border-radius: 10px;
+  border-bottom: 1px solid rgb(220, 220, 220);
+  border-radius: 5px;
   margin-bottom: 20px;
   padding: 10px;
 }
@@ -10940,7 +10944,7 @@ a {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
-  margin: 5px 0;
+  margin: 10px;
 }
 .dec_box h2, .dec_box .h2 {
   font-size: 18px;
@@ -10959,4 +10963,30 @@ a {
   left: 0;
   height: 100%;
   width: 100%;
+}
+
+.dec_box:last-child {
+  border: none;
+}
+
+.dec_show {
+  padding: 0 20px;
+}
+.dec_show div:first-child + p {
+  display: block;
+  margin: 30px 10px;
+}
+
+.comment_box {
+  border-bottom: 1px solid rgb(220, 220, 220);
+}
+.comment_box div {
+  margin: 20px 0 0 0;
+}
+.comment_box div + p {
+  margin: 20px 10px;
+}
+
+.comment_box:last-child {
+  border: none;
 }

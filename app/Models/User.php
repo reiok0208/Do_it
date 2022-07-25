@@ -46,6 +46,10 @@ class User extends Authenticatable
         return $this->hasMany(Declaration::class);
     }
 
+    public function declaration_comment() {
+        return $this->hasMany(Declaration_comment::class);
+    }
+
     /**
      * Relationships
      */

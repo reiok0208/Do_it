@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Declaration;
+use App\Models\Declaration_comment;
 
 class DeclarationController extends Controller
 {
@@ -24,7 +25,7 @@ class DeclarationController extends Controller
      */
     public function index()
     {
-        $declarations = Declaration::with('user')->paginate(20);
+        $declarations = Declaration::paginate(20);
         return view('declaration.index', compact('declarations'));
     }
 
@@ -57,7 +58,10 @@ class DeclarationController extends Controller
      */
     public function show($id)
     {
-        //
+        $declaration = Declaration::whereId($id)->first();
+        $comments = Declaration_comment::whereDeclarationId($id)->get();
+        $count = Declaration_comment::whereDeclarationId($id)->count();
+        return view('declaration.show', compact('declaration','comments','count'));
     }
 
     /**
