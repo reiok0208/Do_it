@@ -19,6 +19,10 @@ Auth::routes();
 
 Route::group(['prefix' => 'declaration', 'as' => 'declaration.'], function(){
     Route::get('/', [App\Http\Controllers\DeclarationController::class, 'index'])->name('index');
+    Route::get('/new', [App\Http\Controllers\DeclarationController::class, 'create'])->name('create');
+    Route::post('/new', [App\Http\Controllers\DeclarationController::class, 'create'])->name('create');
+    Route::post('/new/confirm', [App\Http\Controllers\DeclarationController::class, 'confirm'])->name('confirm');
+    Route::post('/', [App\Http\Controllers\DeclarationController::class, 'store'])->name('store');
     Route::get('/{id}', [App\Http\Controllers\DeclarationController::class, 'show'])->name('show');
 });
 

@@ -26,8 +26,12 @@
                             </div>
                         </div>
                         <p>{{ nl2br($declaration->body) }}</p>
-                        <div class="row">
-                            <p class="col-md-4"></p>
+                        <div class="row align-items-end">
+                            <div class="col-md-4">
+                                @foreach($declaration->tags as $tag)
+                                    <span class="badge rounded-pill bg-secondary">{{$tag->name}}</span>
+                                @endforeach
+                            </div>
                             <div class="col text-end">
                                 <p>期間： {{ $declaration->start_date->format('Y年m月d日H時i分') }}</p>
                                 <p> 〜 {{ $declaration->end_date->format('Y年m月d日H時i分') }}</p>

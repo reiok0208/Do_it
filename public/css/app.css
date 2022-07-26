@@ -10972,9 +10972,15 @@ a {
 .dec_show {
   padding: 0 20px;
 }
+.dec_show div:first-child p {
+  font-size: 14px;
+}
 .dec_show div:first-child + p {
   display: block;
   margin: 30px 10px;
+}
+.dec_show div:last-child {
+  font-size: 14px;
 }
 
 .comment_box {
@@ -10984,9 +10990,31 @@ a {
   margin: 20px 0 0 0;
 }
 .comment_box div + p {
-  margin: 20px 10px;
+  margin: 20px;
 }
 
 .comment_box:last-child {
   border: none;
+}
+
+.confirm_content {
+  margin-top: 7px;
+}
+
+.user_box {
+  padding: 10px;
+}
+.user_box .icon {
+  border: solid;
+  border-radius: 100px;
+  width: 60px;
+  height: 60px;
+}
+
+.nav_content a {
+  margin: 5px 60px 5px 0;
+  text-decoration: none;
+}
+.nav_content a:last-child {
+  margin: 5px 0;
 }

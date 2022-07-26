@@ -32,8 +32,14 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
+                    <ul class="nav_content navbar-nav ms-auto">
+                        @guest
+                            <a href="{{ route('declaration.index') }}">宣言一覧</a>
+                        @else
+                            <a href="{{ route('declaration.index') }}">宣言一覧</a>
+                            <a href="{{ route('declaration.create') }}">宣言投稿</a>
+                            <a href="{{ route('user.show',['id'=>Auth::user()->id]) }}">マイページ</a>
+                        @endguest
                     </ul>
 
                     <!-- Right Side Of Navbar -->

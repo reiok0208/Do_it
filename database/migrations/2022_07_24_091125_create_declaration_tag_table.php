@@ -14,9 +14,11 @@ class CreateDeclarationTagTable extends Migration
     public function up()
     {
         Schema::create('declaration_tag', function (Blueprint $table) {
-            $table->foreignId('declaration_id')->constrained()->onDelete('cascade');
-            $table->foreignId('tag_id')->constrained();
-            $table->unique(['declaration_id', 'tag_id']);
+            $table->unsignedBigInteger('declaration_id');
+            $table->unsignedBigInteger('tag_id');
+
+            $table->foreign('declaration_id')->references('id')->on('declarations')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
         });
     }
 

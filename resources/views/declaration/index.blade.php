@@ -24,8 +24,12 @@
                                 <p class="col-md-4 text-end">宣言日：{{ $dec->created_at->format('Y年m月d日') }}</p>
                             </div>
                             <p>{{ nl2br($dec->body) }}</p>
-                            <div class="row">
-                                <p class="col-md-4"></p>
+                            <div class="row align-items-end">
+                                <div class="col-md-4">
+                                    @foreach($dec->tags as $tag)
+                                        <span class="badge rounded-pill bg-secondary">{{$tag->name}}</span>
+                                    @endforeach
+                                </div>
                                 <div class="col">
                                     <p class="text-end">期間：　{{ $dec->start_date->format('Y年m月d日H時i分') }}</p>
                                     <p class="text-end"> 〜 {{ $dec->end_date->format('Y年m月d日H時i分') }}</p>

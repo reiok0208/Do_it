@@ -2,10 +2,17 @@
 .dec_show{
     padding: 0 20px;
     div:first-child{
+        p{
+            font-size: 14px;
+        }
         + p{
             display: block;
             margin: 30px 10px;
         }
+    }
+
+    div:last-child{
+        font-size: 14px;
     }
 }
 
@@ -14,7 +21,7 @@
     div{
         margin: 20px 0 0 0;
         + p{
-            margin: 20px 10px;
+            margin: 20px;
         }
     }
 }

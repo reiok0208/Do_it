@@ -21,4 +21,9 @@ class Declaration extends Model
     public function declaration_comment() {
         return $this->hasMany(Declaration_comment::class);
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }
