@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Declaration;
 use App\Models\Declaration_comment;
 use App\Models\Declaration_tag;
+use App\Models\Report;
 use App\Models\Tag;
 
 class DeclarationController extends Controller
@@ -19,7 +20,7 @@ class DeclarationController extends Controller
      */
     public function index()
     {
-        $declarations = Declaration::paginate(20);
+        $declarations = Declaration::latest()->paginate(20);
         return view('declaration.index', compact('declarations'));
     }
 
@@ -174,6 +175,47 @@ class DeclarationController extends Controller
 
         $declaration->delete();
 
-        return redirect()->route('declaration.index');
+        $url = url()->previous();
+
+        if (preg_match("/\?page\=/", $url)) {
+            return redirect(url()->previous());
+        } else {
+            return redirect()->route('declaration.index');
+        }
+    }
+
+    public function report_create(Request $request, $id)
+    {
+        $declaration = Declaration::find($id);
+
+        $request->session()->put([
+            '_old_input' => [
+                'rate' => $request->rate,
+                'execution' => $request->execution,
+                'body' => $request->body,
+            ]
+        ]);
+        return view('declaration.report.create', compact('declaration'));
+    }
+
+    public function report_confirm(Request $request)
+    {
+        return view('declaration.report.confirm', compact('request'));
+    }
+
+    public function report_store(Request $request)
+    {
+        $report = new Report;
+        $report->declaration_id = $request->declaration_id;
+        $report->rate = $request->rate;
+        $report->execution = $request->execution;
+        $report->body = e($request->body);
+
+        $report->save();
+
+        // 二重送信防止
+        $request->session()->regenerateToken();
+
+        return redirect()->route('declaration.show', ['id' => $report->declaration_id]);
     }
 }

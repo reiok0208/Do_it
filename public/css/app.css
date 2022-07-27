@@ -10976,13 +10976,14 @@ a {
   padding: 0 20px;
 }
 .dec_show div:first-child p {
+  color: gray;
   font-size: 14px;
 }
 .dec_show div:first-child + p {
   display: block;
   margin: 30px 10px;
 }
-.dec_show div:last-child {
+.dec_show div:nth-child(2) {
   font-size: 14px;
 }
 

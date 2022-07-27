@@ -57,8 +57,8 @@
                             <label for="body" class="col-md-3 col-form-label text-md-end">{{ __('内容') }}</label>
 
                             <div class="col-md-7">
-                                <p class="confirm_content">{{ nl2br($request->body) }}</p>
-                                <input id="body" type="hidden" name="body" value="{{ nl2br($request->body) }}">
+                                <p class="confirm_content">{!! nl2br(e($request->body)) !!}</p>
+                                <input id="body" type="hidden" name="body" value="{{ $request->body }}">
                             </div>
                         </div>
 
@@ -80,7 +80,7 @@
                                 <input id="tag" type="hidden" name="tag" value="{{ $request->tag }}">
                                 <input id="start_date" type="hidden" name="start_date" value="{{ $request->start_date }}">
                                 <input id="end_date" type="hidden" name="end_date" value="{{ $request->end_date }}">
-                                <input id="body" type="hidden" name="body" value="{{ nl2br($request->body) }}">
+                                <input id="body" type="hidden" name="body" value="{{ $request->body }}">
                                 <button class="btn btn-outline-danger" type="submit" style="width: 100px;">戻る</button>
                             </form>
                         </div>

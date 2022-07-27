@@ -39,7 +39,7 @@
                                 </div>
                             </div>
 
-                            <p>{{ nl2br($dec->body) }}</p>
+                            <p>{!! $dec->body !!}</p>
                             <div class="row align-items-end">
                                 <div class="col-md-4">
                                     @foreach($dec->tags as $tag)

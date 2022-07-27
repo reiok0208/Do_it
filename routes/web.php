@@ -23,10 +23,15 @@ Route::group(['prefix' => 'declaration', 'as' => 'declaration.'], function(){
     Route::post('/new', [App\Http\Controllers\DeclarationController::class, 'create'])->name('create');
     Route::post('/new/confirm', [App\Http\Controllers\DeclarationController::class, 'confirm'])->name('confirm');
     Route::post('/store', [App\Http\Controllers\DeclarationController::class, 'store'])->name('store');
-    Route::get('/{id}', [App\Http\Controllers\DeclarationController::class, 'show'])->name('show');
+    Route::get('/show/{id}', [App\Http\Controllers\DeclarationController::class, 'show'])->name('show');
     Route::get('/edit/{id}', [App\Http\Controllers\DeclarationController::class, 'edit'])->name('edit');
     Route::post('/update', [App\Http\Controllers\DeclarationController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [App\Http\Controllers\DeclarationController::class, 'destroy'])->name('destroy');
+    Route::group(['prefix' => 'report', 'as' => 'report.'], function(){
+        Route::get('/{id}/new', [App\Http\Controllers\DeclarationController::class, 'report_create'])->name('create');
+        Route::post('/new/confirm', [App\Http\Controllers\DeclarationController::class, 'report_confirm'])->name('confirm');
+        Route::post('/store', [App\Http\Controllers\DeclarationController::class, 'report_store'])->name('store');
+    });
 });
 
 Route::group(['prefix' => 'user', 'as' => 'user.'], function(){
