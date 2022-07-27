@@ -13,6 +13,6 @@ class Tag extends Model
 
     public function declarations()
     {
-        return $this->belongsToMany(Declaration::class);
+        return $this->belongsToMany(Declaration::class, 'declaration_tag');
     }
 }

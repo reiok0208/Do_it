@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Declaration;
 use App\Models\Declaration_comment;
+use App\Models\Declaration_tag;
 use App\Models\Tag;
 
 class DeclarationController extends Controller
@@ -74,7 +75,7 @@ class DeclarationController extends Controller
         foreach ($tags as $tag) {
             array_push($tags_id, $tag['id']);
         };
-        $declaration->tags()->attach($tags_id);
+        $declaration->tags()->sync($tags_id);
 
         // 二重送信防止
         $request->session()->regenerateToken();
@@ -102,9 +103,28 @@ class DeclarationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        $declaration = Declaration::whereId($id)->first();
+
+        // タグを#ありの状態に加工
+        $tags = "";
+        foreach($declaration->tags as $tag){
+            $tags .= "#"."$tag->name";
+        }
+
+        $request->session()->put([
+            '_old_input' => [
+                'id' => $declaration->id,
+                'title' => $declaration->title,
+                'tag' => $tags,
+                'start_date' => $declaration->start_date->format('Y-m-d'),
+                'end_date' => $declaration->end_date->format('Y-m-d'),
+                'body' => $declaration->body
+            ]
+        ]);
+
+        return view('declaration.edit');
     }
 
     /**
@@ -114,9 +134,32 @@ class DeclarationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $declaration = Declaration::find($request->id);
+        $declaration->title = e($request->title);
+        $declaration->body = e($request->body);
+        $declaration->start_date = e($request->start_date);
+        $declaration->end_date = e($request->end_date);
+        $declaration->update();
+
+        preg_match_all('/#([a-zA-Z0-9０-９ぁ-んァ-ヶー一-龠]+)/u', $request->tag, $match);
+        $tags = [];
+        foreach ($match[1] as $tag) {
+            $record = Tag::firstOrCreate(['name' => $tag]);
+            array_push($tags, $record);
+        };
+
+        $tags_id = [];
+        foreach ($tags as $tag) {
+            array_push($tags_id, $tag['id']);
+        };
+        $declaration->tags()->sync($tags_id);
+
+        // 二重送信防止
+        $request->session()->regenerateToken();
+
+        return redirect()->route('declaration.show', ['id' => $declaration->id]);
     }
 
     /**
@@ -127,6 +170,10 @@ class DeclarationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $declaration = Declaration::findOrFail($id);
+
+        $declaration->delete();
+
+        return redirect()->route('declaration.index');
     }
 }

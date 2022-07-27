@@ -22,11 +22,12 @@ a{
     border-bottom: 1px solid $gray;
     border-radius: 5px;
     margin-bottom: 20px;
-    padding: 10px;
+    padding-bottom: 20px;
     div:first-child{
         font-size: 12px;
-        p{
+        div:nth-child(2){
             color: gray;
+            padding-top: 10px;
             a{
                 position: relative;
                 z-index: 100;
@@ -38,14 +39,15 @@ a{
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 3;
             overflow: hidden;
-            margin: 10px;
+            margin: 0 10px 10px 10px;
         }
     }
     h2{
         font-size: 18px;
         font-weight: 900;
+        padding-top: 10px;
     }
-    div:last-child{
+    div:nth-child(2){
         color: gray;
         font-size: 12px;
         div{
@@ -58,6 +60,7 @@ a{
         left: 0;
         height:100%;
         width: 100%;
+        z-index: 0;
     }
 }
 

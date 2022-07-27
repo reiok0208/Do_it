@@ -10926,15 +10926,16 @@ a {
   border-bottom: 1px solid rgb(220, 220, 220);
   border-radius: 5px;
   margin-bottom: 20px;
-  padding: 10px;
+  padding-bottom: 20px;
 }
 .dec_box div:first-child {
   font-size: 12px;
 }
-.dec_box div:first-child p {
+.dec_box div:first-child div:nth-child(2) {
   color: gray;
+  padding-top: 10px;
 }
-.dec_box div:first-child p a {
+.dec_box div:first-child div:nth-child(2) a {
   position: relative;
   z-index: 100;
 }
@@ -10944,17 +10945,18 @@ a {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
-  margin: 10px;
+  margin: 0 10px 10px 10px;
 }
 .dec_box h2, .dec_box .h2 {
   font-size: 18px;
   font-weight: 900;
+  padding-top: 10px;
 }
-.dec_box div:last-child {
+.dec_box div:nth-child(2) {
   color: gray;
   font-size: 12px;
 }
-.dec_box div:last-child div {
+.dec_box div:nth-child(2) div {
   line-height: 20px;
 }
 .dec_box > a {
@@ -10963,6 +10965,7 @@ a {
   left: 0;
   height: 100%;
   width: 100%;
+  z-index: 0;
 }
 
 .dec_box:last-child {
