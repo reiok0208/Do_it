@@ -9,4 +9,5 @@ class Declaration_tag extends Model
 {
     use HasFactory;
     protected $table = 'declaration_tag';
+    public $timestamps = false;
 }

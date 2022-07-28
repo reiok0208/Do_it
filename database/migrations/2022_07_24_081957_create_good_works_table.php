@@ -15,8 +15,7 @@ class CreateGoodWorksTable extends Migration
     {
         Schema::create('good_works', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('declaration_id')->constrained()->onDelete('cascade');
-            $table->unique(['user_id', 'declaration_id']);
+            $table->foreignId('report_id')->constrained()->onDelete('cascade');
         });
     }
 

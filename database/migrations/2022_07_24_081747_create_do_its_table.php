@@ -16,7 +16,6 @@ class CreateDoItsTable extends Migration
         Schema::create('do_its', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('declaration_id')->constrained()->onDelete('cascade');
-            $table->unique(['user_id', 'declaration_id']);
         });
     }
 
