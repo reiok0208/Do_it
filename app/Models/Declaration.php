@@ -26,4 +26,8 @@ class Declaration extends Model
     {
         return $this->belongsToMany(Tag::class, 'declaration_tag');
     }
+
+    public function report() {
+        return $this->hasOne(Report::class);
+    }
 }

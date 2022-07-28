@@ -54,21 +54,21 @@
 
 
                         <div class="row mb-2">
-                            <div class="col-md-5 offset-md-5">
-                                <button type="submit" class="btn btn-outline-primary" style="width: 100px;">
+                            <div class="col text-center">
+                                <button type="submit" class="btn btn-outline-primary" style="width: 150px;">
                                     {{ __('Good work!') }}
                                 </button>
                             </div>
                         </div>
                     </form>
                     <div class="row mb-2">
-                        <div class="col-md-5 offset-md-5">
+                        <div class="col text-center">
                             <form method="post" action="{{ route('declaration.report.create',['id'=>$request->declaration_id]) }}">
                                 @csrf
                                 <input id="rate" type="hidden" name="rate" value="{{ $request->rate }}">
                                 <input id="execution" type="hidden" name="execution" value="{{ $request->execution }}">
                                 <input id="body" type="hidden" name="body" value="{{ $request->body }}">
-                                <button class="btn btn-outline-danger" type="submit" style="width: 100px;">戻る</button>
+                                <button class="btn btn-outline-danger" type="submit" style="width: 150px;">戻る</button>
                             </form>
                         </div>
                     </div>

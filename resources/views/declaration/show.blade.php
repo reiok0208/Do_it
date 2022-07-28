@@ -60,12 +60,43 @@
                 </div>
             </div>
 
+            @if (Auth::check())
+                @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('declaration.comment.store') }}">
+                    @csrf
+                    <input id="declaration_id" type="hidden" name="declaration_id" value="{{ $declaration->id }}">
+
+                    <div class="row mb-3">
+                        <div class="col-md-10">
+                            <textarea id="body" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="コメント内容を入力" required style="background-color:white;">{{ old('body') }}</textarea>
+
+                            @error('body')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="col-md-2 align-self-end text-end">
+                            <button type="submit" class="btn btn-outline-primary">
+                                {{ __('コメント投稿') }}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            @endif
+
             <div class="card">
                 <div class="card-header">{{ __('コメント') }}</div>
                 <div class="card-body">
                     @include('include.comment')
                 </div>
             </div>
+            {{ $comments->links() }}
         </div>
     </div>
 </div>

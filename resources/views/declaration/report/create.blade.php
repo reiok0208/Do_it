@@ -27,23 +27,23 @@
 
                             <div class="col-md-7">
                                 <div class="form-check form-check-inline">
-                                    <input type="radio" class="form-check-input" name="rate" id="rate1" value="1">
+                                    <input type="radio" class="form-check-input" name="rate" id="rate1" value="1" {{ old('rate') == '1' ? 'checked' : '' }}>
                                     <label for="rate1" class="form-check-label">1</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input type="radio" class="form-check-input" name="rate" id="rate2" value="2">
+                                    <input type="radio" class="form-check-input" name="rate" id="rate2" value="2" {{ old('rate') == '2' ? 'checked' : '' }}>
                                     <label for="rate2" class="form-check-label">2</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input type="radio" class="form-check-input" name="rate" id="rate3" value="3">
+                                    <input type="radio" class="form-check-input" name="rate" id="rate3" value="3" {{ old('rate') == '3' ? 'checked' : '' }}>
                                     <label for="rate3" class="form-check-label">3</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input type="radio" class="form-check-input" name="rate" id="rate4" value="4">
+                                    <input type="radio" class="form-check-input" name="rate" id="rate4" value="4" {{ old('rate') == '4' ? 'checked' : '' }}>
                                     <label for="rate4" class="form-check-label">4</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input type="radio" class="form-check-input" name="rate" id="rate5" value="5">
+                                    <input type="radio" class="form-check-input" name="rate" id="rate5" value="5" {{ old('rate') == '5' ? 'checked' : '' }}>
                                     <label for="rate5" class="form-check-label">5</label>
                                 </div>
 

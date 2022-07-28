@@ -9,6 +9,7 @@ use App\Models\Declaration;
 use App\Models\Declaration_comment;
 use App\Models\Declaration_tag;
 use App\Models\Report;
+use App\Models\Report_comment;
 use App\Models\Tag;
 
 class DeclarationController extends Controller
@@ -93,7 +94,7 @@ class DeclarationController extends Controller
     public function show($id)
     {
         $declaration = Declaration::whereId($id)->first();
-        $comments = Declaration_comment::whereDeclarationId($id)->get();
+        $comments = Declaration_comment::latest()->whereDeclarationId($id)->paginate(10);
         $count = Declaration_comment::whereDeclarationId($id)->count();
         return view('declaration.show', compact('declaration','comments','count'));
     }
@@ -184,18 +185,32 @@ class DeclarationController extends Controller
         }
     }
 
+
+
+
+
+
+
+    /************************************************************************************************************
+     * Report
+     *
+     */
     public function report_create(Request $request, $id)
     {
         $declaration = Declaration::find($id);
-
-        $request->session()->put([
-            '_old_input' => [
-                'rate' => $request->rate,
-                'execution' => $request->execution,
-                'body' => $request->body,
-            ]
-        ]);
-        return view('declaration.report.create', compact('declaration'));
+        $report = $declaration->report;
+        if($report != null){
+            return redirect()->route('declaration.report.show',['id' => $report->id] );
+        }else{
+            $request->session()->put([
+                '_old_input' => [
+                    'rate' => $request->rate,
+                    'execution' => $request->execution,
+                    'body' => $request->body,
+                ]
+            ]);
+            return view('declaration.report.create', compact('declaration'));
+        }
     }
 
     public function report_confirm(Request $request)
@@ -216,6 +231,15 @@ class DeclarationController extends Controller
         // 二重送信防止
         $request->session()->regenerateToken();
 
-        return redirect()->route('declaration.show', ['id' => $report->declaration_id]);
+        return redirect()->route('declaration.report.show', ['id' => $report->id]);
+    }
+
+    public function report_show($id)
+    {
+        $report = Report::whereId($id)->first();
+        $declaration = Declaration::whereId($report->declaration_id)->first();
+        $comments = Report_comment::latest()->whereReportId($id)->paginate(10);
+        $count = Report_comment::whereReportId($id)->count();
+        return view('declaration.report.show', compact('report','declaration','comments','count'));
     }
 }

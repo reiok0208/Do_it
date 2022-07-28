@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     use HasFactory;
+
+    public function report_comment() {
+        return $this->hasMany(Report_comment::class);
+    }
 }
