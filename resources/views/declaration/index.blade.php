@@ -46,6 +46,56 @@
                                         <span class="badge rounded-pill bg-secondary">{{$tag->name}}</span>
                                     @endforeach
                                 </div>
+                                <div class="col-md-3" style="position:relative; z-index:100;">
+                                    @auth
+                                        @if (strtotime(date('Y/m/d')) < strtotime($dec->end_date))
+                                            @if (!$dec->isDoItBy(Auth::user()))
+                                                <span class="likes">
+                                                    <i class="fa-solid fa-hand-point-left fa-lg do-it-toggle" data-declaration-id="{{ $dec->id }}">
+                                                        <span class="do-it-counter">{{$dec->do_it_count}}</span> Do it!
+                                                    </i>
+
+                                                </span>
+                                            @else
+                                                <span class="likes">
+                                                    <i class="fa-solid fa-hand-point-left fa-lg do-it-toggle liked" data-declaration-id="{{ $dec->id }}">
+                                                        <span class="do-it-counter">{{$dec->do_it_count}}</span> Do it!
+                                                    </i>
+                                                </span>
+                                            @endif
+                                        @else
+                                            @if (!$dec->isGoodWorkBy(Auth::user()))
+                                                <span class="likes">
+                                                    <i class="fa-solid fa-hands-clapping fa-lg good-work-toggle" data-declaration-id="{{ $dec->id }}">
+                                                        <span class="good-work-counter">{{$dec->good_work_count}}</span> Good work!
+                                                    </i>
+
+                                                </span>
+                                            @else
+                                                <span class="likes">
+                                                    <i class="fa-solid fa-hands-clapping fa-lg good-work-toggle liked" data-declaration-id="{{ $dec->id }}">
+                                                        <span class="good-work-counter">{{$dec->good_work_count}}</span> Good work!
+                                                    </i>
+                                                </span>
+                                            @endif
+                                        @endif
+                                    @endauth
+                                    @guest
+                                        @if (strtotime(date('Y/m/d')) < strtotime($dec->end_date))
+                                            <span class="likes">
+                                                <i class="fa-solid fa-hand-point-left fa-lg">
+                                                    <span class="do-it-counter">{{$dec->do_it_count}}</span> Do it!
+                                                </i>
+                                            </span>
+                                        @else
+                                            <span class="likes">
+                                                <i class="fa-solid fa-hands-clapping fa-lg">
+                                                    <span class="good-work-counter">{{$dec->good_work_count}}</span> Good work!
+                                                </i>
+                                            </span>
+                                        @endif
+                                    @endguest
+                                </div>
                                 <div class="col">
                                     <p class="text-end">期間：{{ $dec->start_date->format('Y年m月d日') }}　〜　{{ $dec->end_date->format('Y年m月d日') }}</p>
                                 </div>

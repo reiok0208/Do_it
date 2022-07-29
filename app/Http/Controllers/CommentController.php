@@ -18,6 +18,8 @@ class CommentController extends Controller
      */
     public function declaration_comment_store(Request $request)
     {
+        $this->comment_valid($request);
+
         $comment = new Declaration_comment;
         $comment->declaration_id = $request->declaration_id;
         $comment->user_id = Auth::user()->id;
@@ -32,6 +34,8 @@ class CommentController extends Controller
 
     public function report_comment_store(Request $request)
     {
+        $this->comment_valid($request);
+
         $comment = new Report_comment;
         $comment->report_id = $request->report_id;
         $comment->user_id = Auth::user()->id;
@@ -72,5 +76,25 @@ class CommentController extends Controller
         } else {
             return redirect()->route('declaration.report.show', ['id' => $comment->report_id]);
         }
+    }
+
+    /************************************************************************************************************
+     * バリデーション
+     *
+     */
+    public function comment_valid($request){
+        // バリデーションルール
+        $validateRules = [
+            'body' => 'required|max:150',
+        ];
+
+        // バリデーションメッセージの日本語化
+        $validateMessages = [
+            "body.required" => "内容は必須入力です。",
+            "body.max" => "150文字以内でご入力ください。",
+        ];
+
+        //バリデーションをインスタンス化
+        $this->validate($request, $validateRules, $validateMessages);
     }
 }

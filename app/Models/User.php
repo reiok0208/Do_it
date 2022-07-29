@@ -50,6 +50,14 @@ class User extends Authenticatable
         return $this->hasMany(Declaration_comment::class);
     }
 
+    public function do_it() {
+        return $this->hasMany(Do_it::class);
+    }
+
+    public function good_work() {
+        return $this->hasMany(Good_work::class);
+    }
+
     /**
      * Relationships
      */

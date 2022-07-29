@@ -15,7 +15,7 @@ class Good_workFactory extends Factory
     {
         return [
             'user_id' => $this->faker->numberBetween(1,100),
-            'report_id' => $this->faker->numberBetween(1,100)
+            'declaration_id' => $this->faker->numberBetween(1,100)
         ];
     }
 }

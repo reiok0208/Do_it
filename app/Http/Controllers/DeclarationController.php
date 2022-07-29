@@ -11,6 +11,8 @@ use App\Models\Declaration_tag;
 use App\Models\Report;
 use App\Models\Report_comment;
 use App\Models\Tag;
+use App\Models\Do_it;
+use App\Models\Good_work;
 
 class DeclarationController extends Controller
 {
@@ -19,9 +21,10 @@ class DeclarationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $declarations = Declaration::latest()->paginate(20);
+        $declarations = Declaration::withCount('do_it')->withCount('good_work')->latest()->paginate(20);
+        $request->session()->forget('_old_input');
         return view('declaration.index', compact('declarations'));
     }
 
@@ -32,20 +35,27 @@ class DeclarationController extends Controller
      */
     public function create(Request $request)
     {
-        $request->session()->put([
-            '_old_input' => [
-                'title' => $request->title,
-                'tag' => $request->tag,
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-                'body' => $request->body
-            ]
-        ]);
+        if (!preg_match("/declaration\/new/", url()->previous())) {
+            $request->session()->forget('_old_input');
+        }
+
+        if(!empty($request->title)){
+            $request->session()->put([
+                '_old_input' => [
+                    'title' => $request->title,
+                    'tag' => $request->tag,
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date,
+                    'body' => $request->body
+                ]
+            ]);
+        }
         return view('declaration.create');
     }
 
     public function confirm(Request $request)
     {
+        $this->dec_valid($request);
         return view('declaration.confirm', compact('request'));
     }
 
@@ -82,6 +92,8 @@ class DeclarationController extends Controller
         // 二重送信防止
         $request->session()->regenerateToken();
 
+        $request->session()->forget('_old_input');
+
         return redirect()->route('declaration.show', ['id' => $declaration->id]);
     }
 
@@ -115,16 +127,18 @@ class DeclarationController extends Controller
             $tags .= "#"."$tag->name";
         }
 
-        $request->session()->put([
-            '_old_input' => [
-                'id' => $declaration->id,
-                'title' => $declaration->title,
-                'tag' => $tags,
-                'start_date' => $declaration->start_date->format('Y-m-d'),
-                'end_date' => $declaration->end_date->format('Y-m-d'),
-                'body' => $declaration->body
-            ]
-        ]);
+        if(!preg_match("/edit/", url()->previous())){
+            $request->session()->put([
+                '_old_input' => [
+                    'id' => $declaration->id,
+                    'title' => $declaration->title,
+                    'tag' => $tags,
+                    'start_date' => $declaration->start_date->format('Y-m-d'),
+                    'end_date' => $declaration->end_date->format('Y-m-d'),
+                    'body' => $declaration->body
+                ]
+            ]);
+        }
 
         return view('declaration.edit');
     }
@@ -138,6 +152,18 @@ class DeclarationController extends Controller
      */
     public function update(Request $request)
     {
+        $request->session()->put([
+            '_old_input' => [
+                'id' => $request->input('id'),
+                'title' => $request->input('title'),
+                'tag' => $request->input('tags'),
+                'start_date' => $request->input("start_date"),
+                'end_date' => $request->input("end_date"),
+                'body' => $request->input('body')
+            ]
+        ]);
+        $this->dec_valid($request);
+
         $declaration = Declaration::find($request->id);
         $declaration->title = e($request->title);
         $declaration->body = e($request->body);
@@ -160,6 +186,8 @@ class DeclarationController extends Controller
 
         // 二重送信防止
         $request->session()->regenerateToken();
+
+        $request->session()->forget('_old_input');
 
         return redirect()->route('declaration.show', ['id' => $declaration->id]);
     }
@@ -187,10 +215,6 @@ class DeclarationController extends Controller
 
 
 
-
-
-
-
     /************************************************************************************************************
      * Report
      *
@@ -202,19 +226,22 @@ class DeclarationController extends Controller
         if($report != null){
             return redirect()->route('declaration.report.show',['id' => $report->id] );
         }else{
-            $request->session()->put([
-                '_old_input' => [
-                    'rate' => $request->rate,
-                    'execution' => $request->execution,
-                    'body' => $request->body,
-                ]
-            ]);
+            if(preg_match("/confirm/", url()->previous())){
+                $request->session()->put([
+                    '_old_input' => [
+                        'rate' => $request->rate,
+                        'execution' => $request->execution,
+                        'body' => $request->body,
+                    ]
+                ]);
+            }
             return view('declaration.report.create', compact('declaration'));
         }
     }
 
     public function report_confirm(Request $request)
     {
+        $this->report_valid($request);
         return view('declaration.report.confirm', compact('request'));
     }
 
@@ -241,5 +268,102 @@ class DeclarationController extends Controller
         $comments = Report_comment::latest()->whereReportId($id)->paginate(10);
         $count = Report_comment::whereReportId($id)->count();
         return view('declaration.report.show', compact('report','declaration','comments','count'));
+    }
+
+
+
+    /************************************************************************************************************
+     * いいね
+     *
+     */
+    public function do_it(Request $request){
+        $user_id = Auth::user()->id;
+        $declaration_id = $request->declaration_id; //JSONから飛んできたdeclaration_id
+        $already = Do_it::where('user_id', $user_id)->where('declaration_id', $declaration_id)->first(); //データがあるか取得してみる
+
+        if (!$already) { //中身がなければ保存
+            $like = new Do_it;
+            $like->declaration_id = $declaration_id;
+            $like->user_id = $user_id;
+            $like->save();
+        } else { //中身があれば削除
+            Do_it::where('declaration_id', $declaration_id)->where('user_id', $user_id)->delete();
+        }
+
+        $do_it_count = Declaration::withCount('do_it')->findOrFail($declaration_id)->do_it_count; //更新された宣言のいいね数を取得
+        $param = [
+            'do_it_count' => $do_it_count,
+        ];
+        return response()->json($param); //JSONへ返却
+    }
+
+    public function good_work(Request $request){
+        $user_id = Auth::user()->id;
+        $declaration_id = $request->declaration_id; //JSONから飛んできたdeclaration_id
+        $already = Good_work::where('user_id', $user_id)->where('declaration_id', $declaration_id)->first(); //データがあるか取得してみる
+
+        if (!$already) { //中身がなければ保存
+            $like = new Good_work;
+            $like->declaration_id = $declaration_id;
+            $like->user_id = $user_id;
+            $like->save();
+        } else { //中身があれば削除
+            Good_work::where('declaration_id', $declaration_id)->where('user_id', $user_id)->delete();
+        }
+
+        $good_work_count = Declaration::withCount('good_work')->findOrFail($declaration_id)->good_work_count; //更新された宣言のいいね数を取得
+        $param = [
+            'good_work_count' => $good_work_count,
+        ];
+        return response()->json($param); //JSONへ返却
+    }
+
+
+
+    /************************************************************************************************************
+     * バリデーション
+     *
+     */
+    public function dec_valid($request){
+        // バリデーションルール
+        $validateRules = [
+            'title' => 'required|max:15',
+            'start_date' =>  'required|date|after:yesterday',
+            'end_date' => 'required|date|after:start_date',
+            'body' => 'required|max:150',
+        ];
+
+        // バリデーションメッセージの日本語化
+        $validateMessages = [
+            "title.required" => "タイトルは必須入力です。",
+            "start_date.required" => "開始日は必須入力です。",
+            "end_date.required" => "終了日は必須入力です。",
+            "body.required" => "内容は必須入力です。",
+            "title.max" => "15文字以内でご入力ください。",
+            "body.max" => "150文字以内でご入力ください。",
+            "start_date.after" => "開始日は今日以降の日付を指定してください。",
+            "end_date.after" => "終了日は開始日以降の日付を指定してください。"
+        ];
+
+        //バリデーションをインスタンス化
+        $this->validate($request, $validateRules, $validateMessages);
+    }
+
+    public function report_valid($request){
+        // バリデーションルール
+        $validateRules = [
+            'rate' => 'required',
+            'body' => 'required|max:150',
+        ];
+
+        // バリデーションメッセージの日本語化
+        $validateMessages = [
+            "rate.required" => "自己評価は必須入力です。",
+            "body.required" => "内容は必須入力です。",
+            "body.max" => "150文字以内でご入力ください。",
+        ];
+
+        //バリデーションをインスタンス化
+        $this->validate($request, $validateRules, $validateMessages);
     }
 }

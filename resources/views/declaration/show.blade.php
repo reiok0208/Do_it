@@ -73,7 +73,7 @@
 
                     <div class="row mb-3">
                         <div class="col-md-10">
-                            <textarea id="body" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="コメント内容を入力" required style="background-color:white;">{{ old('body') }}</textarea>
+                            <textarea id="body" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="コメント内容を入力してください" required style="background-color:white;" rows="5">{{ old('body') }}</textarea>
 
                             @error('body')
                                 <span class="invalid-feedback" role="alert">

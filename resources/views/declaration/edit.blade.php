@@ -22,7 +22,7 @@
                             <label for="title" class="col-md-3 col-form-label text-md-end">{{ __('タイトル') }}</label>
 
                             <div class="col-md-7">
-                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" required autofocus placeholder="宣言タイトルを入力">
+                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" autofocus placeholder="宣言タイトルを入力してください">
 
                                 @error('title')
                                     <span class="invalid-feedback" role="alert">
@@ -36,7 +36,7 @@
                             <label for="tag" class="col-md-3 col-form-label text-md-end">{{ __('タグ') }}</label>
 
                             <div class="col-md-7">
-                                <input id="tag" type="text" class="form-control @error('tag') is-invalid @enderror" name="tag" value="{{ old('tag') }}" placeholder="#で区切って入力">
+                                <input id="tag" type="text" class="form-control @error('tag') is-invalid @enderror" name="tag" value="{{ old('tag') }}" placeholder="タグを入力してください　例：#投稿#勉強">
 
                                 @error('tag')
                                     <span class="invalid-feedback" role="alert">
@@ -50,7 +50,7 @@
                             <label for="start_date" class="col-md-3 col-form-label text-md-end">{{ __('開始日') }}</label>
 
                             <div class="col-md-7">
-                                <input id="start_date" type="date" class="form-control @error('start_date') is-invalid @enderror" name="start_date" value="{{ old('start_date') }}" required>
+                                <input id="start_date" type="date" class="form-control @error('start_date') is-invalid @enderror" name="start_date" value="{{ old('start_date') }}">
 
                                 @error('start_date')
                                     <span class="invalid-feedback" role="alert">
@@ -64,7 +64,7 @@
                             <label for="end_date" class="col-md-3 col-form-label text-md-end">{{ __('終了日') }}</label>
 
                             <div class="col-md-7">
-                                <input id="end_date" type="date" class="form-control @error('end_date') is-invalid @enderror" name="end_date" value="{{ old('end_date') }}" required>
+                                <input id="end_date" type="date" class="form-control @error('end_date') is-invalid @enderror" name="end_date" value="{{ old('end_date') }}">
 
                                 @error('end_date')
                                     <span class="invalid-feedback" role="alert">
@@ -78,7 +78,7 @@
                             <label for="body" class="col-md-3 col-form-label text-md-end">{{ __('内容') }}</label>
 
                             <div class="col-md-7">
-                                <textarea id="body" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="宣言内容を入力" required>{{ old('body') }}</textarea>
+                                <textarea id="body" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="宣言内容を入力してください" rows="10">{{ old('body') }}</textarea>
 
                                 @error('body')
                                     <span class="invalid-feedback" role="alert">

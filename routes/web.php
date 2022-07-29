@@ -40,6 +40,9 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function(){
     Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('show');
 });
 
+// いいね関連
+Route::post('/do_it', [App\Http\Controllers\DeclarationController::class, 'do_it'])->name('do_it');
+Route::post('/good_work', [App\Http\Controllers\DeclarationController::class, 'good_work'])->name('good_work');
 
 // コメント関連
 Route::post('/declaration/comment/store', [App\Http\Controllers\CommentController::class, 'declaration_comment_store'])
