@@ -5,18 +5,26 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="d-flex justify-content-center" style="margin-bottom:30px;">
-                    <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center disabled">宣言詳細</a>
-                    <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center end_date" href="{{ route('declaration.report.create',['id'=>$declaration->id]) }}">宣言報告</a>
+                <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center disabled">宣言詳細</a>
+                @if ($declaration->report != null)
+                    <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center end_date" href="{{ route('declaration.report.show',['id'=>$declaration->report->id]) }}">宣言報告</a>
+                @else
+                    @if(Auth::user() && $declaration->user_id == Auth::id())
+                        <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center end_date" href="{{ route('declaration.report.create',['id'=>$declaration->id]) }}">宣言報告(未提出)</a>
+                    @else
+                        <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center end_date disabled">宣言報告(未提出)</a>
+                    @endif
+                @endif
             </div>
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
             <div class="card">
                 <div class="card-header">{{ __('宣言詳細') }}</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
 
                     <div class="dec_box dec_show">
                         <div class="row">
@@ -24,24 +32,26 @@
                             <p class="col-md-3 text-end">
                                 宣言者：<a href="{{ route('user.show',['id'=>$declaration->user->id]) }}">{{ $declaration->user->name }}</a>
                             </p>
-                            <div class="col-md-4 text-end">
+                            <div class="col text-end">
                                 <p>宣言日：{{ $declaration->created_at->format('Y年m月d日') }}</p>
                                 <p>更新日：{{ $declaration->updated_at->format('Y年m月d日') }}</p>
                             </div>
-                            <div class="col-md-1 dropdown text-end" style="position:relative; z-index:100;">
-                                <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">･･･</a>
+                            @if (Auth::user() && $declaration->user_id == Auth::id())
+                                <div class="col-md-1 dropdown text-end" style="position:relative; z-index:100;">
+                                    <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">･･･</a>
 
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <li><a class="dropdown-item" href="{{ route('declaration.edit',['id'=>$declaration->id]) }}">編集</a></li>
-                                    <li>
-                                        <form method="POST" action="{{ route('declaration.destroy',['id'=>$declaration->id]) }}">
-                                            @csrf
-                                            @method('delete')
-                                            <button class="delete dropdown-item btn btn-link" style="text-decoration:none; color:black; border-radius:0;" type="submit">削除</button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <li><a class="dropdown-item" href="{{ route('declaration.edit',['id'=>$declaration->id]) }}">編集</a></li>
+                                        <li>
+                                            <form method="POST" action="{{ route('declaration.destroy',['id'=>$declaration->id]) }}">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="delete dropdown-item btn btn-link" style="text-decoration:none; color:black; border-radius:0;" type="submit">削除</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            @endif
                         </div>
                         <p>{!! $declaration->body !!}</p>
                         <div class="row align-items-end">
@@ -54,19 +64,15 @@
                                 <p>期間： {{ $declaration->start_date->format('Y年m月d日') }}</p>
                                 <p> 〜 {{ $declaration->end_date->format('Y年m月d日') }}</p>
                             </div>
-                            <div class="col-md-1"></div>
+                            @if (Auth::user() && $declaration->user_id == Auth::id())
+                                <div class="col-md-1"></div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
 
             @if (Auth::check())
-                @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                @endif
-
                 <form method="POST" action="{{ route('declaration.comment.store') }}">
                     @csrf
                     <input id="declaration_id" type="hidden" name="declaration_id" value="{{ $declaration->id }}">

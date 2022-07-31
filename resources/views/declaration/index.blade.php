@@ -4,16 +4,15 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
             <div class="card">
                 <div class="card-header">{{ __('全宣言一覧') }}</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
                     @foreach ($declarations as $dec)
                         <div class="dec_box">
                             <div class="row">
@@ -23,23 +22,28 @@
                                     <span>宣言日：{{ $dec->created_at->format('Y年m月d日') }}</span>
                                 </div>
 
-                                <div class="col-md-1 dropdown text-end" style="position:relative; z-index:100;">
-                                    <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">･･･</a>
+                                @if (Auth::user() && $dec->user_id == Auth::id())
+                                    <div class="col-md-1 dropdown text-end" style="position:relative; z-index:100;">
+                                        <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">･･･</a>
 
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <li><a class="dropdown-item" href="{{ route('declaration.edit',['id'=>$dec->id]) }}">編集</a></li>
-                                        <li>
-                                            <form method="POST" action="{{ route('declaration.destroy',['id'=>$dec->id]) }}">
-                                                @csrf
-                                                @method('delete')
-                                                <button class="delete dropdown-item btn btn-link" style="text-decoration:none; color:black; border-radius:0;" type="submit">削除</button>
-                                            </form>
-                                        </li>
-                                    </ul>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <li><a class="dropdown-item" href="{{ route('declaration.edit',['id'=>$dec->id]) }}">編集</a></li>
+                                            <li>
+                                                <form method="POST" action="{{ route('declaration.destroy',['id'=>$dec->id]) }}">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button class="delete dropdown-item btn btn-link" style="text-decoration:none; color:black; border-radius:0;" type="submit">削除</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11">
+                                    <p>{!! $dec->body !!}</p>
                                 </div>
                             </div>
-
-                            <p>{!! $dec->body !!}</p>
                             <div class="row align-items-end">
                                 <div class="col-md-4">
                                     @foreach($dec->tags as $tag)

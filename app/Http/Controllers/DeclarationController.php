@@ -13,6 +13,7 @@ use App\Models\Report_comment;
 use App\Models\Tag;
 use App\Models\Do_it;
 use App\Models\Good_work;
+use Illuminate\Support\Facades\Gate;
 
 class DeclarationController extends Controller
 {
@@ -55,7 +56,7 @@ class DeclarationController extends Controller
 
     public function confirm(Request $request)
     {
-        $this->dec_valid($request);
+        // $this->dec_valid($request);
         return view('declaration.confirm', compact('request'));
     }
 
@@ -94,7 +95,7 @@ class DeclarationController extends Controller
 
         $request->session()->forget('_old_input');
 
-        return redirect()->route('declaration.show', ['id' => $declaration->id]);
+        return redirect()->route('declaration.show', ['id' => $declaration->id])->with('status', '投稿しました！');
     }
 
     /**
@@ -120,6 +121,9 @@ class DeclarationController extends Controller
     public function edit(Request $request, $id)
     {
         $declaration = Declaration::whereId($id)->first();
+        if(! Gate::allows('declaration_gate', $declaration)){
+            abort(403);
+        }
 
         // タグを#ありの状態に加工
         $tags = "";
@@ -152,6 +156,11 @@ class DeclarationController extends Controller
      */
     public function update(Request $request)
     {
+        $declaration = Declaration::whereId($request->id)->first();
+        if(! Gate::allows('declaration_gate', $declaration)){
+            abort(403);
+        }
+
         $request->session()->put([
             '_old_input' => [
                 'id' => $request->input('id'),
@@ -189,7 +198,7 @@ class DeclarationController extends Controller
 
         $request->session()->forget('_old_input');
 
-        return redirect()->route('declaration.show', ['id' => $declaration->id]);
+        return redirect()->route('declaration.show', ['id' => $declaration->id])->with('status', '編集しました！');
     }
 
     /**
@@ -201,6 +210,9 @@ class DeclarationController extends Controller
     public function destroy($id)
     {
         $declaration = Declaration::findOrFail($id);
+        if(! Gate::allows('declaration_gate', $declaration)){
+            abort(403);
+        }
 
         $declaration->delete();
 
@@ -209,7 +221,7 @@ class DeclarationController extends Controller
         if (preg_match("/\?page\=/", $url)) {
             return redirect(url()->previous());
         } else {
-            return redirect()->route('declaration.index');
+            return redirect()->route('declaration.index')->with('status', '削除しました！');
         }
     }
 
@@ -222,7 +234,10 @@ class DeclarationController extends Controller
     public function report_create(Request $request, $id)
     {
         $declaration = Declaration::find($id);
-        if(strtotime(date('Y/m/d')) > strtotime($declaration->end_date)){
+        if(! Gate::allows('declaration_gate', $declaration)){
+            abort(403);
+        }
+        if(strtotime(date('Y/m/d')) > strtotime($declaration->end_date) || ($declaration->user_id == Auth::id())){
             $report = $declaration->report;
             if($report != null){
                 return redirect()->route('declaration.report.show',['id' => $report->id] );
@@ -251,6 +266,10 @@ class DeclarationController extends Controller
 
     public function report_store(Request $request)
     {
+        $declaration = Declaration::find($request->declaration_id);
+        if(! Gate::allows('declaration_gate', $declaration)){
+            abort(403);
+        }
         $report = new Report;
         $report->declaration_id = $request->declaration_id;
         $report->rate = $request->rate;
@@ -262,7 +281,7 @@ class DeclarationController extends Controller
         // 二重送信防止
         $request->session()->regenerateToken();
 
-        return redirect()->route('declaration.report.show', ['id' => $report->id]);
+        return redirect()->route('declaration.report.show', ['id' => $report->id])->with('status', '報告提出しました！');
     }
 
     public function report_show($id)

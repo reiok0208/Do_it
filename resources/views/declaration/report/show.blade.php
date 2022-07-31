@@ -8,16 +8,15 @@
                 <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center" href="{{ route('declaration.show',['id'=>$declaration->id]) }}">宣言詳細</a>
                 <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center disabled">宣言報告</a>
             </div>
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
             <div class="card">
                 <div class="card-header">{{ __('宣言報告') }}</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
                     <div class="dec_box dec_show">
                         <div class="row">
                             <h2 class="col-md-5">
@@ -40,12 +39,6 @@
             </div>
 
             @if (Auth::check())
-                @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                @endif
-
                 <form method="POST" action="{{ route('report.comment.store') }}">
                     @csrf
                     <input id="report_id" type="hidden" name="report_id" value="{{ $report->id }}">

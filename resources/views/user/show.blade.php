@@ -4,18 +4,15 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-
-
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
             <div class="card">
                 <div class="card-header">{{ __('ユーザー詳細') }}</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
                     <div class="user_box">
                         <div class='row justify-content-between'>
                             <div class="col-2 icon">
