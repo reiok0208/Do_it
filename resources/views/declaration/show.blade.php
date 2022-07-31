@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="d-flex justify-content-center" style="margin-bottom:30px;">
                     <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center disabled">宣言詳細</a>
-                    <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center" href="{{ route('declaration.report.create',['id'=>$declaration->id]) }}">宣言報告</a>
+                    <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center end_date" href="{{ route('declaration.report.create',['id'=>$declaration->id]) }}">宣言報告</a>
             </div>
             <div class="card">
                 <div class="card-header">{{ __('宣言詳細') }}</div>
@@ -100,4 +100,7 @@
         </div>
     </div>
 </div>
+<script>
+    const end_date = @json(strtotime(date('Y/m/d')) > strtotime($declaration->end_date));
+</script>
 @endsection

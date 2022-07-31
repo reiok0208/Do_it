@@ -69,3 +69,12 @@ $(function () {
         });
     });
 });
+
+
+// 終了日前の宣言報告ページは遷移禁止
+$('.end_date').on('click', function(e){
+    if(!end_date){
+        alert('終了日を過ぎていません。\n報告は終了日を過ぎたら入力できます。');
+        e.preventDefault();
+    }
+});

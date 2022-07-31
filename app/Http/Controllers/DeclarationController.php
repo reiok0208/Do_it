@@ -222,20 +222,24 @@ class DeclarationController extends Controller
     public function report_create(Request $request, $id)
     {
         $declaration = Declaration::find($id);
-        $report = $declaration->report;
-        if($report != null){
-            return redirect()->route('declaration.report.show',['id' => $report->id] );
-        }else{
-            if(preg_match("/confirm/", url()->previous())){
-                $request->session()->put([
-                    '_old_input' => [
-                        'rate' => $request->rate,
-                        'execution' => $request->execution,
-                        'body' => $request->body,
-                    ]
-                ]);
+        if(strtotime(date('Y/m/d')) > strtotime($declaration->end_date)){
+            $report = $declaration->report;
+            if($report != null){
+                return redirect()->route('declaration.report.show',['id' => $report->id] );
+            }else{
+                if(preg_match("/confirm/", url()->previous())){
+                    $request->session()->put([
+                        '_old_input' => [
+                            'rate' => $request->rate,
+                            'execution' => $request->execution,
+                            'body' => $request->body,
+                        ]
+                    ]);
+                }
+                return view('declaration.report.create', compact('declaration'));
             }
-            return view('declaration.report.create', compact('declaration'));
+        }else{
+            return redirect()->route('declaration.show', ['id' => $declaration->id]);
         }
     }
 
