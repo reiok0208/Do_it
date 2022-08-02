@@ -20,7 +20,7 @@
                     <div class="card-header">ユーザー情報編集</div>
                     <div class="card-body">
 
-                        <form method="POST" action="/user/edit/info" style="border-bottom: solid 1px rgba(200,200,200);">
+                        <form method="POST" action="/user/edit/info" enctype="multipart/form-data" style="border-bottom: solid 1px rgba(200,200,200);">
                         @csrf
                             <div class="form-group row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-end">ユーザー名変更</label>
@@ -33,11 +33,26 @@
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="form-group row mb-4">
                                 <label for="body" class="col-md-4 col-form-label text-end">自己紹介変更</label>
                                 <div class="col-md-6">
                                     <textarea id="body" name="body" class="form-control @error('body') is-invalid @enderror" style="height:100px;">{{$auth["body"]}}</textarea>
                                     @error('body')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="image" class="col-md-4 col-form-label text-md-end">{{ __('アイコン画像') }}</label>
+
+                                <div class="col-md-6">
+                                    <input type="file" name="image" accept="image/png, image/jpeg" class="form-control">
+
+                                    @error('image')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

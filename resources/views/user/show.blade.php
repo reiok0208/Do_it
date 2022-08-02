@@ -15,17 +15,21 @@
                 <div class="card-body">
                     <div class="user_box">
                         <div class='row justify-content-between'>
-                            <div class="col-2 icon">
-                                アイコン
+                            <div class="col-md-2">
+                                @if ($user->image != null)
+                                    <img src="{{ Storage::url($user->image) }}" alt="アイコン画像" width="50%">
+                                @else
+                                    <img src="{{ asset('img/default_icon.png') }}" alt="アイコン画像" width="50%">
+                                @endif
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-6">
                                 <p>ユーザー名：{{ $user->name }}</p>
                                 @if (Auth::id() == $user->id)
                                     <p>メールアドレス：{{ $user->email }}</p>
                                 @endif
                                 <p>自己紹介：{{ $user->body }}</p>
                             </div>
-                            <div class="col-4 text-end">
+                            <div class="col-md-4 text-end">
                                 <div>
                                     <a href="{{ route('user.follows',['id'=>$user->id]) }}">{{ $user->follows->count() }}フォロー</a>
                                     <a href="{{ route('user.followers',['id'=>$user->id]) }}">{{ $user->followers->count() }}フォロワー</a>
