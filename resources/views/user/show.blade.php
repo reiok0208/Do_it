@@ -26,15 +26,28 @@
                                 <p>自己紹介：{{ $user->body }}</p>
                             </div>
                             <div class="col-4 text-end">
-                                <p>
-                                    <a href="#">◯フォロー</a>
-                                    <a href="#">◯フォロワー</a>
-                                </p>
+                                <div>
+                                    <a href="{{ route('user.follows',['id'=>$user->id]) }}">{{ $user->follows->count() }}フォロー</a>
+                                    <a href="{{ route('user.followers',['id'=>$user->id]) }}">{{ $user->followers->count() }}フォロワー</a>
+                                </div>
+                                @if ($user->id != Auth::id())
+                                    @if ($followed == null)
+                                        <form method="POST" action="{{ route('user.follow',['id'=>$user->id]) }}">
+                                            @csrf
+                                            <button class="btn btn-outline-primary" type="submit">フォローする</button>
+                                        </form>
+                                    @else
+                                        <form method="POST" action="{{ route('user.unfollow',['id'=>$user->id]) }}">
+                                            @csrf
+                                            <button class="btn btn-outline-danger" type="submit">フォロー解除する</button>
+                                        </form>
+                                    @endif
+                                @endif
                                 @if (Auth::id() == $user->id)
-                                    <button class="btn btn-outline-primary user_edit">アカウント編集</button><br>
-                                    <button class="btn btn-outline-danger">アカウント削除</button>
+                                    <a class="btn btn-outline-primary text-center w-30 user_edit" href="{{ route('user.edit') }}">ユーザー編集</a><br>
+                                    <a class="btn btn-outline-danger text-center w-30" href="{{ route('user.delete') }}">ユーザー削除</a>
                                 @elseif ($user->admin == 1)
-                                    <button class="btn btn-outline-danger">アカウント削除</button>
+                                    <button class="btn btn-outline-danger">アカウント凍結</button>
                                 @endif
                             </div>
                         </div>

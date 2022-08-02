@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Declaration;
+use App\Models\Relationship;
 
 class UserController extends Controller
 {
@@ -24,27 +25,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -53,41 +33,42 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::whereId($id)->first();
-        $declarations = Declaration::whereUserId($id)->paginate(20);
-        return view('user.show', compact('user','declarations'));
+        $declarations = Declaration::whereUserId($id)->latest()->paginate(20);
+        $followed = Relationship::where('following_user_id', \Auth::user()->id)->where('user_id', $id)->first();
+        return view('user.show', compact('user','declarations','followed'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+    // ユーザーのフォロー・アンフォロー
+    public function follow($id) {
+        $follow = Relationship::create([
+            'following_user_id' => \Auth::user()->id,
+            'user_id' => $id,
+        ]);
+        return redirect()->back()->with('status', 'フォローしました！');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+    public function unfollow($id) {
+        $follow = Relationship::where('following_user_id', \Auth::user()->id)->where('user_id', $id)->first();
+        $follow->delete();
+
+        return redirect()->back()->with('status', 'フォロー解除しました！');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+
+    // ログインユーザーのフォロー・フォロワー情報を取得
+    public function  user_follows($id)
     {
-        //
+        $user = User::whereId($id)->first();
+        $follows = $user->follows()->latest()->paginate(20);
+        return view('user.follow', compact('user','follows'));
     }
+
+    public function  user_followers($id)
+    {
+        $user = User::whereId($id)->first();
+        $follows = $user->followers()->latest()->paginate(20);
+        return view('user.follow', compact('user','follows'));
+    }
+
 }

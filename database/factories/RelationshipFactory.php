@@ -16,7 +16,7 @@ class RelationshipFactory extends Factory
     {
         return [
             'user_id' => 1,
-            'follower_id' => function () { return self::$sequence++; }
+            'following_user_id' => function () { return self::$sequence++; }
         ];
     }
 }

@@ -36,9 +36,6 @@ Route::group(['prefix' => 'declaration', 'as' => 'declaration.'], function(){
     });
 });
 
-Route::group(['prefix' => 'user', 'as' => 'user.'], function(){
-    Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('show');
-});
 
 // いいね関連
 Route::post('/do_it', [App\Http\Controllers\DeclarationController::class, 'do_it'])->name('do_it')->middleware('auth');
@@ -56,3 +53,22 @@ Route::delete('/declaration/comment/delete/{id}', [App\Http\Controllers\CommentC
 
 Route::delete('/report/comment/delete/{id}', [App\Http\Controllers\CommentController::class, 'report_comment_destroy'])
 ->name('report.comment.destroy')->middleware('auth');
+
+
+// ユーザー関連
+Route::group(['prefix' => 'user', 'as' => 'user.'], function(){
+    Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('show');
+    Route::get('/{id}/follows', [App\Http\Controllers\UserController::class, 'user_follows'])->name('follows');
+    Route::get('/{id}/followers', [App\Http\Controllers\UserController::class, 'user_followers'])->name('followers');
+    Route::post('/{id}/follow', [App\Http\Controllers\UserController::class, 'follow'])->name('follow');
+    Route::post('/{id}/unfollow', [App\Http\Controllers\UserController::class, 'unfollow'])->name('unfollow');
+});
+
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('/user', 'App\Http\Controllers\Auth\UserEditController@UserEditForm')->name('user.edit');
+    Route::post('/user/edit/info','App\Http\Controllers\Auth\UserEditController@InfoUpdate');
+    Route::post('/user/edit/email','App\Http\Controllers\Auth\UserEditController@EmailUpdate');
+    Route::post('/user/edit/password','App\Http\Controllers\Auth\UserEditController@PasswordChange');
+    Route::get('/user/edit/delete','App\Http\Controllers\Auth\UserEditController@WithdrawalForm')->name('user.delete');;
+    Route::post('/user/edit/Withdrawal','App\Http\Controllers\Auth\UserEditController@Withdrawal');
+});
