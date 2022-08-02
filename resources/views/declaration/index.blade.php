@@ -14,10 +14,10 @@
 
                 <div class="card-body">
                     @foreach ($declarations as $dec)
-                        <div class="dec_box">
+                        <div class="declaration">
                             <div class="row">
-                                <h2 class="col-md-4">{{ $dec->title }}</h2>
-                                <div class="col-md-7 text-end">
+                                <h2 class="declaration__title col-md-4">{{ $dec->title }}</h2>
+                                <div class="declaration__date--top col-md-7 text-end">
                                     <span>宣言者：<a href="{{ route('user.show',['id'=>$dec->user->id]) }}">{{ $dec->user->name }}</a>　</span>
                                     <span>宣言日：{{ $dec->created_at->format('Y年m月d日') }}</span>
                                 </div>
@@ -41,13 +41,13 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-11">
-                                    <p>{!! $dec->body !!}</p>
+                                    <p class="declaration__body">{!! $dec->body !!}</p>
                                 </div>
                             </div>
                             <div class="row align-items-end">
                                 <div class="col-md-4">
                                     @foreach($dec->tags as $tag)
-                                        <span class="badge rounded-pill bg-secondary">{{$tag->name}}</span>
+                                        <a href="#" class="declaration__badge badge rounded-pill bg-secondary">{{$tag->name}}</a>
                                     @endforeach
                                 </div>
                                 <div class="col-md-3" style="position:relative; z-index:100;">
@@ -101,7 +101,7 @@
                                     @endguest
                                 </div>
                                 <div class="col">
-                                    <p class="text-end">期間：{{ $dec->start_date->format('Y年m月d日') }}　〜　{{ $dec->end_date->format('Y年m月d日') }}</p>
+                                    <p class="declaration__date--bottom text-end">期間：{{ $dec->start_date->format('Y年m月d日') }}　〜　{{ $dec->end_date->format('Y年m月d日') }}</p>
                                 </div>
                                 <div class="col-md-1"></div>
                             </div>

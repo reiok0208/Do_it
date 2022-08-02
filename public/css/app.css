@@ -10904,69 +10904,38 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-body {
-  font-family: "Noto Sans JP", sans-serif;
-}
-
-p, h2, .h2 {
-  margin: 0;
-  padding: 0;
-}
-
-a {
-  color: gray;
-}
-
-.card {
-  margin-bottom: 30px;
-}
-
-.dec_box {
-  position: relative;
-  border-bottom: 1px solid rgb(220, 220, 220);
-  border-radius: 5px;
+/* mixin */
+.declaration {
+  padding: 0 20px 20px 20px;
   margin-bottom: 20px;
-  padding-bottom: 20px;
+  border-bottom: solid 1px rgb(220, 220, 220);
+  border-radius: 10px;
 }
-.dec_box div:first-child {
-  font-size: 12px;
+.declaration__title {
+  font-size: 20px;
+  font-weight: 900;
 }
-.dec_box div:first-child div:nth-child(2) {
-  padding-top: 10px;
+.declaration__date {
+  font-size: 15px;
 }
-.dec_box div:first-child div:nth-child(2) a {
+.declaration__date--top span:first-child {
   position: relative;
   z-index: 100;
 }
-.dec_box div:first-child + p {
-  font-size: 15px;
+.declaration__body {
+  margin: 20px 10px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
-  margin: 0 10px 10px 10px;
 }
-.dec_box h2, .dec_box .h2 {
-  font-size: 18px;
-  font-weight: 900;
-  padding-top: 10px;
-}
-.dec_box div:nth-child(2) {
-  font-size: 12px;
-}
-.dec_box div:nth-child(2) div {
-  line-height: 20px;
-}
-.dec_box > a {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 0;
+.declaration__badge {
+  position: relative;
+  z-index: 100;
+  text-decoration: none;
 }
 
-.dec_box:last-child {
+.declaration:last-child {
   border: none;
 }
 
@@ -11004,12 +10973,6 @@ a {
 
 .user_box {
   padding: 10px;
-}
-.user_box .icon {
-  border: solid;
-  border-radius: 100px;
-  width: 60px;
-  height: 60px;
 }
 
 /*!
@@ -21438,4 +21401,30 @@ readers do not read off random characters that represent icons */
 
 textarea {
   resize: none;
+}
+
+body {
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+p, h2, .h2 {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: gray;
+}
+
+.card {
+  margin-bottom: 30px;
+}
+
+.link_box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
 }
