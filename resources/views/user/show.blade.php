@@ -49,9 +49,22 @@
                                 @endif
                                 @if (Auth::id() == $user->id)
                                     <a class="btn btn-outline-primary text-center w-30 user_edit" href="{{ route('user.edit') }}">ユーザー編集</a><br>
-                                    <a class="btn btn-outline-danger text-center w-30" href="{{ route('user.delete') }}">ユーザー削除</a>
-                                @elseif ($user->admin == 1)
-                                    <button class="btn btn-outline-danger">アカウント凍結</button>
+                                    @if (Auth::user()->admin == 0)
+                                        <a class="btn btn-outline-danger text-center w-30" href="{{ route('user.delete') }}">ユーザー削除</a>
+                                    @endif
+                                @endif
+                                @if(Auth::id() != $user->id && Auth::user()->admin == 1)
+                                    @if ($user->del_flg == 0)
+                                        <form method="POST" action="{{ route('admin.user.frozen',['id'=>$user->id]) }}">
+                                            @csrf
+                                            <button class="delete btn btn-outline-danger text-center w-30" type="submit">ユーザー凍結</button>
+                                        </form>
+                                    @elseif($user->del_flg == 1)
+                                        <form method="POST" action="{{ route('admin.user.lift',['id'=>$user->id]) }}">
+                                            @csrf
+                                            <button class="delete btn btn-outline-primary text-center w-30" type="submit">ユーザー凍結解除</button>
+                                        </form>
+                                    @endif
                                 @endif
                             </div>
                         </div>

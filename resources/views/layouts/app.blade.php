@@ -39,6 +39,9 @@
                             <a href="{{ route('declaration.index') }}">宣言一覧</a>
                             <a href="{{ route('declaration.create') }}">宣言投稿</a>
                             <a href="{{ route('user.show',['id'=>Auth::user()->id]) }}">マイページ</a>
+                            @if (Auth::user()->admin == 1)
+                                <a href="{{ route('admin.index') }}">管理画面</a>
+                            @endif
                         @endguest
                     </ul>
 

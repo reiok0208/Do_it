@@ -10906,6 +10906,7 @@ textarea.form-control-lg {
 }
 /* mixin */
 .declaration {
+  position: relative;
   padding: 0 20px 20px 20px;
   margin-bottom: 20px;
   border-bottom: solid 1px rgb(220, 220, 220);

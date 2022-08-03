@@ -39,5 +39,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('declaration_gate', function(User $user, Declaration $declaration) {
             return $user->id == $declaration->user_id;
         });
+        Gate::define('admin_gate', function(User $user) {
+            return $user->admin == 1;
+        });
     }
 }

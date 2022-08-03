@@ -72,3 +72,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/user/edit/delete','App\Http\Controllers\Auth\UserEditController@WithdrawalForm')->name('user.delete');;
     Route::post('/user/edit/Withdrawal','App\Http\Controllers\Auth\UserEditController@Withdrawal');
 });
+
+//管理者関連
+Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function() {
+    Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('index');
+    Route::get('/declaration', [App\Http\Controllers\AdminController::class, 'declaration_index'])->name('declaration.index');
+    Route::post('/declaration/frozen/{id}', [App\Http\Controllers\AdminController::class, 'declaration_frozen'])->name('declaration.frozen');
+    Route::post('/declaration/lift/{id}', [App\Http\Controllers\AdminController::class, 'declaration_lift'])->name('declaration.lift');
+    Route::get('/user', [App\Http\Controllers\AdminController::class, 'user_index'])->name('user.index');
+    Route::post('/user/frozen/{id}', [App\Http\Controllers\AdminController::class, 'user_frozen'])->name('user.frozen');
+    Route::post('/user/lift/{id}', [App\Http\Controllers\AdminController::class, 'user_lift'])->name('user.lift');
+});

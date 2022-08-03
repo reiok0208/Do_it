@@ -2,7 +2,7 @@ require('./bootstrap');
 
 $(function () {
     $(".delete").on("click", function (e) {
-        var result = window.confirm("本当に削除しますか？");
+        var result = window.confirm("本当によろしいですか？");
 
         if (!result) {
             e.preventDefault();

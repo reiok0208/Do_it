@@ -216,9 +216,7 @@ class DeclarationController extends Controller
 
         $declaration->delete();
 
-        $url = url()->previous();
-
-        if (preg_match("/\?page\=/", $url)) {
+        if (preg_match("/\?page\=/", url()->previous())) {
             return redirect(url()->previous());
         } else {
             return redirect()->route('declaration.index')->with('status', '削除しました！');
