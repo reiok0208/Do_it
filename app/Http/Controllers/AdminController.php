@@ -52,7 +52,7 @@ class AdminController extends Controller
         if(preg_match("/\?page\=/", url()->previous())) {
             return redirect(url()->previous())->with('status', '宣言を凍結しました！');
         } else {
-            return redirect()->route('declaration.index')->with('status', '宣言を凍結しました！');
+            return redirect()->back()->with('status', '宣言を凍結しました！');
         }
 
     }
@@ -66,7 +66,7 @@ class AdminController extends Controller
         if(preg_match("/\?page\=/", url()->previous())) {
             return redirect(url()->previous())->with('status', '宣言を凍結解除しました！');
         } else {
-            return redirect()->route('admin.declaration.index')->with('status', '宣言を凍結解除しました！');
+            return redirect()->back()->with('status', '宣言を凍結解除しました！');
         }
     }
 
@@ -82,13 +82,8 @@ class AdminController extends Controller
         $user->del_flg = 1;
         $user->update();
 
-        if(preg_match("/\?page\=/", url()->previous())) {
-            return redirect(url()->previous())->with('status', 'ユーザーを凍結しました！');
-        }else if(!preg_match("/admin/", url()->previous())){
-            return redirect()->route('user.show', ['id' => $id])->with('status', 'ユーザーを凍結しました！');
-        }else{
-            return redirect()->route('admin.user.index')->with('status', 'ユーザーを凍結しました！');
-        }
+
+        return redirect()->back()->with('status', 'ユーザーを凍結しました！');
 
     }
 
@@ -98,13 +93,8 @@ class AdminController extends Controller
         $user->del_flg = 0;
         $user->update();
 
-        if(preg_match("/\?page\=/", url()->previous())) {
-            return redirect(url()->previous())->with('status', 'ユーザーを凍結解除しました！');
-        }else if(!preg_match("/admin/", url()->previous())){
-            return redirect()->route('user.show', ['id' => $id])->with('status', 'ユーザーを凍結解除しました！');
-        }else{
-            return redirect()->route('admin.user.index')->with('status', 'ユーザーを凍結解除しました！');
-        }
+        return redirect()->back()->with('status', 'ユーザーを凍結解除しました！');
+
     }
 
 }

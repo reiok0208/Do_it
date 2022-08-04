@@ -10916,8 +10916,8 @@ textarea.form-control-lg {
   font-size: 20px;
   font-weight: 900;
 }
-.declaration__date {
-  font-size: 15px;
+.declaration__date--top {
+  text-align: right;
 }
 .declaration__date--top span:first-child {
   position: relative;
@@ -10940,34 +10940,99 @@ textarea.form-control-lg {
   border: none;
 }
 
-.dec_show {
-  padding: 0 20px;
+@media screen and (max-width: 767px) {
+  .declaration {
+    text-align: center;
+  }
+  .declaration__title {
+    font-size: 15px;
+  }
+  .declaration__date--top {
+    text-align: center !important;
+    font-size: 12px;
+    margin-top: 10px;
+  }
+  .declaration__date--bottom {
+    text-align: center !important;
+    font-size: 12px;
+  }
+  .declaration__like {
+    font-size: 12px;
+    margin: 10px 0;
+  }
+  .declaration__body {
+    font-size: 13px;
+    margin-top: 0;
+  }
+  #dropdownMenuLink {
+    position: relative;
+    bottom: 55px;
+  }
 }
-.dec_show div:first-child p {
-  font-size: 14px;
-}
-.dec_show div:first-child + p {
-  display: block;
-  margin: 30px 10px;
-}
-.dec_show div:nth-child(2) {
-  font-size: 14px;
-}
-
-.comment_box {
-  border-bottom: 1px solid rgb(220, 220, 220);
-}
-.comment_box div {
-  margin: 20px 0 0 0;
-}
-.comment_box div + p {
+.declaration-show {
   margin: 20px;
 }
+.declaration-show__title {
+  font-size: 20px;
+}
+.declaration-show__body {
+  margin: 50px 20px;
+}
+.declaration-show__date--bottom {
+  position: relative;
+  top: 20px;
+}
 
-.comment_box:last-child {
+.comment {
+  border-bottom: 1px solid rgb(220, 220, 220);
+  margin: 20px 10px;
+  padding: 20px;
+  border-radius: 10px;
+}
+.comment__body {
+  margin: 20px 10px;
+}
+
+.comment:last-child {
   border: none;
 }
 
+@media screen and (max-width: 767px) {
+  .declaration-show {
+    margin: 10px;
+  }
+  .declaration-show__title {
+    font-size: 16px;
+  }
+  .declaration-show__user {
+    position: relative;
+    top: 30px;
+    font-size: 11px;
+  }
+  .declaration-show__date--top {
+    position: relative;
+    top: 30px;
+    font-size: 11px;
+  }
+  .declaration-show__date--bottom {
+    position: relative;
+    top: 10px;
+    font-size: 11px;
+  }
+  .declaration-show__body {
+    font-size: 13px;
+    margin: 20px 10px;
+  }
+  .comment {
+    font-size: 13px;
+  }
+  .comment__date {
+    text-align: left !important;
+  }
+  .comment__button {
+    text-align: right;
+  }
+}
 .confirm_content {
   margin-top: 7px;
 }

@@ -17,8 +17,8 @@ $gray: rgb(220, 220, 220);
         font-weight: 900;
     }
     &__date{
-        font-size: 15px;
         &--top{
+            text-align: right;
             span:first-child{
                 @include z-index();
             }
@@ -39,4 +39,37 @@ $gray: rgb(220, 220, 220);
 
 .declaration:last-child{
     border: none;
+}
+
+@media screen and (max-width: 767px) {
+    .declaration{
+        text-align: center;
+        &__title{
+            font-size: 15px;
+        }
+        &__date{
+            &--top{
+                text-align: center !important;
+                font-size: 12px;
+                margin-top: 10px;
+            }
+            &--bottom{
+                text-align: center !important;
+                font-size: 12px;
+            }
+        }
+        &__like{
+            font-size: 12px;
+            margin: 10px 0;
+        }
+        &__body{
+            font-size: 13px;
+            margin-top: 0;
+        }
+
+    }
+    #dropdownMenuLink{
+        position: relative;
+        bottom: 55px;
+    }
 }

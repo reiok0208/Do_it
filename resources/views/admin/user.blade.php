@@ -18,16 +18,16 @@
                             <div class="row mb-3">
                                 <div class="col-md-2 text-end">
                                     @if ($user->image != null)
-                                        <img src="{{ Storage::url($user->image) }}" alt="アイコン画像" width="30%">
+                                        <img src="{{ Storage::url($user->image) }}" alt="アイコン画像" width="60px">
                                     @else
-                                        <img src="{{ asset('img/default_icon.png') }}" alt="アイコン画像" width="30%">
+                                        <img src="{{ asset('img/default_icon.png') }}" alt="アイコン画像" width="60px">
                                     @endif
                                 </div>
                                 <div class="col-md-10">
                                     <div class="row">
                                         <div class="col-md-8">
                                             {{ "ID:".$user->id."　ユーザー名：".$user->name }}
-                                            <span style="color:red;">@if ($user->del_flg == 1) 凍結中 @endif</span>
+                                            <span style="color:red;">@if ($user->del_flg == 1)(凍結中)@endif</span>
                                         </div>
                                         @if ($user->admin == 0)
                                             <div class="col-md-1 dropdown text-end" style="position:relative; z-index:100;">

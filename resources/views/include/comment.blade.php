@@ -1,11 +1,11 @@
-<h2 style="font-size:20px;">コメント：{{ $count }}件</h2>
+<h2 style="font-size:18px;">　全{{ $count }}件</h2>
 @foreach ($comments as $comment)
-    <div class="comment_box">
+    <div class="comment">
         <div class="row">
-            <p class="col-md-6">
+            <p class="comment__title col-md-6">
                 投稿者：<a href="{{ route('user.show',['id'=>$comment->user->id]) }}">{{ $comment->user->name }}</a>
             </p>
-            <p class="col-md-5 text-end">投稿日：{{ $comment->created_at }}</p>
+            <p class="comment__date col-md-5 text-end">投稿日：{{ $comment->created_at }}</p>
 
             @if (Auth::user() && $comment->user_id == Auth::id())
                 <div class="col-md-1 dropdown text-end" style="margin:0;">
@@ -27,6 +27,6 @@
                 </div>
             @endif
         </div>
-        <p>{!! $comment->body !!}</p>
+        <p class="comment__body">{!! $comment->body !!}</p>
     </div>
 @endforeach

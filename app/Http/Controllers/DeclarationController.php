@@ -106,7 +106,7 @@ class DeclarationController extends Controller
      */
     public function show($id)
     {
-        $declaration = Declaration::whereId($id)->first();
+        $declaration = Declaration::whereId($id)->withCount('do_it')->withCount('good_work')->first();
         $comments = Declaration_comment::latest()->whereDeclarationId($id)->paginate(10);
         $count = Declaration_comment::whereDeclarationId($id)->count();
         return view('declaration.show', compact('declaration','comments','count'));
@@ -216,11 +216,7 @@ class DeclarationController extends Controller
 
         $declaration->delete();
 
-        if (preg_match("/\?page\=/", url()->previous())) {
-            return redirect(url()->previous());
-        } else {
-            return redirect()->route('declaration.index')->with('status', '削除しました！');
-        }
+        return redirect()->back()->with('status', '削除しました！');
     }
 
 

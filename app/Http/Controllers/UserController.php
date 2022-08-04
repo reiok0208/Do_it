@@ -33,7 +33,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::whereId($id)->first();
-        $declarations = Declaration::whereUserId($id)->latest()->paginate(20);
+        $declarations = Declaration::whereUserId($id)->withCount('do_it')->withCount('good_work')->latest()->paginate(20);
         $followed = Relationship::where('following_user_id', \Auth::user()->id)->where('user_id', $id)->first();
         return view('user.show', compact('user','declarations','followed'));
     }
