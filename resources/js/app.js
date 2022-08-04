@@ -78,3 +78,10 @@ $('.end_date').on('click', function(e){
         e.preventDefault();
     }
 });
+
+
+$(function () {
+    $(".sort_by_select").change(function() {
+        $('.sort_by_form').submit();
+    });
+});

@@ -26,7 +26,7 @@ class DeclarationController extends Controller
      */
     public function index(Request $request)
     {
-        $declarations = Declaration::withCount('do_it')->withCount('good_work')->latest()->paginate(20);
+        $declarations = Declaration::withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
         $request->session()->forget('_old_input');
         return view('declaration.index', compact('declarations'));
     }
@@ -346,6 +346,33 @@ class DeclarationController extends Controller
         $twitter_url = 'https://twitter.com/share?';
         $twitter_url .= implode('&', array_map(function($key, $value){return $key.'='.$value;}, array_keys($aryTwitter), array_values($aryTwitter)));
         echo $twitter_url;
+    }
+
+    /************************************************************************************************************
+     * ソート
+     *
+     */
+    public function sort_by(Request $request){
+        if(empty($request->sort_by)){
+            $sort = $request->session()->get('sort_by');
+        }else{
+            $request->session()->put('sort_by',$request->sort_by);
+            $sort = $request->sort_by;
+        }
+        if($sort == "宣言が新しい順"){
+            $declarations = Declaration::withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
+        }else if($sort == "宣言が古い順"){
+            $declarations = Declaration::withCount('do_it')->withCount('good_work')->oldest('id')->paginate(20);
+        }else if($sort == "Do_it数順"){
+            $declarations = Declaration::where('end_date','>',date("Y/m/d"))->withCount('do_it')->withCount('good_work')->orderBy('do_it_count', 'desc')->paginate(20);
+        }else if($sort == "Good_work数順"){
+            $declarations = Declaration::where('end_date','<',date("Y/m/d"))->withCount('do_it')->withCount('good_work')->orderBy('good_work_count', 'desc')->paginate(20);
+        }else if($sort == "フォロー中"){
+            $declarations = Declaration::whereIn('user_id', Auth::user()->follows()->pluck('user_id'))->withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
+        }
+
+        return view('declaration.index', compact('declarations','sort'));
+
     }
 
 }

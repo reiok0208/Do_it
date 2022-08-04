@@ -20,6 +20,8 @@ Auth::routes();
 // Declaration及びReport関連
 Route::group(['prefix' => 'declaration', 'as' => 'declaration.'], function(){
     Route::get('/', [App\Http\Controllers\DeclarationController::class, 'index'])->name('index');
+    Route::get('/sort_by', [App\Http\Controllers\DeclarationController::class, 'sort_by']);
+    Route::post('/sort_by', [App\Http\Controllers\DeclarationController::class, 'sort_by'])->name('sort_by');
     Route::get('/new', [App\Http\Controllers\DeclarationController::class, 'create'])->name('create')->middleware('auth');
     Route::post('/new', [App\Http\Controllers\DeclarationController::class, 'create'])->name('create')->middleware('auth');
     Route::post('/new/confirm', [App\Http\Controllers\DeclarationController::class, 'confirm'])->name('confirm')->middleware('auth');

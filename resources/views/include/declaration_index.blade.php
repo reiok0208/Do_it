@@ -1,27 +1,3 @@
-<!-- 並び替え -->
-<form method="get" action="">
-    <div class="form-group row mb-3 text-end">
-        <label for="Email" class="col-form-label col-md-2 offset-md-5 col-lg-3 offset-lg-5">並び替え</label>
-        <div class="col-md-3 col-lg-3">
-            <select class="form-select" aria-label="Default select example">
-                <option selected>selected</option>
-                <option value="#"></option>
-            </select>
-        </div>
-    </div>
-</form>
-<!-- 宣言検索 -->
-<form method="get" action="">
-    <div class="form-group row mb-3 text-end">
-        <label for="Email" class="col-form-label col-md-2 offset-md-5 col-lg-3 offset-lg-5">宣言検索</label>
-        <div class="col-md-3 col-lg-3">
-            <input type="text" id="search" name="search" class="form-control">
-        </div>
-        <div class="col-md-1 text-right h-100">
-            <button class="btn btn-primary h-25" style="width: 70px;">検索</button>
-        </div>
-    </div>
-</form>
 <!-- 完了メッセージ表示 -->
 @if (session('status'))
     <div class="alert alert-success" role="alert">
@@ -30,9 +6,9 @@
 @endif
 <div class="card">
     <div class="card-header">
-        @if (preg_match("/user/", url()->current())){{ __('ユーザー宣言一覧') }}
-        @elseif(preg_match("/admin\/declaration/", url()->current())){{ __('凍結宣言一覧') }}
-        @else{{ __('全宣言一覧') }}
+        @if (preg_match("/user/", url()->current())){{ __('ユーザー宣言一覧') }} @if(!empty($sort))-{{ $sort }}-@endif
+        @elseif(preg_match("/admin\/declaration/", url()->current())){{ __('凍結宣言一覧') }} @if(!empty($sort))-{{ $sort }}-@endif
+        @else{{ __('全宣言一覧') }} @if(!empty($sort))-{{ $sort }}-@endif
         @endif
     </div>
     <div class="card-body">
