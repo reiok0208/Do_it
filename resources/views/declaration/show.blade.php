@@ -61,6 +61,8 @@
                                         </li>
                                     </ul>
                                 </div>
+                            @else
+                                <div class="col-md-1"></div>
                             @endif
                         </div>
                         <p class="declaration-show__body">{!! $declaration->body !!}</p>
@@ -129,9 +131,12 @@
                                 <p>期間： {{ $declaration->start_date->format('Y年m月d日') }}</p>
                                 <p> 〜 {{ $declaration->end_date->format('Y年m月d日') }}</p>
                             </div>
-                            @if (Auth::user() && ($declaration->user_id == Auth::id() || Auth::user()->admin == 1))
-                                <div class="col-md-1"></div>
-                            @endif
+                            <div class="declaration__share col-md-1 text-end">
+                                @inject('DeclarationController', 'App\Http\Controllers\DeclarationController')
+                                <a href="{{ $DeclarationController->twitter_share($declaration) }}" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-twitter fa-2x" style="color: #1D9CF1;"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -144,7 +149,7 @@
 
                     <div class="row mb-3">
                         <div class="col-md-10">
-                            <textarea id="body" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="コメント内容を入力してください" required style="background-color:white;" rows="5">{{ old('body') }}</textarea>
+                            <textarea id="body" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="コメント内容を入力してください" style="background-color:white;" rows="5">{{ old('body') }}</textarea>
 
                             @error('body')
                                 <span class="invalid-feedback" role="alert">

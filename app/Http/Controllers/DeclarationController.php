@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeclarationValidationRequest;
+use App\Http\Requests\ReportValidationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -54,9 +56,8 @@ class DeclarationController extends Controller
         return view('declaration.create');
     }
 
-    public function confirm(Request $request)
+    public function confirm(/*DeclarationValidation*/Request $request)
     {
-        // $this->dec_valid($request);
         return view('declaration.confirm', compact('request'));
     }
 
@@ -131,6 +132,7 @@ class DeclarationController extends Controller
             $tags .= "#"."$tag->name";
         }
 
+        // バリデーション発火時に変更した値を保持する
         if(!preg_match("/edit/", url()->previous())){
             $request->session()->put([
                 '_old_input' => [
@@ -154,24 +156,12 @@ class DeclarationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(DeclarationValidationRequest $request)
     {
         $declaration = Declaration::whereId($request->id)->first();
         if(! Gate::allows('declaration_gate', $declaration)){
             abort(403);
         }
-
-        $request->session()->put([
-            '_old_input' => [
-                'id' => $request->input('id'),
-                'title' => $request->input('title'),
-                'tag' => $request->input('tags'),
-                'start_date' => $request->input("start_date"),
-                'end_date' => $request->input("end_date"),
-                'body' => $request->input('body')
-            ]
-        ]);
-        $this->dec_valid($request);
 
         $declaration = Declaration::find($request->id);
         $declaration->title = e($request->title);
@@ -252,9 +242,8 @@ class DeclarationController extends Controller
         }
     }
 
-    public function report_confirm(Request $request)
+    public function report_confirm(ReportValidationRequest $request)
     {
-        $this->report_valid($request);
         return view('declaration.report.confirm', compact('request'));
     }
 
@@ -335,52 +324,28 @@ class DeclarationController extends Controller
         return response()->json($param); //JSONへ返却
     }
 
-
-
     /************************************************************************************************************
-     * バリデーション
+     * Twitter共有
      *
      */
-    public function dec_valid($request){
-        // バリデーションルール
-        $validateRules = [
-            'title' => 'required|max:15',
-            'start_date' =>  'required|date|after:yesterday',
-            'end_date' => 'required|date|after:start_date',
-            'body' => 'required|max:150',
-        ];
+    public function twitter_share($declaration){
+        $aryTwitter = [];
+        $aryTwitter['text'] = $declaration->title."&brvbar; Do_it!";
+        $aryTwitter['url'] = url()->current();
 
-        // バリデーションメッセージの日本語化
-        $validateMessages = [
-            "title.required" => "タイトルは必須入力です。",
-            "start_date.required" => "開始日は必須入力です。",
-            "end_date.required" => "終了日は必須入力です。",
-            "body.required" => "内容は必須入力です。",
-            "title.max" => "15文字以内でご入力ください。",
-            "body.max" => "150文字以内でご入力ください。",
-            "start_date.after" => "開始日は今日以降の日付を指定してください。",
-            "end_date.after" => "終了日は開始日以降の日付を指定してください。"
-        ];
+        if(!empty($declaration->tags[0])){
+            foreach($declaration->tags as $tag){
+                $array[] = $tag->name;
+            }
+            $implode = implode(',', $array);
+            $tags = preg_replace("/\s/", "", $implode);
+            $aryTwitter['hashtags'] = $tags;
+        }
 
-        //バリデーションをインスタンス化
-        $this->validate($request, $validateRules, $validateMessages);
+
+        $twitter_url = 'https://twitter.com/share?';
+        $twitter_url .= implode('&', array_map(function($key, $value){return $key.'='.$value;}, array_keys($aryTwitter), array_values($aryTwitter)));
+        echo $twitter_url;
     }
 
-    public function report_valid($request){
-        // バリデーションルール
-        $validateRules = [
-            'rate' => 'required',
-            'body' => 'required|max:150',
-        ];
-
-        // バリデーションメッセージの日本語化
-        $validateMessages = [
-            "rate.required" => "自己評価は必須入力です。",
-            "body.required" => "内容は必須入力です。",
-            "body.max" => "150文字以内でご入力ください。",
-        ];
-
-        //バリデーションをインスタンス化
-        $this->validate($request, $validateRules, $validateMessages);
-    }
 }

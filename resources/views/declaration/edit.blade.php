@@ -90,7 +90,7 @@
 
 
                         <div class="row mb-0">
-                            <div class="col-md-5 offset-md-5">
+                            <div style="text-align: center;">
                                 <button type="submit" class="btn btn-outline-primary" style="width: 100px;">
                                     {{ __('編集') }}
                                 </button>

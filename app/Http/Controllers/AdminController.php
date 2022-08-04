@@ -49,11 +49,7 @@ class AdminController extends Controller
         $declaration->del_flg = 1;
         $declaration->update();
 
-        if(preg_match("/\?page\=/", url()->previous())) {
-            return redirect(url()->previous())->with('status', '宣言を凍結しました！');
-        } else {
-            return redirect()->back()->with('status', '宣言を凍結しました！');
-        }
+        return redirect()->back()->with('status', '宣言を凍結しました！');
 
     }
 
@@ -63,11 +59,7 @@ class AdminController extends Controller
         $declaration->del_flg = 0;
         $declaration->update();
 
-        if(preg_match("/\?page\=/", url()->previous())) {
-            return redirect(url()->previous())->with('status', '宣言を凍結解除しました！');
-        } else {
-            return redirect()->back()->with('status', '宣言を凍結解除しました！');
-        }
+        return redirect()->back()->with('status', '宣言を凍結解除しました！');
     }
 
     public function user_index()

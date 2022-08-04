@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentValidationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Declaration_comment;
@@ -16,9 +17,8 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function declaration_comment_store(Request $request)
+    public function declaration_comment_store(CommentValidationRequest $request)
     {
-        $this->comment_valid($request);
 
         $comment = new Declaration_comment;
         $comment->declaration_id = $request->declaration_id;
@@ -29,12 +29,11 @@ class CommentController extends Controller
         // 二重送信防止
         $request->session()->regenerateToken();
 
-        return redirect()->route('declaration.show', ['id' => $request->declaration_id]);
+        return redirect()->back()->with('status', 'コメントを投稿しました！');
     }
 
-    public function report_comment_store(Request $request)
+    public function report_comment_store(CommentValidationRequest $request)
     {
-        $this->comment_valid($request);
 
         $comment = new Report_comment;
         $comment->report_id = $request->report_id;
@@ -45,7 +44,7 @@ class CommentController extends Controller
         // 二重送信防止
         $request->session()->regenerateToken();
 
-        return redirect()->route('declaration.report.show', ['id' => $request->report_id]);
+        return redirect()->back()->with('status', 'コメントを投稿しました！');
     }
 
 
@@ -55,13 +54,7 @@ class CommentController extends Controller
         $comment = Declaration_comment::findOrFail($id);
         $comment->delete();
 
-        $url = url()->previous();
-
-        if (preg_match("/\?page\=/", $url)) {
-            return redirect(url()->previous());
-        } else {
-            return redirect()->route('declaration.show', ['id' => $comment->declaration_id]);
-        }
+        return redirect()->back()->with('status', 'コメントを削除しました！');
     }
 
     public function report_comment_destroy($id)
@@ -69,32 +62,7 @@ class CommentController extends Controller
         $comment = Report_comment::findOrFail($id);
         $comment->delete();
 
-        $url = url()->previous();
-
-        if (preg_match("/\?page\=/", $url)) {
-            return redirect(url()->previous());
-        } else {
-            return redirect()->route('declaration.report.show', ['id' => $comment->report_id]);
-        }
+        return redirect()->back()->with('status', 'コメントを削除しました！');
     }
 
-    /************************************************************************************************************
-     * バリデーション
-     *
-     */
-    public function comment_valid($request){
-        // バリデーションルール
-        $validateRules = [
-            'body' => 'required|max:150',
-        ];
-
-        // バリデーションメッセージの日本語化
-        $validateMessages = [
-            "body.required" => "内容は必須入力です。",
-            "body.max" => "150文字以内でご入力ください。",
-        ];
-
-        //バリデーションをインスタンス化
-        $this->validate($request, $validateRules, $validateMessages);
-    }
 }

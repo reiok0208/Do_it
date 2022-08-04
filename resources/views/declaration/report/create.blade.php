@@ -74,7 +74,7 @@
                             <label for="body" class="col-md-3 col-form-label text-md-end">{{ __('報告内容') }}</label>
 
                             <div class="col-md-7">
-                                <textarea id="body" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="報告内容を入力してください" rows="10">{{ old('body') }}</textarea>
+                                <textarea id="body" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="取組内容や感想を入力してください" rows="10">{{ old('body') }}</textarea>
 
                                 @error('body')
                                     <span class="invalid-feedback" role="alert">
@@ -87,7 +87,7 @@
 
 
                         <div class="row mb-0">
-                            <div class="col-md-5 offset-md-5">
+                            <div style="text-align: center;">
                                 <button type="submit" class="btn btn-outline-primary" style="width: 100px;">
                                     {{ __('確認') }}
                                 </button>

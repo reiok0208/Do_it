@@ -17,6 +17,7 @@ Route::get('/', [App\Http\Controllers\DeclarationController::class, 'index'])->n
 
 Auth::routes();
 
+// Declaration及びReport関連
 Route::group(['prefix' => 'declaration', 'as' => 'declaration.'], function(){
     Route::get('/', [App\Http\Controllers\DeclarationController::class, 'index'])->name('index');
     Route::get('/new', [App\Http\Controllers\DeclarationController::class, 'create'])->name('create')->middleware('auth');
@@ -64,6 +65,7 @@ Route::group(['prefix' => 'user', 'as' => 'user.'], function(){
     Route::post('/{id}/unfollow', [App\Http\Controllers\UserController::class, 'unfollow'])->name('unfollow');
 });
 
+// ユーザー編集関連(パッケージ生成)
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/user', 'App\Http\Controllers\Auth\UserEditController@UserEditForm')->name('user.edit');
     Route::post('/user/edit/info','App\Http\Controllers\Auth\UserEditController@InfoUpdate');

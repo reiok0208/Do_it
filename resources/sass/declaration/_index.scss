@@ -35,6 +35,11 @@ $gray: rgb(220, 220, 220);
         @include z-index();
         text-decoration: none;
     }
+    &__share{
+        position: relative;
+        top: 10px;
+        right: 10px;
+    }
 }
 
 .declaration:last-child{
