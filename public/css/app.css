@@ -10917,11 +10917,16 @@ textarea.form-control-lg {
   font-weight: 900;
 }
 .declaration__date--top {
+  font-size: 12px;
   text-align: right;
 }
 .declaration__date--top span:first-child {
   position: relative;
   z-index: 100;
+}
+.declaration__date--bottom {
+  font-size: 12px;
+  display: inline-block;
 }
 .declaration__body {
   margin: 20px 10px;
@@ -10939,6 +10944,9 @@ textarea.form-control-lg {
   position: relative;
   top: 10px;
   right: 10px;
+}
+.declaration__like {
+  font-size: 12px;
 }
 
 .declaration:last-child {
@@ -10988,6 +10996,13 @@ textarea.form-control-lg {
   top: 20px;
 }
 
+.report {
+  margin: 20px;
+}
+.report h2, .report .h2 {
+  font-size: 20px;
+}
+
 .comment {
   border-bottom: 1px solid rgb(220, 220, 220);
   margin: 20px 10px;
@@ -11028,6 +11043,12 @@ textarea.form-control-lg {
     font-size: 13px;
     margin: 20px 10px;
   }
+  .declaration-show__like {
+    font-size: 10px;
+  }
+  .declaration-show__nav {
+    font-size: 10px;
+  }
   .comment {
     font-size: 13px;
   }
@@ -11038,14 +11059,60 @@ textarea.form-control-lg {
     text-align: right;
   }
 }
-.confirm_content {
-  margin-top: 7px;
+.user-show {
+  margin: 20px 10px;
 }
 
-.user_box {
-  padding: 10px;
+.follow {
+  padding: 15px 0;
+  border-bottom: solid 1px rgb(220, 220, 220);
+  border-radius: 10px;
 }
 
+.follow:last-child {
+  border: none;
+}
+
+@media screen and (max-width: 767px) {
+  .user-show__image {
+    width: 40px;
+    height: 40px;
+  }
+  .user-show__text {
+    font-size: 10px;
+    position: relative;
+    right: 10px;
+  }
+  .user-show__follow a {
+    display: block;
+    font-size: 10px;
+  }
+  .user-show__button {
+    font-size: 10px;
+  }
+  .follow__name {
+    position: relative;
+    left: 20px;
+    font-size: 10px;
+  }
+  .follow__body {
+    position: relative;
+    left: 20px;
+    bottom: 10px;
+    font-size: 10px;
+  }
+  .follow__follow a {
+    font-size: 10px;
+  }
+  .follow__button {
+    font-size: 10px;
+  }
+  .user__other {
+    position: relative;
+    z-index: 100;
+    top: 50px;
+  }
+}
 /*!
  * Font Awesome Free 6.1.2 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)

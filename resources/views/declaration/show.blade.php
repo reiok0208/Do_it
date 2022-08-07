@@ -2,17 +2,17 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row">
         <div class="col-md-12">
             <div class="d-flex justify-content-center" style="margin-bottom:30px;">
-                <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center disabled">宣言詳細</a>
+                <a class="declaration-show__nav btn btn-outline-secondary rounded-0 col-lg-2 col-4 text-center disabled">宣言詳細</a>
                 @if ($declaration->report != null)
-                    <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center end_date" href="{{ route('declaration.report.show',['id'=>$declaration->report->id]) }}">宣言報告</a>
+                    <a class="declaration-show__nav btn btn-outline-secondary rounded-0 col-lg-2 col-4 text-center end_date" href="{{ route('declaration.report.show',['id'=>$declaration->report->id]) }}">宣言報告</a>
                 @else
                     @if(Auth::user() && $declaration->user_id == Auth::id())
-                        <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center end_date" href="{{ route('declaration.report.create',['id'=>$declaration->id]) }}">宣言報告(未提出)</a>
+                        <a class="declaration-show__nav btn btn-outline-secondary rounded-0 col-lg-2 col-4 text-center end_date" href="{{ route('declaration.report.create',['id'=>$declaration->id]) }}">宣言報告(未提出)</a>
                     @else
-                        <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center end_date disabled">宣言報告(未提出)</a>
+                        <a class="declaration-show__nav btn btn-outline-secondary rounded-0 col-lg-2 col-4 text-center end_date disabled">宣言報告(未提出)</a>
                     @endif
                 @endif
             </div>
@@ -28,7 +28,7 @@
 
                     <div class="declaration-show">
                         <div class="row">
-                            <h2 class="declaration-show__title col-md-6">{{ $declaration->title }}</h2>
+                            <h2 class="declaration-show__title col-lg-5">{{ $declaration->title }}</h2>
                             <p class="declaration-show__user col">
                                 宣言者：<a href="{{ route('user.show',['id'=>$declaration->user->id]) }}">{{ $declaration->user->name }}</a>
                             </p>
@@ -42,7 +42,7 @@
                                     <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">･･･</a>
 
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        @if($declaration->user_id == Auth::id())
+                                        @if($declaration->user_id == Auth::id() && (strtotime(date('Y/m/d')) < strtotime($declaration->start_date)))
                                             <li><a class="dropdown-item" href="{{ route('declaration.edit',['id'=>$declaration->id]) }}">編集</a></li>
                                         @endif
                                         <li>
@@ -67,7 +67,7 @@
                         </div>
                         <p class="declaration-show__body">{!! $declaration->body !!}</p>
                         <div class="row align-items-end">
-                            <div class="col-md-6">
+                            <div class="col-lg-5">
                                 @foreach($declaration->tags as $tag)
                                     <span class="badge rounded-pill bg-secondary">{{$tag->name}}</span>
                                 @endforeach

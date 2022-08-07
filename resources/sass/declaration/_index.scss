@@ -18,10 +18,15 @@ $gray: rgb(220, 220, 220);
     }
     &__date{
         &--top{
+            font-size: 12px;
             text-align: right;
             span:first-child{
                 @include z-index();
             }
+        }
+        &--bottom{
+            font-size: 12px;
+            display: inline-block;
         }
     }
     &__body{
@@ -39,6 +44,9 @@ $gray: rgb(220, 220, 220);
         position: relative;
         top: 10px;
         right: 10px;
+    }
+    &__like{
+        font-size: 12px;
     }
 }
 

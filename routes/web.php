@@ -20,8 +20,9 @@ Auth::routes();
 // Declaration及びReport関連
 Route::group(['prefix' => 'declaration', 'as' => 'declaration.'], function(){
     Route::get('/', [App\Http\Controllers\DeclarationController::class, 'index'])->name('index');
-    Route::get('/sort_by', [App\Http\Controllers\DeclarationController::class, 'sort_by']);
-    Route::post('/sort_by', [App\Http\Controllers\DeclarationController::class, 'sort_by'])->name('sort_by');
+    Route::get('/sort_by', [App\Http\Controllers\DeclarationController::class, 'sort_by'])->name('sort_by');
+    Route::get('/search_by', [App\Http\Controllers\DeclarationController::class, 'search_by'])->name('search_by');
+    Route::get('/tag_by', [App\Http\Controllers\DeclarationController::class, 'tag_by'])->name('tag_by');
     Route::get('/new', [App\Http\Controllers\DeclarationController::class, 'create'])->name('create')->middleware('auth');
     Route::post('/new', [App\Http\Controllers\DeclarationController::class, 'create'])->name('create')->middleware('auth');
     Route::post('/new/confirm', [App\Http\Controllers\DeclarationController::class, 'confirm'])->name('confirm')->middleware('auth');
@@ -80,10 +81,11 @@ Route::group(['middleware' => ['auth']], function() {
 //管理者関連
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function() {
     Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('index');
-    Route::get('/declaration', [App\Http\Controllers\AdminController::class, 'declaration_index'])->name('declaration.index');
+    Route::get('/declaration/frozen', [App\Http\Controllers\AdminController::class, 'declaration_frozen_index'])->name('declaration.frozen.index');
     Route::post('/declaration/frozen/{id}', [App\Http\Controllers\AdminController::class, 'declaration_frozen'])->name('declaration.frozen');
     Route::post('/declaration/lift/{id}', [App\Http\Controllers\AdminController::class, 'declaration_lift'])->name('declaration.lift');
     Route::get('/user', [App\Http\Controllers\AdminController::class, 'user_index'])->name('user.index');
+    Route::get('/user/frozen', [App\Http\Controllers\AdminController::class, 'user_frozen_index'])->name('user.frozen.index');
     Route::post('/user/frozen/{id}', [App\Http\Controllers\AdminController::class, 'user_frozen'])->name('user.frozen');
     Route::post('/user/lift/{id}', [App\Http\Controllers\AdminController::class, 'user_lift'])->name('user.lift');
 });

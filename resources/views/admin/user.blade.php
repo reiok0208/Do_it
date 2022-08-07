@@ -13,24 +13,29 @@
                 <div class="card-header">{{ __('全ユーザー管理') }}</div>
 
                 <div class="card-body">
+                    @if (session('record'))
+                        <div class="alert alert-light" role="alert">
+                            {{ session('record') }}
+                        </div>
+                    @endif
                     @foreach ($users as $user)
-                        <div class="dec_box" style="position: relative;">
-                            <div class="row mb-3">
-                                <div class="col-md-2 text-end">
+                        <div class="follow" style="position: relative;">
+                            <div class="row">
+                                <div class="col-1 text-end">
                                     @if ($user->image != null)
-                                        <img src="{{ Storage::url($user->image) }}" alt="アイコン画像" width="60px">
+                                        <img class="user-show__image" src="{{ Storage::url($user->image) }}" alt="アイコン画像" width="60px">
                                     @else
-                                        <img src="{{ asset('img/default_icon.png') }}" alt="アイコン画像" width="60px">
+                                        <img class="user-show__image" src="{{ asset('img/default_icon.png') }}" alt="アイコン画像" width="60px">
                                     @endif
                                 </div>
-                                <div class="col-md-10">
+                                <div class="col-11">
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="follow__name col-9">
                                             {{ "ID:".$user->id."　ユーザー名：".$user->name }}
                                             <span style="color:red;">@if ($user->del_flg == 1)(凍結中)@endif</span>
                                         </div>
                                         @if ($user->admin == 0)
-                                            <div class="col-md-1 dropdown text-end" style="position:relative; z-index:100;">
+                                            <div class="user__other col-2 dropdown text-end" style="position: relative; z-index:100;">
                                                 <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">･･･</a>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                     <li>
@@ -51,8 +56,8 @@
                                         @endif
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-8">
-                                            <p>{!! $user->body !!}</p>
+                                        <div class="col-8">
+                                            <p class="follow__body" style="bottom:0;">{!! $user->body !!}</p>
                                         </div>
                                     </div>
                                 </div>

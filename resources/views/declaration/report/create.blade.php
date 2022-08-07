@@ -57,7 +57,7 @@
                             <label for="execution" class="col-md-3 col-form-label text-md-end">{{ __('できましたか？') }}</label>
 
                             <div class="col-md-7">
-                                <select id="execution" class="form-control" name="execution">
+                                <select id="execution" class="form-select" name="execution">
                                     <option value='0' {{ old('execution') == '0' ? 'selected' : '' }}>できなかった</option>
                                     <option value='1' {{ old('execution') == '1' ? 'selected' : '' }}>できた</option>
                                 </select>

@@ -1,4 +1,9 @@
 <h2 style="font-size:18px;">　全{{ $count }}件</h2>
+@if (session('comment'))
+    <div class="alert alert-light" role="alert">
+        {{ session('comment') }}
+    </div>
+@endif
 @foreach ($comments as $comment)
     <div class="comment">
         <div class="row">

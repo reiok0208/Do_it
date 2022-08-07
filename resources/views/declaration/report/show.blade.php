@@ -17,20 +17,20 @@
                 <div class="card-header">{{ __('宣言報告') }}</div>
 
                 <div class="card-body">
-                    <div class="dec_box dec_show">
+                    <div class="report">
                         <div class="row">
-                            <h2 class="col-md-5">
+                            <h2 class="col-7 col-md-9">
                                 @if($report->execution == 1)
                                     <span>できた</span>
                                 @else
                                     <span>できなかった</span>
                                 @endif
                             </h2>
-                            <p class="col text-end">
+                            <p class="col">
                                 宣言者：<a href="{{ route('user.show',['id'=>$declaration->user->id]) }}">{{ $declaration->user->name }}</a>
                             </p>
                         </div>
-                        <div class="row">
+                        <div class="row mb-5">
                             <p>{{ $report->rate }}/5段階中</p>
                         </div>
                         <p>{!! $report->body !!}</p>
@@ -53,7 +53,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <div class="col-md-2 align-self-end  text-end">
+                        <div class="comment__button col-md-2 align-self-end">
                             <button type="submit" class="btn btn-outline-primary">
                                 {{ __('コメント投稿') }}
                             </button>

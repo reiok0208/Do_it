@@ -16,8 +16,8 @@
                     <form method="POST" action="{{ route('declaration.store') }}">
                         @csrf
 
-                        <div class="row mb-3">
-                            <label for="title" class="col-md-3 col-form-label text-md-end">{{ __('タイトル') }}</label>
+                        <div class="row mb-5">
+                            <label for="title" class="col-md-3  text-md-end">{{ __('タイトル') }}</label>
 
                             <div class="col-md-7">
                                 <p class="confirm_content">{{ $request->title }}</p>
@@ -25,8 +25,8 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="tag" class="col-md-3 col-form-label text-md-end">{{ __('タグ') }}</label>
+                        <div class="row mb-5">
+                            <label for="tag" class="col-md-3  text-md-end">{{ __('タグ') }}</label>
 
                             <div class="col-md-7">
                                 <p class="confirm_content">{{ $request->tag }}</p>
@@ -34,8 +34,8 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="start_date" class="col-md-3 col-form-label text-md-end">{{ __('開始日') }}</label>
+                        <div class="row mb-5">
+                            <label for="start_date" class="col-md-3  text-md-end">{{ __('開始日') }}</label>
 
                             <div class="col-md-7">
                                 <p class="confirm_content">{{ $request->start_date }}</p>
@@ -43,8 +43,8 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="end_date" class="col-md-3 col-form-label text-md-end">{{ __('終了日') }}</label>
+                        <div class="row mb-5">
+                            <label for="end_date" class="col-md-3  text-md-end">{{ __('終了日') }}</label>
 
                             <div class="col-md-7">
                                 <p class="confirm_content">{{ $request->end_date }}</p>
@@ -52,8 +52,8 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="body" class="col-md-3 col-form-label text-md-end">{{ __('内容') }}</label>
+                        <div class="row mb-5">
+                            <label for="body" class="col-md-3  text-md-end">{{ __('内容') }}</label>
 
                             <div class="col-md-7">
                                 <p class="confirm_content">{!! nl2br(e($request->body)) !!}</p>

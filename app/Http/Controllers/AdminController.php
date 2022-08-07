@@ -36,10 +36,14 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
-    public function declaration_index(Request $request)
+    public function declaration_frozen_index(Request $request)
     {
         $declarations = Declaration::where('del_flg','1')->latest()->paginate(20);
         $request->session()->forget('_old_input');
+
+        if ($declarations->isEmpty()){
+            $request->session()->flash('record', 'Oops！凍結した宣言がありません！');
+        }
         return view('admin.declaration', compact('declarations'));
     }
 
@@ -64,7 +68,17 @@ class AdminController extends Controller
 
     public function user_index()
     {
-        $users = User::latest('del_flg')->paginate(20);
+        $users = User::where('del_flg','0')->latest('id')->paginate(20);
+        return view('admin.user', compact('users'));
+    }
+
+    public function user_frozen_index(Request $request)
+    {
+        $users = User::where('del_flg','1')->latest('id')->paginate(20);
+
+        if ($users->isEmpty()){
+            $request->session()->flash('record', 'Oops！凍結したユーザーがいません！');
+        }
         return view('admin.user', compact('users'));
     }
 

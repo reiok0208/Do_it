@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DeclarationValidationRequest;
 use App\Http\Requests\ReportValidationRequest;
+use App\Http\Requests\SearchValidationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,12 @@ class DeclarationController extends Controller
     public function index(Request $request)
     {
         $declarations = Declaration::withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
-        $request->session()->forget('_old_input');
+        $request->session()->forget(['_old_input','record']);
+
+        if ($declarations->isEmpty()){
+            $request->session()->flash('record', 'Oops！宣言がありません！');
+        }
+
         return view('declaration.index', compact('declarations'));
     }
 
@@ -105,11 +111,15 @@ class DeclarationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $declaration = Declaration::whereId($id)->withCount('do_it')->withCount('good_work')->first();
         $comments = Declaration_comment::latest()->whereDeclarationId($id)->paginate(10);
         $count = Declaration_comment::whereDeclarationId($id)->count();
+
+        if ($comments->isEmpty()){
+            $request->session()->flash('comment', 'コメントがありません！応援しましょう！');
+        }
         return view('declaration.show', compact('declaration','comments','count'));
     }
 
@@ -267,12 +277,16 @@ class DeclarationController extends Controller
         return redirect()->route('declaration.report.show', ['id' => $report->id])->with('status', '報告提出しました！');
     }
 
-    public function report_show($id)
+    public function report_show(Request $request, $id)
     {
         $report = Report::whereId($id)->first();
         $declaration = Declaration::whereId($report->declaration_id)->first();
         $comments = Report_comment::latest()->whereReportId($id)->paginate(10);
         $count = Report_comment::whereReportId($id)->count();
+
+        if ($comments->isEmpty()){
+            $request->session()->flash('comment', 'コメントがありません！労いの言葉をかけましょう！');
+        }
         return view('declaration.report.show', compact('report','declaration','comments','count'));
     }
 
@@ -371,7 +385,58 @@ class DeclarationController extends Controller
             $declarations = Declaration::whereIn('user_id', Auth::user()->follows()->pluck('user_id'))->withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
         }
 
+        if ($declarations->isEmpty()){
+            $request->session()->flash('record', 'Oops！宣言がありませんでした！');
+        }
+
         return view('declaration.index', compact('declarations','sort'));
+
+    }
+
+    /************************************************************************************************************
+     * 文字検索
+     *
+     */
+    public function search_by(SearchValidationRequest $request){
+        if(empty($request->search_by)){
+            $search = $request->session()->get('search_by');
+        }else{
+            $request->session()->put('search_by',$request->search_by);
+            $search = e($request->search_by) ?? '';
+        }
+
+        $pat = '%' . addcslashes($search, '%_\\') . '%';
+        $declarations = Declaration::where('title', 'LIKE', $pat)
+                                    ->orWhere('body', 'LIKE', $pat)
+                                    ->orWhereHas('tags', function ($query) use ($pat){
+                                        $query->where('name', 'LIKE', $pat);
+                                    })->latest('created_at')->paginate(20);
+        if ($declarations->isEmpty()){
+            return redirect()->route('declaration.index')->with('record', 'Oops！検索条件にあった宣言がありませんでした！');
+        }
+
+        return view('declaration.index', compact('declarations','search'));
+
+    }
+
+    /************************************************************************************************************
+     * タグ検索
+     *
+     */
+    public function tag_by(Request $request){
+        if(empty($request->tag_by)){
+            $tag = $request->session()->get('tag_by');
+        }else{
+            $request->session()->put('tag_by',$request->tag_by);
+            $tag = e($request->tag_by) ?? '';
+        }
+
+        $pat = addcslashes($tag, '%_\\');
+        $declarations = Declaration::WhereHas('tags', function ($query) use ($pat){
+                                        $query->where('name', $pat);
+                                    })->latest('created_at')->paginate(20);
+
+        return view('declaration.index', compact('declarations','tag'));
 
     }
 

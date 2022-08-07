@@ -17,19 +17,19 @@
                         @csrf
                         <input id="declaration_id" type="hidden" name="declaration_id" value="{{ $request->declaration_id }}">
 
-                        <div class="row mb-3">
-                            <label for="rate" class="col-md-3 col-form-label text-md-end">{{ __('自己評価') }}</label>
+                        <div class="row mb-5">
+                            <label for="rate" class="col-3 text-end">{{ __('自己評価') }}</label>
 
-                            <div class="col-md-7">
+                            <div class="col-7">
                                 <p class="confirm_content">{{ $request->rate }}/5段階中</p>
                                 <input id="rate" type="hidden" name="rate" value="{{ $request->rate }}">
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="execution" class="col-md-3 col-form-label text-md-end">{{ __('できましたか？') }}</label>
+                        <div class="row mb-5">
+                            <label for="execution" class="col-3 text-end">{{ __('できましたか？') }}</label>
 
-                            <div class="col-md-7">
+                            <div class="col-7">
                                 <p class="confirm_content">
                                     @if($request->execution == 1)
                                         <span>できた</span>
@@ -41,10 +41,10 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="body" class="col-md-3 col-form-label text-md-end">{{ __('報告内容') }}</label>
+                        <div class="row mb-5">
+                            <label for="body" class="col-3 text-end">{{ __('報告内容') }}</label>
 
-                            <div class="col-md-7">
+                            <div class="col-7">
                                 <p class="confirm_content">{!! nl2br(e($request->body)) !!}</p>
                                 <input id="body" type="hidden" name="body" value="{{ $request->body }}">
                             </div>

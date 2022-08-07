@@ -30,11 +30,15 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $user = User::whereId($id)->first();
         $declarations = Declaration::whereUserId($id)->withCount('do_it')->withCount('good_work')->latest()->paginate(20);
         $followed = Relationship::where('following_user_id', \Auth::user()->id)->where('user_id', $id)->first();
+
+        if ($declarations->isEmpty()){
+            $request->session()->flash('record', 'Oops！宣言がありません！');
+        }
         return view('user.show', compact('user','declarations','followed'));
     }
 
@@ -57,17 +61,25 @@ class UserController extends Controller
 
 
     // ログインユーザーのフォロー・フォロワー情報を取得
-    public function  user_follows($id)
+    public function  user_follows(Request $request, $id)
     {
         $user = User::whereId($id)->first();
         $follows = $user->follows()->latest()->paginate(20);
+
+        if ($follows->isEmpty()){
+            $request->session()->flash('follow', 'フォローがいません！切磋琢磨できる仲間をフォローしましょう！');
+        }
         return view('user.follow', compact('user','follows'));
     }
 
-    public function  user_followers($id)
+    public function  user_followers(Request $request, $id)
     {
         $user = User::whereId($id)->first();
         $follows = $user->followers()->latest()->paginate(20);
+
+        if ($follows->isEmpty()){
+            $request->session()->flash('follow', 'フォロワーがいません！');
+        }
         return view('user.follow', compact('user','follows'));
     }
 
