@@ -30,6 +30,12 @@ class DeclarationController extends Controller
         $declarations = Declaration::withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
         $request->session()->forget(['_old_input','record']);
 
+        foreach($declarations as $dec){
+            if($dec->user_id == Auth::id() && $dec->report == null && strtotime(date('Y/m/d')) > strtotime($dec->end_date)){
+                return redirect()->route('declaration.show', ['id' => $dec->id])->with('null_report', '宣言報告を提出してください');
+            }
+        }
+
         if ($declarations->isEmpty()){
             $request->session()->flash('record', 'Oops！宣言がありません！');
         }
@@ -117,6 +123,8 @@ class DeclarationController extends Controller
         $comments = Declaration_comment::latest()->whereDeclarationId($id)->paginate(10);
         $count = Declaration_comment::whereDeclarationId($id)->count();
 
+        $request->session()->forget(['comment']);
+
         if ($comments->isEmpty()){
             $request->session()->flash('comment', 'コメントがありません！応援しましょう！');
         }
@@ -132,7 +140,8 @@ class DeclarationController extends Controller
     public function edit(Request $request, $id)
     {
         $declaration = Declaration::whereId($id)->first();
-        if(! Gate::allows('declaration_gate', $declaration)){
+        // Gate権限
+        if(! Gate::allows('edit_gate', $declaration)){
             abort(403);
         }
 
@@ -169,7 +178,8 @@ class DeclarationController extends Controller
     public function update(DeclarationValidationRequest $request)
     {
         $declaration = Declaration::whereId($request->id)->first();
-        if(! Gate::allows('declaration_gate', $declaration)){
+        // Gate権限
+        if(! Gate::allows('edit_gate', $declaration)){
             abort(403);
         }
 
@@ -210,7 +220,8 @@ class DeclarationController extends Controller
     public function destroy($id)
     {
         $declaration = Declaration::findOrFail($id);
-        if(! Gate::allows('declaration_gate', $declaration)){
+        // Gate権限
+        if(! Gate::allows('delete_gate', $declaration)){
             abort(403);
         }
 
@@ -228,9 +239,11 @@ class DeclarationController extends Controller
     public function report_create(Request $request, $id)
     {
         $declaration = Declaration::find($id);
-        if(! Gate::allows('declaration_gate', $declaration)){
+        // Gate権限
+        if(! Gate::allows('report_gate', $declaration)){
             abort(403);
         }
+
         if(strtotime(date('Y/m/d')) > strtotime($declaration->end_date) || ($declaration->user_id == Auth::id())){
             $report = $declaration->report;
             if($report != null){
@@ -260,9 +273,11 @@ class DeclarationController extends Controller
     public function report_store(Request $request)
     {
         $declaration = Declaration::find($request->declaration_id);
-        if(! Gate::allows('declaration_gate', $declaration)){
+        // Gate権限
+        if(! Gate::allows('report_gate', $declaration)){
             abort(403);
         }
+
         $report = new Report;
         $report->declaration_id = $request->declaration_id;
         $report->rate = $request->rate;
@@ -283,6 +298,8 @@ class DeclarationController extends Controller
         $declaration = Declaration::whereId($report->declaration_id)->first();
         $comments = Report_comment::latest()->whereReportId($id)->paginate(10);
         $count = Report_comment::whereReportId($id)->count();
+
+        $request->session()->forget(['comment']);
 
         if ($comments->isEmpty()){
             $request->session()->flash('comment', 'コメントがありません！労いの言葉をかけましょう！');

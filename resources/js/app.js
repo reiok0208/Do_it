@@ -10,9 +10,24 @@ $(function () {
     });
 });
 
+// 終了日前の宣言報告ページは遷移禁止
+$('.end_date').on('click', function(e){
+    if(!end_date){
+        alert('終了日を過ぎていません。\n報告は終了日を過ぎたら閲覧・入力できます。');
+        e.preventDefault();
+    }
+});
+
+
+$(function () {
+    $(".sort_by_select").change(function() {
+        $('.sort_by_form').submit();
+    });
+});
+
 
 // JSON
-// いいね関連
+// いいね関連非同期
 // 発火後コントローラーへ飛び処理したのちここへ返ってくる(非同期のためviewは介さない)
 $(function () {
     let like = $('.do-it-toggle');
@@ -70,18 +85,30 @@ $(function () {
     });
 });
 
-
-// 終了日前の宣言報告ページは遷移禁止
-$('.end_date').on('click', function(e){
-    if(!end_date){
-        alert('終了日を過ぎていません。\n報告は終了日を過ぎたら閲覧・入力できます。');
-        e.preventDefault();
-    }
-});
-
-
-$(function () {
-    $(".sort_by_select").change(function() {
-        $('.sort_by_form').submit();
-    });
-});
+//コメント関連非同期
+// $(function () {
+//     let comment = $('.comment__ajax');
+//     comment.on('click', function () {
+//         let body = document.getElementById('body').value;
+//         let declaration_id = document.getElementById('declaration_id').value;
+//         $.ajax({
+//             headers: {
+//                 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') // フォームの@csrfと同じ
+//             },
+//             url: '/declaration/comment/store',
+//             method: 'POST',
+//             data: {
+//                 'declaration_id': declaration_id,
+//                 'body': body
+//             },
+//         })
+//         //通信が成功したとき
+//         .then((res) => {
+//             console.log(res);
+//         })
+//         //通信が失敗したとき
+//         .fail((error) => {
+//             console.log(error.statusText);
+//         });
+//     });
+// });

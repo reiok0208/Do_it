@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Declaration;
 use App\Models\Relationship;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -35,6 +36,12 @@ class UserController extends Controller
         $user = User::whereId($id)->first();
         $declarations = Declaration::whereUserId($id)->withCount('do_it')->withCount('good_work')->latest()->paginate(20);
         $followed = Relationship::where('following_user_id', \Auth::user()->id)->where('user_id', $id)->first();
+
+        foreach($declarations as $dec){
+            if($dec->user_id == Auth::id() && $dec->report == null && strtotime(date('Y/m/d')) > strtotime($dec->end_date)){
+                return redirect()->route('declaration.show', ['id' => $dec->id])->with('null_report', '宣言報告を提出してください');
+            }
+        }
 
         if ($declarations->isEmpty()){
             $request->session()->flash('record', 'Oops！宣言がありません！');

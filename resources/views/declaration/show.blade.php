@@ -16,6 +16,11 @@
                     @endif
                 @endif
             </div>
+            @if (session('null_report'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('null_report') }}
+                </div>
+            @endif
             @if (session('status'))
                 <div class="alert alert-success" role="alert">
                     {{ session('status') }}
@@ -42,21 +47,30 @@
                                     <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">･･･</a>
 
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        @if($declaration->user_id == Auth::id() && (strtotime(date('Y/m/d')) < strtotime($declaration->start_date)))
+                                        @if($declaration->user_id == Auth::id() && strtotime(date('Y/m/d')) < strtotime($declaration->start_date))
                                             <li><a class="dropdown-item" href="{{ route('declaration.edit',['id'=>$declaration->id]) }}">編集</a></li>
+                                        @elseif($declaration->user_id == Auth::id() && strtotime(date('Y/m/d')) > strtotime($declaration->start_date))
+                                            <p style="margin: 5px;">開始日以降の<br>編集はできません</p>
                                         @endif
                                         <li>
-                                            @if ($declaration->user_id == Auth::id() || Auth::user()->admin != 1)
+                                            @if ($declaration->user_id == Auth::id() && (strtotime($declaration->start_date) > strtotime(date('Y/m/d')) || strtotime(date('Y/m/d')) > strtotime($declaration->end_date)))
                                                 <form method="POST" action="{{ route('declaration.destroy',['id'=>$declaration->id]) }}">
                                                     @csrf
                                                     @method('delete')
                                                     <button class="delete dropdown-item btn btn-link" style="text-decoration:none; color:black; border-radius:0;" type="submit">削除</button>
                                                 </form>
-                                            @else
+                                            @elseif ($declaration->user_id != Auth::id() && Auth::user()->admin == 1 && $declaration->del_flg == 0)
                                                 <form method="POST" action="{{ route('admin.declaration.frozen',['id'=>$declaration->id]) }}">
                                                     @csrf
                                                     <button class="delete dropdown-item btn btn-link" style="text-decoration:none; color:black; border-radius:0;" type="submit">凍結</button>
                                                 </form>
+                                            @elseif ($declaration->user_id != Auth::id())
+                                                <form method="POST" action="{{ route('admin.declaration.lift',['id'=>$declaration->id]) }}">
+                                                    @csrf
+                                                    <button class="delete dropdown-item btn btn-link" style="text-decoration:none; color:black; border-radius:0;" type="submit">凍結解除</button>
+                                                </form>
+                                            @else
+                                                <p style="margin: 5px;">期間中の<br>削除はできません</p>
                                             @endif
                                         </li>
                                     </ul>
@@ -69,7 +83,12 @@
                         <div class="row align-items-end">
                             <div class="col-lg-5">
                                 @foreach($declaration->tags as $tag)
-                                    <span class="badge rounded-pill bg-secondary">{{$tag->name}}</span>
+                                    @if (Request::routeIs('declaration.show'))
+                                        {{ Request::session()->forget(['sort_by','search_by','tag_by']) }}
+                                        <a href="/declaration/tag_by?tag_by={{ $tag->name }}" class="declaration__badge badge rounded-pill bg-secondary">{{$tag->name}}</a>
+                                    @else
+                                        <span class="badge rounded-pill bg-secondary">{{$tag->name}}</span>
+                                    @endif
                                 @endforeach
                             </div>
                             <div class="declaration-show__like col" style="position:relative; z-index:100;">

@@ -40,28 +40,36 @@
                                 <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">･･･</a>
 
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    @if($dec->user_id == Auth::id() && (strtotime(date('Y/m/d')) < strtotime($dec->start_date)))
+                                    <!-- 認証ユーザーの宣言か && (現在日 < 開始日) -->
+                                    @if($dec->user_id == Auth::id() && strtotime(date('Y/m/d')) < strtotime($dec->start_date))
                                         <li><a class="dropdown-item" href="{{ route('declaration.edit',['id'=>$dec->id]) }}">編集</a></li>
+                                    <!-- 認証ユーザーの宣言か && (現在日 > 開始日) -->
+                                    @elseif($dec->user_id == Auth::id() && strtotime(date('Y/m/d')) > strtotime($dec->start_date))
+                                        <p style="margin: 5px;">開始日以降の<br>編集はできません</p>
                                     @endif
                                     <li>
-                                        @if (($dec->user_id == Auth::id() && (strtotime($dec->start_date) > strtotime(date('Y/m/d'))) || (strtotime(date('Y/m/d')) > strtotime($dec->end_date))) || Auth::user()->admin != 1)
+                                        <!-- 認証ユーザーの宣言か && (開始日 > 現在日 || 現在日 > 終了日) -->
+                                        @if ($dec->user_id == Auth::id() && (strtotime($dec->start_date) > strtotime(date('Y/m/d')) || strtotime(date('Y/m/d')) > strtotime($dec->end_date)))
                                             <form method="POST" action="{{ route('declaration.destroy',['id'=>$dec->id]) }}">
                                                 @csrf
                                                 @method('delete')
                                                 <button class="delete dropdown-item btn btn-link" style="text-decoration:none; color:black; border-radius:0;" type="submit">削除</button>
                                             </form>
+                                        <!-- 認証ユーザーの宣言ではなく管理者かつdel_flg == 0の宣言 -->
                                         @elseif ($dec->user_id != Auth::id() && Auth::user()->admin == 1 && $dec->del_flg == 0)
                                             <form method="POST" action="{{ route('admin.declaration.frozen',['id'=>$dec->id]) }}">
                                                 @csrf
                                                 <button class="delete dropdown-item btn btn-link" style="text-decoration:none; color:black; border-radius:0;" type="submit">凍結</button>
                                             </form>
-                                        @elseif ($dec->user_id != Auth::id())
+                                        <!-- 認証ユーザーの宣言ではなく管理者かつdel_flg == 1の宣言 -->
+                                        @elseif ($dec->user_id != Auth::id() && Auth::user()->admin == 1 && $dec->del_flg == 1)
                                             <form method="POST" action="{{ route('admin.declaration.lift',['id'=>$dec->id]) }}">
                                                 @csrf
                                                 <button class="delete dropdown-item btn btn-link" style="text-decoration:none; color:black; border-radius:0;" type="submit">凍結解除</button>
                                             </form>
-                                        @else
-                                            <p style="margin: 5px;">期間中の編集・削除はできません</p>
+                                        <!-- 認証ユーザーの宣言か && (開始日 < 現在日 || 現在日 < 終了日) -->
+                                        @elseif ($dec->user_id == Auth::id() && (strtotime($dec->start_date) < strtotime(date('Y/m/d')) || strtotime(date('Y/m/d')) < strtotime($dec->end_date)))
+                                            <p style="margin: 5px;">期間中の<br>削除はできません</p>
                                         @endif
                                     </li>
                                 </ul>

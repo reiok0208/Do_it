@@ -7,11 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Declaration;
 use App\Models\User;
-use App\Models\Declaration_comment;
-use App\Models\Declaration_tag;
-use App\Models\Report;
-use App\Models\Report_comment;
-use App\Models\Tag;
+
 
 class AdminController extends Controller
 {
