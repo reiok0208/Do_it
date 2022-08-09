@@ -63,17 +63,25 @@ class CommentController extends Controller
     public function declaration_comment_destroy($id)
     {
         $comment = Declaration_comment::findOrFail($id);
-        $comment->delete();
 
-        return redirect()->back()->with('status', 'コメントを削除しました！');
+        if(Auth::user()->admin == 0 && $comment->user_id != Auth::id()){
+            abort(403);
+        }else if(Auth::user()->admin == 1 || $comment->user_id == Auth::id()){ //管理者には全コメント物理削除権限あり
+            $comment->delete();
+            return redirect()->back()->with('status', 'コメントを削除しました！');
+        }
     }
 
     public function report_comment_destroy($id)
     {
         $comment = Report_comment::findOrFail($id);
-        $comment->delete();
 
-        return redirect()->back()->with('status', 'コメントを削除しました！');
+        if(Auth::user()->admin == 0 && $comment->user_id != Auth::id()){
+            abort(403);
+        }else if(Auth::user()->admin == 1 || $comment->user_id == Auth::id()){ //管理者には全コメント物理削除権限あり
+            $comment->delete();
+            return redirect()->back()->with('status', 'コメントを削除しました！');
+        }
     }
 
 }

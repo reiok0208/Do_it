@@ -50,19 +50,24 @@ class UserController extends Controller
     }
 
     // ユーザーのフォロー・アンフォロー
-    public function follow($id) {
-        $follow = Relationship::create([
+    public function follow(Request $request) {
+        Relationship::create([
             'following_user_id' => \Auth::user()->id,
-            'user_id' => $id,
+            'user_id' => $request->user_id,
         ]);
-        return redirect()->back()->with('status', 'フォローしました！');
+
+        $follow_count = Relationship::where('user_id', $request->user_id)->count();
+
+        return response()->json($follow_count);
     }
 
-    public function unfollow($id) {
-        $follow = Relationship::where('following_user_id', \Auth::user()->id)->where('user_id', $id)->first();
+    public function unfollow(Request $request) {
+        $follow = Relationship::where('following_user_id', \Auth::user()->id)->where('user_id', $request->user_id)->first();
         $follow->delete();
 
-        return redirect()->back()->with('status', 'フォロー解除しました！');
+        $follow_count = Relationship::where('user_id', $request->user_id)->count();
+
+        return response()->json($follow_count);
     }
 
 

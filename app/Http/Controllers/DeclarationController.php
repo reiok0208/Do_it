@@ -90,17 +90,22 @@ class DeclarationController extends Controller
         $declaration->user_id = Auth::user()->id;
         $declaration->save();
 
+        // 「#タグ#タグ」のような結合状態をpreg_match_allで分解し$match配列に入れる
         preg_match_all('/#([a-zA-Z0-9０-９ぁ-んァ-ヶー一-龠]+)/u', $request->tag, $match);
         $tags = [];
+        // $match[1]から始める理由は[0]が#入りのタグであるから
         foreach ($match[1] as $tag) {
+            // タグが新規か既存かを調べ新規であればcreateする
             $record = Tag::firstOrCreate(['name' => $tag]);
             array_push($tags, $record);
         };
 
         $tags_id = [];
         foreach ($tags as $tag) {
+            // 宣言に使われたタグのidを取り出し配列に追加
             array_push($tags_id, $tag['id']);
         };
+        // syncでタグと宣言を紐づける
         $declaration->tags()->sync($tags_id);
 
         // 二重送信防止

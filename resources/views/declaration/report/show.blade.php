@@ -5,8 +5,8 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="d-flex justify-content-center" style="margin-bottom:30px;">
-                <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center" href="{{ route('declaration.show',['id'=>$declaration->id]) }}">宣言詳細</a>
-                <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center disabled">宣言報告</a>
+                <a class="declaration-show__nav btn btn-outline-secondary rounded-0 col-lg-2 col-4 text-center" href="{{ route('declaration.show',['id'=>$declaration->id]) }}">宣言詳細</a>
+                <a class="declaration-show__nav btn btn-outline-secondary rounded-0 col-lg-2 col-4 text-center disabled">宣言報告</a>
             </div>
             @if (session('status'))
                 <div class="alert alert-success" role="alert">
@@ -21,19 +21,27 @@
                         <div class="row">
                             <h2 class="col-7 col-md-9">
                                 @if($report->execution == 1)
-                                    <span>できた</span>
+                                    できた
                                 @else
-                                    <span>できなかった</span>
+                                    できなかった
                                 @endif
                             </h2>
-                            <p class="col">
+                            <p class="report__user col">
                                 宣言者：<a href="{{ route('user.show',['id'=>$declaration->user->id]) }}">{{ $declaration->user->name }}</a>
                             </p>
                         </div>
-                        <div class="row mb-5">
-                            <p>{{ $report->rate }}/5段階中</p>
+                        <div class="report__rate row">
+                            @for ($i=0; $i < 5; $i++)
+                                @php
+                                    if($i < $report->rate){
+                                        echo "★";
+                                    }else{
+                                        echo "☆";
+                                    }
+                                @endphp
+                            @endfor
                         </div>
-                        <p>{!! $report->body !!}</p>
+                        <p class="report__body">{!! $report->body !!}</p>
                     </div>
                 </div>
             </div>

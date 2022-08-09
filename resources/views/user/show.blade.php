@@ -27,19 +27,13 @@
                             <div class="col-4 text-end">
                                 <div class="user-show__follow mb-3">
                                     <a href="{{ route('user.follows',['id'=>$user->id]) }}">{{ $user->follows->count() }}フォロー</a>
-                                    <a href="{{ route('user.followers',['id'=>$user->id]) }}">{{ $user->followers->count() }}フォロワー</a>
+                                    <a class="follow__count" href="{{ route('user.followers',['id'=>$user->id]) }}">{{ $user->followers->count() }}フォロワー</a>
                                 </div>
                                 @if ($user->id != Auth::id())
                                     @if ($followed == null)
-                                        <form method="POST" action="{{ route('user.follow',['id'=>$user->id]) }}">
-                                            @csrf
-                                            <button class="user-show__button btn btn-outline-primary mb-1" type="submit">フォロー</button>
-                                        </form>
+                                        <button class="follow__button btn btn-outline-primary btn-sm follow-toggle mb-1" data-follow-id="{{ $user->id }}" style="position:relative; z-index:100;">フォロー</button>
                                     @else
-                                        <form method="POST" action="{{ route('user.unfollow',['id'=>$user->id]) }}">
-                                            @csrf
-                                            <button class="user-show__button btn btn-outline-danger mb-1" type="submit">フォロー解除</button>
-                                        </form>
+                                        <button class="unfollow__button btn btn-outline-danger btn-sm follow-toggle mb-1" data-follow-id="{{ $user->id }}" style="position:relative; z-index:100;">フォロー解除</button>
                                     @endif
                                 @endif
                                 @if (Auth::id() == $user->id)

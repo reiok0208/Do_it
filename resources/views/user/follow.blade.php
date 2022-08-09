@@ -35,7 +35,7 @@
                                         </div>
                                         <div class="follow__follow col-lg-4 col-5 text-end" style="position:relative; z-index:100;">
                                             <a href="{{ route('user.follows',['id'=>$follow->id]) }}">{{ $follow->follows->count() }}フォロー</a>
-                                            <a href="{{ route('user.followers',['id'=>$follow->id]) }}">{{ $follow->followers->count() }}フォロワー</a>
+                                            <a class="follow__count" href="{{ route('user.followers',['id'=>$follow->id]) }}">{{ $follow->followers->count() }}フォロワー</a>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -45,15 +45,9 @@
                                         <div class="col-lg-3 col-5 text-end">
                                             @if ($follow->id != Auth::id())
                                                 @if (App\Models\Relationship::where('following_user_id', \Auth::user()->id)->where('user_id', $follow->id)->first() == null)
-                                                    <form method="POST" action="{{ route('user.follow',['id'=>$follow->id]) }}">
-                                                        @csrf
-                                                        <button class="follow__button btn btn-outline-primary btn-sm" type="submit" style="position:relative; z-index:100;">フォロー</button>
-                                                    </form>
+                                                    <button class="follow__button btn btn-outline-primary btn-sm follow-toggle" data-follow-id="{{ $follow->id }}" style="position:relative; z-index:100;">フォロー</button>
                                                 @else
-                                                    <form method="POST" action="{{ route('user.unfollow',['id'=>$follow->id]) }}">
-                                                        @csrf
-                                                        <button class="follow__button btn btn-outline-danger btn-sm" type="submit" style="position:relative; z-index:100;">フォロー解除</button>
-                                                    </form>
+                                                    <button class="unfollow__button btn btn-outline-danger btn-sm follow-toggle" data-follow-id="{{ $follow->id }}" style="position:relative; z-index:100;">フォロー解除</button>
                                                 @endif
                                             @endif
                                         </div>

@@ -20,6 +20,9 @@
     h2{
         font-size: 20px;
     }
+    &__rate{
+        margin: 20px 0 !important;
+    }
 }
 
 .comment{
@@ -73,14 +76,29 @@
         }
     }
 
+    .report{
+        margin: 10px;
+        h2{
+            font-size: 16px;
+        }
+        &__rate{
+            margin: 20px 0 !important;
+        }
+        &__user{
+            font-size: 11px;
+        }
+        &__body{
+            font-size: 13px;
+            margin: 0 10px;
+        }
+    }
+
     .comment{
         font-size: 13px;
         &__date{
             text-align: left !important;
         }
     }
-
-
 
     .comment__button{
         text-align: right;

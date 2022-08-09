@@ -72,8 +72,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'user', 'as' => 'user.'], fu
     Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('show');
     Route::get('/{id}/follows', [App\Http\Controllers\UserController::class, 'user_follows'])->name('follows');
     Route::get('/{id}/followers', [App\Http\Controllers\UserController::class, 'user_followers'])->name('followers');
-    Route::post('/{id}/follow', [App\Http\Controllers\UserController::class, 'follow'])->name('follow');
-    Route::post('/{id}/unfollow', [App\Http\Controllers\UserController::class, 'unfollow'])->name('unfollow');
+    Route::post('/follow', [App\Http\Controllers\UserController::class, 'follow'])->name('follow');
+    Route::post('/unfollow', [App\Http\Controllers\UserController::class, 'unfollow'])->name('unfollow');
 });
 // ユーザー編集関連(パッケージ生成)
 Route::group(['middleware' => ['auth']], function() {

@@ -11002,6 +11002,9 @@ textarea.form-control-lg {
 .report h2, .report .h2 {
   font-size: 20px;
 }
+.report__rate {
+  margin: 20px 0 !important;
+}
 
 .comment {
   border-bottom: 1px solid rgb(220, 220, 220);
@@ -11048,6 +11051,22 @@ textarea.form-control-lg {
   }
   .declaration-show__nav {
     font-size: 10px;
+  }
+  .report {
+    margin: 10px;
+  }
+  .report h2, .report .h2 {
+    font-size: 16px;
+  }
+  .report__rate {
+    margin: 20px 0 !important;
+  }
+  .report__user {
+    font-size: 11px;
+  }
+  .report__body {
+    font-size: 13px;
+    margin: 0 10px;
   }
   .comment {
     font-size: 13px;

@@ -1,7 +1,7 @@
 require('./bootstrap');
 
 $(function () {
-    $(".delete").on("click", function (e) {
+    $(document).on("click", ".delete", function (e) { //$(document)から指定することでAjaxのhtml遅延読み込み後もイベントとして認識される
         var result = window.confirm("本当によろしいですか？");
 
         if (!result) {
@@ -130,6 +130,57 @@ $(function () {
         .fail((error) => {
             $(".comment__success").css("display","none");
             $(".comment__error").text(error.responseJSON.errors.body);
+        });
+    });
+});
+
+// フォロー関連非同期
+$(function () {
+    let follow = $('.follow-toggle');
+    let followId;
+    follow.on('click', function () {
+        let $this = $(this);
+        if($this.attr("class").match(/unfollow/)){
+            follow_url = '/user/unfollow';
+        }else{
+            follow_url = '/user/follow';
+        }
+        followId = $this.data('follow-id');
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') // フォームの@csrfと同じ
+            },
+            url: follow_url,
+            method: 'POST',
+            data: {
+                'user_id' : followId
+            },
+        })
+        //通信成功時
+        .done(function (data) {
+            if ($this.text() == 'フォロー') {
+                if (location.pathname.match(/follow/)){
+                    $this.parent().parent().prev().children('.follow__follow').children('.follow__count').text(data+"フォロワー");
+                }else{
+                    $('.follow__count').text(data+"フォロワー");
+                }
+                $this.removeClass('follow__button btn-outline-primary');
+                $this.addClass('unfollow__button btn-outline-danger');
+                $this.text('フォロー解除');
+            }else{
+                if (location.pathname.match(/follow/)){
+                    $this.parent().parent().prev().children('.follow__follow').children('.follow__count').text(data+"フォロワー");
+                }else{
+                    $('.follow__count').text(data+"フォロワー");
+                }
+                $this.removeClass('unfollow__button btn-outline-danger');
+                $this.addClass('follow__button btn-outline-primary');
+                $this.text('フォロー');
+            }
+        })
+        //通信失敗時
+        .fail(function () {
+            console.log('fail');
         });
     });
 });
