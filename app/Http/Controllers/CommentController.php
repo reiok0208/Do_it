@@ -17,34 +17,45 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    public function declaration_comment_index(Request $request)
+    {
+        $comments = Declaration_comment::latest()->whereDeclarationId($request->id)->get();
+        $count = Declaration_comment::whereDeclarationId($request->id)->count();
+
+        return view('include.comment', compact('comments','count'));
+    }
+
+    public function report_comment_index(Request $request)
+    {
+        $comments = Report_comment::latest()->whereReportId($request->id)->get();
+        $count = Report_comment::whereReportId($request->id)->count();
+
+        return view('include.comment', compact('comments','count'));
+    }
+
     public function declaration_comment_store(CommentValidationRequest $request)
     {
 
         $comment = new Declaration_comment;
-        $comment->declaration_id = $request->declaration_id;
+        $comment->declaration_id = $request->id;
         $comment->user_id = Auth::user()->id;
         $comment->body = e($request->body);
         $comment->save();
 
-        // 二重送信防止
-        $request->session()->regenerateToken();
-
-        return redirect()->back()->with('status', 'コメントを投稿しました！');
+        return response()->json($request->id);
     }
 
     public function report_comment_store(CommentValidationRequest $request)
     {
 
         $comment = new Report_comment;
-        $comment->report_id = $request->report_id;
+        $comment->report_id = $request->id;
         $comment->user_id = Auth::user()->id;
         $comment->body = e($request->body);
         $comment->save();
 
-        // 二重送信防止
-        $request->session()->regenerateToken();
-
-        return redirect()->back()->with('status', 'コメントを投稿しました！');
+        return response()->json($request->id);
     }
 
 

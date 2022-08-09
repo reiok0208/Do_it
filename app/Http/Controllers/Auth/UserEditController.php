@@ -11,6 +11,8 @@ use App\Http\Requests\UpdateEmailRequest;
 use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\WithdrawalRequest;
 use UserEdit_Operation_DB;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserEditController extends Controller
 {
@@ -30,10 +32,25 @@ class UserEditController extends Controller
     }
 
     public function InfoUpdate(UpdateInfoRequest $request){
-        //ユーザー情報を更新するメソッド
         $this->checkLogin();
-        $UserEdit_Operation_DB = new UserEdit_Operation_DB();
-        return $UserEdit_Operation_DB->InfoUpdate($request);
+        //ユーザー情報更新
+        return DB::transaction(function () use($request){
+            if(!empty($request->image)){
+                $img = $request->image;
+                $path = $img->store('img','public');
+            }else{
+                $path = null;
+            }
+            User::where('id',$request->UserId)
+            ->lockForUpdate()
+            //専有ロック
+            ->update([
+                'name'=> $request->name,
+                'body'=> $request->body,
+                'image'=> $path
+            ]);
+            return redirect('user')->with('status', __('情報の変更に成功しました'));
+        });
     }
 
     public function EmailUpdate(UpdateEmailRequest $request){

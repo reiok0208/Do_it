@@ -39,36 +39,30 @@
             </div>
 
             @if (Auth::check())
-                <form method="POST" action="{{ route('report.comment.store') }}">
-                    @csrf
-                    <input id="report_id" type="hidden" name="report_id" value="{{ $report->id }}">
+                <input id="id" type="hidden" name="id" value="{{ $report->id }}">
 
-                    <div class="row mb-3">
-                        <div class="col-md-10">
-                            <textarea id="body" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="コメント内容を入力してください" style="background-color:white;" rows="5">{{ old('body') }}</textarea>
-
-                            @error('body')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="comment__button col-md-2 align-self-end">
-                            <button type="submit" class="btn btn-outline-primary">
-                                {{ __('コメント投稿') }}
-                            </button>
-                        </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <textarea id="body" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="コメント内容を入力してください" style="background-color:white;" rows="5">{{ old('body') }}</textarea>
                     </div>
-                </form>
+                    <div class="comment__button col-md-2 align-self-end">
+                        <button type="submit" class="comment__ajax btn btn-outline-primary">
+                            {{ __('コメント投稿') }}
+                        </button>
+                    </div>
+                </div>
+                <div class="row mb-3 mx-1">
+                    <span class="comment__error invalid-feedback" role="alert" style="display: inline;"></span>
+                    <div class="comment__success mt-3 alert alert-success" role="alert" style="display:none;">コメント投稿しました！</div>
+                </div>
             @endif
 
             <div class="card">
                 <div class="card-header">{{ __('コメント') }}</div>
-                <div class="card-body">
+                <div class="comment__delete card-body">
                     @include('include.comment')
                 </div>
             </div>
-            {{ $comments->links() }}
         </div>
     </div>
 </div>

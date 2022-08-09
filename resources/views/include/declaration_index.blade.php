@@ -45,7 +45,7 @@
                                         <li><a class="dropdown-item" href="{{ route('declaration.edit',['id'=>$dec->id]) }}">編集</a></li>
                                     <!-- 認証ユーザーの宣言か && (現在日 > 開始日) -->
                                     @elseif($dec->user_id == Auth::id() && strtotime(date('Y/m/d')) > strtotime($dec->start_date))
-                                        <p style="margin: 5px;">開始日以降の<br>編集はできません</p>
+                                        <p style="margin-left:16px;">開始日以降の<br>編集はできません</p>
                                     @endif
                                     <li>
                                         <!-- 認証ユーザーの宣言か && (開始日 > 現在日 || 現在日 > 終了日) -->
@@ -69,7 +69,7 @@
                                             </form>
                                         <!-- 認証ユーザーの宣言か && (開始日 < 現在日 || 現在日 < 終了日) -->
                                         @elseif ($dec->user_id == Auth::id() && (strtotime($dec->start_date) < strtotime(date('Y/m/d')) || strtotime(date('Y/m/d')) < strtotime($dec->end_date)))
-                                            <p style="margin: 5px;">期間中の<br>削除はできません</p>
+                                            <p style="margin-left:16px;">期間中の<br>削除はできません</p>
                                         @endif
                                     </li>
                                 </ul>

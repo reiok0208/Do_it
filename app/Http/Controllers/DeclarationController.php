@@ -31,7 +31,7 @@ class DeclarationController extends Controller
         $request->session()->forget(['_old_input','record']);
 
         foreach($declarations as $dec){
-            if($dec->user_id == Auth::id() && $dec->report == null && strtotime(date('Y/m/d')) > strtotime($dec->end_date)){
+            if($dec->user_id == Auth::id() && $dec->del_flg == 0 && $dec->report == null && strtotime(date('Y/m/d')) > strtotime($dec->end_date)){
                 return redirect()->route('declaration.show', ['id' => $dec->id])->with('null_report', '宣言報告を提出してください');
             }
         }
@@ -120,7 +120,7 @@ class DeclarationController extends Controller
     public function show(Request $request, $id)
     {
         $declaration = Declaration::whereId($id)->withCount('do_it')->withCount('good_work')->first();
-        $comments = Declaration_comment::latest()->whereDeclarationId($id)->paginate(10);
+        $comments = Declaration_comment::latest()->whereDeclarationId($id)->get();
         $count = Declaration_comment::whereDeclarationId($id)->count();
 
         $request->session()->forget(['comment']);
@@ -296,7 +296,7 @@ class DeclarationController extends Controller
     {
         $report = Report::whereId($id)->first();
         $declaration = Declaration::whereId($report->declaration_id)->first();
-        $comments = Report_comment::latest()->whereReportId($id)->paginate(10);
+        $comments = Report_comment::latest()->whereReportId($id)->get();
         $count = Report_comment::whereReportId($id)->count();
 
         $request->session()->forget(['comment']);

@@ -53,6 +53,10 @@ Route::post('/good_work', [App\Http\Controllers\DeclarationController::class, 'g
 
 
 // コメント関連
+Route::get('/declaration/comment/index', [App\Http\Controllers\CommentController::class, 'declaration_comment_index'])
+->name('declaration.comment.index')->middleware('auth');
+Route::get('/report/comment/index', [App\Http\Controllers\CommentController::class, 'report_comment_index'])
+->name('report.comment.index')->middleware('auth');
 Route::post('/declaration/comment/store', [App\Http\Controllers\CommentController::class, 'declaration_comment_store'])
 ->name('declaration.comment.store')->middleware('auth');
 Route::post('/report/comment/store', [App\Http\Controllers\CommentController::class, 'report_comment_store'])

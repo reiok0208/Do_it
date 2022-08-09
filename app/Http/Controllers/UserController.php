@@ -38,7 +38,7 @@ class UserController extends Controller
         $followed = Relationship::where('following_user_id', \Auth::user()->id)->where('user_id', $id)->first();
 
         foreach($declarations as $dec){
-            if($dec->user_id == Auth::id() && $dec->report == null && strtotime(date('Y/m/d')) > strtotime($dec->end_date)){
+            if($dec->user_id == Auth::id() && $dec->del_flg == 0 && $dec->report == null && strtotime(date('Y/m/d')) > strtotime($dec->end_date)){
                 return redirect()->route('declaration.show', ['id' => $dec->id])->with('null_report', '宣言報告を提出してください');
             }
         }

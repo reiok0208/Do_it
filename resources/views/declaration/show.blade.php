@@ -50,7 +50,7 @@
                                         @if($declaration->user_id == Auth::id() && strtotime(date('Y/m/d')) < strtotime($declaration->start_date))
                                             <li><a class="dropdown-item" href="{{ route('declaration.edit',['id'=>$declaration->id]) }}">編集</a></li>
                                         @elseif($declaration->user_id == Auth::id() && strtotime(date('Y/m/d')) > strtotime($declaration->start_date))
-                                            <p style="margin: 5px;">開始日以降の<br>編集はできません</p>
+                                            <p style="margin-left:16px;">開始日以降の<br>編集はできません</p>
                                         @endif
                                         <li>
                                             @if ($declaration->user_id == Auth::id() && (strtotime($declaration->start_date) > strtotime(date('Y/m/d')) || strtotime(date('Y/m/d')) > strtotime($declaration->end_date)))
@@ -70,7 +70,7 @@
                                                     <button class="delete dropdown-item btn btn-link" style="text-decoration:none; color:black; border-radius:0;" type="submit">凍結解除</button>
                                                 </form>
                                             @else
-                                                <p style="margin: 5px;">期間中の<br>削除はできません</p>
+                                                <p style="margin-left:16px;">期間中の<br>削除はできません</p>
                                             @endif
                                         </li>
                                     </ul>
@@ -162,36 +162,30 @@
             </div>
 
             @if (Auth::check())
-                <form method="POST" action="{{ route('declaration.comment.store') }}">
-                    @csrf
-                    <input id="declaration_id" type="hidden" name="declaration_id" value="{{ $declaration->id }}">
+                <input id="id" type="hidden" name="id" value="{{ $declaration->id }}">
 
-                    <div class="row mb-3">
-                        <div class="col-md-10">
-                            <textarea id="body" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="コメント内容を入力してください" style="background-color:white;" rows="5">{{ old('body') }}</textarea>
-
-                            @error('body')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="comment__button col-md-2 align-self-end">
-                            <button type="submit" class="btn btn-outline-primary">
-                                {{ __('コメント投稿') }}
-                            </button>
-                        </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <textarea id="body" class="form-control @error('body') is-invalid @enderror" name="body" placeholder="コメント内容を入力してください" style="background-color:white;" rows="5">{{ old('body') }}</textarea>
                     </div>
-                </form>
+                    <div class="comment__button col-md-2 align-self-end">
+                        <button type="submit" class="comment__ajax btn btn-outline-primary">
+                            {{ __('コメント投稿') }}
+                        </button>
+                    </div>
+                </div>
+                <div class="row mb-3 mx-1">
+                    <span class="comment__error invalid-feedback" role="alert" style="display: inline;"></span>
+                    <div class="comment__success mt-3 alert alert-success" role="alert" style="display:none;">コメント投稿しました！</div>
+                </div>
             @endif
 
             <div class="card">
                 <div class="card-header">{{ __('コメント') }}</div>
-                <div class="card-body">
+                <div class="comment__delete card-body">
                     @include('include.comment')
                 </div>
             </div>
-            {{ $comments->links() }}
         </div>
     </div>
 </div>

@@ -85,30 +85,51 @@ $(function () {
     });
 });
 
-//コメント関連非同期
-// $(function () {
-//     let comment = $('.comment__ajax');
-//     comment.on('click', function () {
-//         let body = document.getElementById('body').value;
-//         let declaration_id = document.getElementById('declaration_id').value;
-//         $.ajax({
-//             headers: {
-//                 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') // フォームの@csrfと同じ
-//             },
-//             url: '/declaration/comment/store',
-//             method: 'POST',
-//             data: {
-//                 'declaration_id': declaration_id,
-//                 'body': body
-//             },
-//         })
-//         //通信が成功したとき
-//         .then((res) => {
-//             console.log(res);
-//         })
-//         //通信が失敗したとき
-//         .fail((error) => {
-//             console.log(error.statusText);
-//         });
-//     });
-// });
+//コメント関連非同期 Declaration,report共用
+$(function () {
+    let comment = $('.comment__ajax');
+    comment.on('click', function () {
+        if (location.pathname.match(/\/declaration\/report\/show\//)){
+            var post_url = '/report/comment/store';
+            var get_url = '/report/comment/index';
+        }else{
+            var post_url = '/declaration/comment/store';
+            var get_url = '/declaration/comment/index';
+        }
+        let body = document.getElementById('body').value;
+        let id = document.getElementById('id').value;
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content') // フォームの@csrfと同じ
+            },
+            url: post_url,
+            method: 'POST',
+            data: {
+                'id': id,
+                'body': body
+            },
+        })
+        //通信が成功したとき
+        .then((data) => {
+            $(".comment__delete").empty();
+            $.ajax({
+                url: get_url,
+                method: 'GET',
+                data: {
+                    'id': data
+                },
+            })
+            .then((data) => {
+                $(".comment__error").empty();
+                $(".comment__delete").append(data);
+                $('textarea').val("");
+                $(".comment__success").css("display","block")
+            })
+        })
+        //通信が失敗したとき
+        .fail((error) => {
+            $(".comment__success").css("display","none");
+            $(".comment__error").text(error.responseJSON.errors.body);
+        });
+    });
+});

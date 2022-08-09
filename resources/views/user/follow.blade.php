@@ -33,7 +33,7 @@
                                         <div class="col-lg-6 col-7">
                                             <p class="follow__name">{{ $follow->name }}</p>
                                         </div>
-                                        <div class="follow__follow col-lg-4 col-5 text-end">
+                                        <div class="follow__follow col-lg-4 col-5 text-end" style="position:relative; z-index:100;">
                                             <a href="{{ route('user.follows',['id'=>$follow->id]) }}">{{ $follow->follows->count() }}フォロー</a>
                                             <a href="{{ route('user.followers',['id'=>$follow->id]) }}">{{ $follow->followers->count() }}フォロワー</a>
                                         </div>
