@@ -18,18 +18,29 @@
                         <input id="declaration_id" type="hidden" name="declaration_id" value="{{ $request->declaration_id }}">
 
                         <div class="row mb-5">
-                            <label for="rate" class="col-3 text-end">{{ __('自己評価') }}</label>
+                            <label for="rate" class="col-sm-3 col-12 text-sm-end text-center">{{ __('自己評価') }}</label>
 
-                            <div class="col-7">
-                                <p class="confirm_content">{{ $request->rate }}/5段階中</p>
+                            <div class="col-sm-7 col-12 text-sm-start text-center">
+                                <div class="confirm_content">
+                                    <!-- 評価の数字を星にする -->
+                                    @for ($i=0; $i < 5; $i++)
+                                        @php
+                                            if($i < $request->rate){
+                                                echo "★";
+                                            }else{
+                                                echo "☆";
+                                            }
+                                        @endphp
+                                    @endfor
+                                </div>
                                 <input id="rate" type="hidden" name="rate" value="{{ $request->rate }}">
                             </div>
                         </div>
 
                         <div class="row mb-5">
-                            <label for="execution" class="col-3 text-end">{{ __('できましたか？') }}</label>
+                            <label for="execution" class="col-sm-3 col-12 text-sm-end text-center">{{ __('できましたか？') }}</label>
 
-                            <div class="col-7">
+                            <div class="col-sm-7 col-12 text-sm-start text-center">
                                 <p class="confirm_content">
                                     @if($request->execution == 1)
                                         <span>できた</span>
@@ -42,9 +53,9 @@
                         </div>
 
                         <div class="row mb-5">
-                            <label for="body" class="col-3 text-end">{{ __('報告内容') }}</label>
+                            <label for="body" class="col-sm-3 col-12 text-sm-end text-center">{{ __('報告内容') }}</label>
 
-                            <div class="col-7">
+                            <div class="col-sm-7 col-12 text-sm-start text-center">
                                 <p class="confirm_content">{!! nl2br(e($request->body)) !!}</p>
                                 <input id="body" type="hidden" name="body" value="{{ $request->body }}">
                             </div>

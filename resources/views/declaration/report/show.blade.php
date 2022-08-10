@@ -31,6 +31,7 @@
                             </p>
                         </div>
                         <div class="report__rate row">
+                            <!-- 評価の数字を星にする -->
                             @for ($i=0; $i < 5; $i++)
                                 @php
                                     if($i < $report->rate){

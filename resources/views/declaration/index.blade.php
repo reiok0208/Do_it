@@ -35,7 +35,7 @@
                         @enderror
                     </div>
                     <div class="col-md-1 text-right h-100">
-                        <button class="btn btn-primary h-25" style="width: 70px;">検索</button>
+                        <button class="btn btn-primary h-25 mt-1 mt-md-0" style="width: 70px;">検索</button>
                     </div>
                 </div>
             </form>

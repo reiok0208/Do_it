@@ -5,8 +5,8 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="d-flex justify-content-center" style="margin-bottom:30px;">
-                <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center" href="{{ route('declaration.show',['id'=>$declaration->id]) }}">宣言詳細</a>
-                <a class="btn btn-outline-secondary rounded-0 col-md-2 text-center disabled">宣言報告</a>
+                <a class="declaration-show__nav btn btn-outline-secondary rounded-0 col-lg-2 col-4 text-center" href="{{ route('declaration.show',['id'=>$declaration->id]) }}">宣言詳細</a>
+                <a class="declaration-show__nav btn btn-outline-secondary rounded-0 col-lg-2 col-4 text-center disabled">宣言報告</a>
             </div>
             @if (session('status'))
                 <div class="alert alert-success" role="alert">

@@ -30,6 +30,7 @@ class DeclarationController extends Controller
         $declarations = Declaration::withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
         $request->session()->forget(['_old_input','record']);
 
+        // 終了日が過ぎていてレポート未提出であったら詳細画面に遷移
         foreach($declarations as $dec){
             if($dec->user_id == Auth::id() && $dec->del_flg == 0 && $dec->report == null && strtotime(date('Y/m/d')) > strtotime($dec->end_date)){
                 return redirect()->route('declaration.show', ['id' => $dec->id])->with('null_report', '宣言報告を提出してください');
@@ -54,6 +55,7 @@ class DeclarationController extends Controller
             $request->session()->forget('_old_input');
         }
 
+        // oldメソッドの入力値を保持
         if(!empty($request->title)){
             $request->session()->put([
                 '_old_input' => [
@@ -68,7 +70,7 @@ class DeclarationController extends Controller
         return view('declaration.create');
     }
 
-    public function confirm(/*DeclarationValidation*/Request $request)
+    public function confirm(DeclarationValidationRequest $request)
     {
         return view('declaration.confirm', compact('request'));
     }
@@ -128,7 +130,7 @@ class DeclarationController extends Controller
         $comments = Declaration_comment::latest()->whereDeclarationId($id)->get();
         $count = Declaration_comment::whereDeclarationId($id)->count();
 
-        $request->session()->forget(['comment']);
+        $request->session()->forget(['comment','_old_input']);
 
         if ($comments->isEmpty()){
             $request->session()->flash('comment', 'コメントがありません！応援しましょう！');
@@ -249,6 +251,7 @@ class DeclarationController extends Controller
             abort(403);
         }
 
+        // 値の保持
         if(strtotime(date('Y/m/d')) > strtotime($declaration->end_date) || ($declaration->user_id == Auth::id())){
             $report = $declaration->report;
             if($report != null){

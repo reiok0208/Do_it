@@ -11069,7 +11069,7 @@ textarea.form-control-lg {
     margin: 0 10px;
   }
   .comment {
-    font-size: 13px;
+    font-size: 12px;
   }
   .comment__date {
     text-align: left !important;
@@ -11124,6 +11124,9 @@ textarea.form-control-lg {
     font-size: 10px;
   }
   .follow__button {
+    font-size: 10px;
+  }
+  .unfollow__button {
     font-size: 10px;
   }
   .user__other {

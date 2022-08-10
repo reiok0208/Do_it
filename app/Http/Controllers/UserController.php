@@ -37,6 +37,7 @@ class UserController extends Controller
         $declarations = Declaration::whereUserId($id)->withCount('do_it')->withCount('good_work')->latest()->paginate(20);
         $followed = Relationship::where('following_user_id', \Auth::user()->id)->where('user_id', $id)->first();
 
+        // 終了日が過ぎていてレポート未提出であったら詳細画面に遷移
         foreach($declarations as $dec){
             if($dec->user_id == Auth::id() && $dec->del_flg == 0 && $dec->report == null && strtotime(date('Y/m/d')) > strtotime($dec->end_date)){
                 return redirect()->route('declaration.show', ['id' => $dec->id])->with('null_report', '宣言報告を提出してください');
@@ -52,8 +53,8 @@ class UserController extends Controller
     // ユーザーのフォロー・アンフォロー
     public function follow(Request $request) {
         Relationship::create([
-            'following_user_id' => \Auth::user()->id,
-            'user_id' => $request->user_id,
+            'following_user_id' => Auth::id(), // フォローした人
+            'user_id' => $request->user_id, // 上記の認証ユーザーにフォローされた人
         ]);
 
         $follow_count = Relationship::where('user_id', $request->user_id)->count();
@@ -62,7 +63,7 @@ class UserController extends Controller
     }
 
     public function unfollow(Request $request) {
-        $follow = Relationship::where('following_user_id', \Auth::user()->id)->where('user_id', $request->user_id)->first();
+        $follow = Relationship::where('following_user_id', Auth::id())->where('user_id', $request->user_id)->first();
         $follow->delete();
 
         $follow_count = Relationship::where('user_id', $request->user_id)->count();

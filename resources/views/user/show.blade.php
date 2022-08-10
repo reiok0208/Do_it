@@ -37,21 +37,21 @@
                                     @endif
                                 @endif
                                 @if (Auth::id() == $user->id)
-                                    <a class="user-show__button btn btn-outline-primary text-center w-30 user_edit mb-1" href="{{ route('user.edit') }}">ユーザー編集</a><br>
+                                    <a class="user-show__button btn btn-outline-primary text-center btn-sm w-30 user_edit mb-1" href="{{ route('user.edit') }}">ユーザー編集</a><br>
                                     @if (Auth::user()->admin == 0)
-                                        <a class="user-show__button btn btn-outline-danger text-center w-30 mb-1" href="{{ route('user.delete') }}">ユーザー削除</a>
+                                        <a class="user-show__button btn btn-outline-danger text-center btn-sm w-30 mb-1" href="{{ route('user.delete') }}">ユーザー削除</a>
                                     @endif
                                 @endif
                                 @if(Auth::id() != $user->id && Auth::user()->admin == 1)
                                     @if ($user->del_flg == 0)
                                         <form method="POST" action="{{ route('admin.user.frozen',['id'=>$user->id]) }}">
                                             @csrf
-                                            <button class="user-show__button delete btn btn-outline-danger text-center w-30 mb-1" type="submit">ユーザー凍結</button>
+                                            <button class="user-show__button delete btn btn-outline-danger btn-sm text-center w-30 mb-1" type="submit">ユーザー凍結</button>
                                         </form>
                                     @elseif($user->del_flg == 1)
                                         <form method="POST" action="{{ route('admin.user.lift',['id'=>$user->id]) }}">
                                             @csrf
-                                            <button class="user-show__button delete btn btn-outline-primary text-center w-30 mb-1" type="submit">ユーザー凍結解除</button>
+                                            <button class="user-show__button delete btn btn-outline-primary btn-sm text-center w-30 mb-1" type="submit">ユーザー凍結解除</button>
                                         </form>
                                     @endif
                                 @endif

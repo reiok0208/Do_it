@@ -14,11 +14,15 @@ class CreateRelationshipsTable extends Migration
     public function up()
     {
         Schema::create('relationships', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('following_user_id');
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('following_user_id')->references('id')->on('users');
+
+            $table->unique(['user_id', 'following_user_id']);
+            $table->unique(['following_user_id', 'user_id']);
         });
     }
 

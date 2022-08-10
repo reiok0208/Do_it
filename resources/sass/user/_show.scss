@@ -57,6 +57,12 @@
         }
     }
 
+    .unfollow{
+        &__button{
+            font-size: 10px;
+        }
+    }
+
     .user{
         &__other{
             position: relative;

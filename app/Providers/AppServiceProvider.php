@@ -35,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         });
         Paginator::useBootstrap();
 
+        // 認可
         $this->registerPolicies();
         Gate::define('admin_gate', function(User $user) {
             return $user->admin == 1;

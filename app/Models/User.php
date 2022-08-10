@@ -62,12 +62,12 @@ class User extends Authenticatable
     /**
      * Relationships
      */
-    public function follows()
+    public function follows() //フォローした
     {
         return $this->belongsToMany(User::class, 'relationships', 'following_user_id', 'user_id');
     }
 
-    public function followers()
+    public function followers() //フォローされた
     {
         return $this->belongsToMany(User::class, 'relationships', 'user_id', 'following_user_id');
     }

@@ -34,7 +34,7 @@
                     <div class="declaration-show">
                         <div class="row">
                             <h2 class="declaration-show__title col-lg-5">{{ $declaration->title }}</h2>
-                            <p class="declaration-show__user col">
+                            <p class="declaration-show__user col" style="position:relative; z-index:200;">
                                 宣言者：<a href="{{ route('user.show',['id'=>$declaration->user->id]) }}">{{ $declaration->user->name }}</a>
                             </p>
                             <div class="declaration-show__date--top col text-end">
@@ -82,6 +82,7 @@
                         <p class="declaration-show__body">{!! $declaration->body !!}</p>
                         <div class="row align-items-end">
                             <div class="col-lg-5">
+                                <!-- タグ検索 -->
                                 @foreach($declaration->tags as $tag)
                                     @if (Request::routeIs('declaration.show'))
                                         {{ Request::session()->forget(['sort_by','search_by','tag_by']) }}
@@ -161,7 +162,7 @@
                 </div>
             </div>
 
-            @if (Auth::check())
+            @if (Auth::check() && strtotime(date('Y/m/d')) < strtotime($declaration->end_date))
                 <input id="id" type="hidden" name="id" value="{{ $declaration->id }}">
 
                 <div class="row">
@@ -190,6 +191,7 @@
     </div>
 </div>
 <script>
+    // reportが書ける期間かどうかjavascriptに判定を送る
     const end_date = @json(strtotime(date('Y/m/d')) > strtotime($declaration->end_date));
 </script>
 @endsection
