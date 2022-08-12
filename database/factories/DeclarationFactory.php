@@ -15,11 +15,11 @@ class DeclarationFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => $this->faker->numberBetween(1,100),
-            'title' => $this->faker->realText(mt_rand(10,15)),
-            'body' => $this->faker->realText(mt_rand(10,500)),
-            'start_date' => $this->faker->dateTimeBetween($startDate = '2022/06/01', $endDate = '2022/07/01'),
-            'end_date' => $this->faker->dateTimeBetween($startDate = 'now -2 day', $endDate = '+2 week'),
+            'user_id' => $this->faker->numberBetween(2,100),
+            'title' => $this->faker->realText(mt_rand(10,13)),
+            'body' => $this->faker->realText(mt_rand(10,130)),
+            'start_date' => $this->faker->dateTimeBetween($startDate = 'now +1 day', $endDate = '+5 day'),
+            'end_date' => $this->faker->dateTimeBetween($startDate = 'now  +1 week', $endDate = '+2 week'),
         ];
     }
 }

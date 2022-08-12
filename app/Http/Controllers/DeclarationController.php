@@ -81,7 +81,7 @@ class DeclarationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DeclarationValidationRequest $request)
     {
 
         $declaration = new Declaration;
@@ -111,9 +111,10 @@ class DeclarationController extends Controller
         $declaration->tags()->sync($tags_id);
 
         // 二重送信防止
-        $request->session()->regenerateToken();
-
-        $request->session()->forget('_old_input');
+        if(preg_match("/confirm/", url()->previous())){
+            $request->session()->regenerateToken();
+            $request->session()->forget('_old_input');
+        }
 
         return redirect()->route('declaration.show', ['id' => $declaration->id])->with('status', '投稿しました！');
     }
@@ -172,7 +173,7 @@ class DeclarationController extends Controller
             ]);
         }
 
-        return view('declaration.edit');
+        return view('declaration.edit', compact('declaration'));
     }
 
     /**
@@ -185,6 +186,7 @@ class DeclarationController extends Controller
     public function update(DeclarationValidationRequest $request)
     {
         $declaration = Declaration::whereId($request->id)->first();
+
         // Gate権限
         if(! Gate::allows('edit_gate', $declaration)){
             abort(403);
@@ -211,9 +213,10 @@ class DeclarationController extends Controller
         $declaration->tags()->sync($tags_id);
 
         // 二重送信防止
-        $request->session()->regenerateToken();
-
-        $request->session()->forget('_old_input');
+        if(preg_match("/edit/", url()->previous())){
+            $request->session()->regenerateToken();
+            $request->session()->forget('_old_input');
+        }
 
         return redirect()->route('declaration.show', ['id' => $declaration->id])->with('status', '編集しました！');
     }
@@ -295,7 +298,9 @@ class DeclarationController extends Controller
         $report->save();
 
         // 二重送信防止
-        $request->session()->regenerateToken();
+        if(preg_match("/confirm/", url()->previous())){
+            $request->session()->regenerateToken();
+        }
 
         return redirect()->route('declaration.report.show', ['id' => $report->id])->with('status', '報告提出しました！');
     }

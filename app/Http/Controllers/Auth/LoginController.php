@@ -44,6 +44,8 @@ class LoginController extends Controller
         if(Auth::user()->del_flg == 1){
             Auth::logout();
             return redirect()->route('login')->with('status', '凍結されたユーザーのためログインできません');
+        }else{
+            return redirect()->route('declaration.index')->with('status', 'ログインに成功しました！');
         }
     }
 }

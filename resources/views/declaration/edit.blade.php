@@ -13,7 +13,7 @@
                 <div class="card-header">{{ __('宣言編集') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('declaration.update') }}">
+                    <form method="POST" action="{{ route('declaration.update',['id'=>$declaration->id]) }}">
                         @csrf
                         <input id="id" type="hidden" name="id" value="{{ old('id') }}">
 

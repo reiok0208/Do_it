@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'declaration', 'as' => 'decl
     Route::post('/new/confirm', [App\Http\Controllers\DeclarationController::class, 'confirm'])->name('confirm');
     Route::post('/store', [App\Http\Controllers\DeclarationController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [App\Http\Controllers\DeclarationController::class, 'edit'])->name('edit');
-    Route::post('/update', [App\Http\Controllers\DeclarationController::class, 'update'])->name('update');
+    Route::post('/update/{id}', [App\Http\Controllers\DeclarationController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [App\Http\Controllers\DeclarationController::class, 'destroy'])->name('destroy');
     Route::group(['prefix' => 'report', 'as' => 'report.'], function(){
         Route::get('/{id}/new', [App\Http\Controllers\DeclarationController::class, 'report_create'])->name('create');
