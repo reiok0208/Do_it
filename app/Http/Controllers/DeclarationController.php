@@ -128,6 +128,12 @@ class DeclarationController extends Controller
     public function show(Request $request, $id)
     {
         $declaration = Declaration::whereId($id)->withCount('do_it')->withCount('good_work')->first();
+
+        // Gate権限
+        if(! Gate::allows('del_flg_gate', $declaration)){
+            abort(403);
+        }
+
         $comments = Declaration_comment::latest()->whereDeclarationId($id)->get();
         $count = Declaration_comment::whereDeclarationId($id)->count();
 
@@ -237,7 +243,7 @@ class DeclarationController extends Controller
 
         $declaration->delete();
 
-        return redirect()->back()->with('status', '削除しました！');
+        return redirect()->route('declaration.index')->with('status', '削除しました！');
     }
 
 
@@ -309,6 +315,12 @@ class DeclarationController extends Controller
     {
         $report = Report::whereId($id)->first();
         $declaration = Declaration::whereId($report->declaration_id)->first();
+
+        // Gate権限
+        if(! Gate::allows('del_flg_gate', $declaration)){
+            abort(403);
+        }
+
         $comments = Report_comment::latest()->whereReportId($id)->get();
         $count = Report_comment::whereReportId($id)->count();
 

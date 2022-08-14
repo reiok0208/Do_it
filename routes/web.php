@@ -81,7 +81,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/user/edit/info','App\Http\Controllers\Auth\UserEditController@InfoUpdate');
     Route::post('/user/edit/email','App\Http\Controllers\Auth\UserEditController@EmailUpdate');
     Route::post('/user/edit/password','App\Http\Controllers\Auth\UserEditController@PasswordChange');
-    Route::get('/user/edit/delete','App\Http\Controllers\Auth\UserEditController@WithdrawalForm')->name('user.delete');;
+    Route::get('/user/edit/delete','App\Http\Controllers\Auth\UserEditController@WithdrawalForm')->name('user.delete');
     Route::post('/user/edit/Withdrawal','App\Http\Controllers\Auth\UserEditController@Withdrawal');
 });
 

@@ -37,6 +37,7 @@ class DeclarationControllerTest extends TestCase
             ->actingAs($this->user)
             ->post('/declaration/store', [
                 'title' => '投稿タイトルテスト',
+                'tag' => '#テストタグ#Laravel',
                 'body' => '投稿内容テスト',
                 'start_date' => '2099/01/01',
                 'end_date' => '2099/12/31'
@@ -44,6 +45,8 @@ class DeclarationControllerTest extends TestCase
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
         $this->assertDatabaseHas('declarations', ['title' => '投稿タイトルテスト']);
+        $this->assertDatabaseHas('tags', ['name' => 'テストタグ']);
+        $this->assertDatabaseHas('tags', ['name' => 'Laravel']);
     }
 
     public function test_宣言編集テスト()
@@ -72,7 +75,7 @@ class DeclarationControllerTest extends TestCase
         $response = $this
             ->actingAs($this->user)
             ->delete(route('declaration.destroy',['id'=>$this->declaration_before->id]));
-        $response->assertRedirect('/');
+        $response->assertRedirect('/declaration');
         $this->assertDeleted($this->declaration_before);
     }
 

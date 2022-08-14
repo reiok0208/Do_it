@@ -59,7 +59,7 @@
                                     @enderror
                                 </div>
                                 <input type="hidden" name="UserId" value={{$auth["id"]}}>
-                                <button dusk="view-button" class="btn btn-primary col-md-1 mt-md-0 mt-3 h-25">更新</button>
+                                <button id="info_submit" dusk="view-button" class="btn btn-primary col-md-1 mt-md-0 mt-3 h-25">更新</button>
                             </div>
                         </form>
 
@@ -76,7 +76,7 @@
                                     @enderror
                                 </div>
                                 <input type="hidden" name="UserId" value={{$auth["id"]}}>
-                                <button dusk="view-button" class="btn btn-primary col-md-1 mt-md-0 mt-3 text-center h-25">更新</button>
+                                <button id="email_submit" dusk="view-button" class="btn btn-primary col-md-1 mt-md-0 mt-3 text-center h-25">更新</button>
                             </div>
                         </form>
 
@@ -117,7 +117,7 @@
                                     @enderror
                                 </div>
                                 <input type="hidden" name="UserId" value={{$auth["id"]}}>
-                                <button dusk="view-button" class="btn btn-primary col-md-1 mt-md-0 mt-3 h-25">更新</button>
+                                <button id="password_submit" dusk="view-button" class="btn btn-primary col-md-1 mt-md-0 mt-3 h-25">更新</button>
                             </div>
                         </form>
                     </div>

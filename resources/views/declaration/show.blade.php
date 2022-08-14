@@ -95,8 +95,8 @@
                             <div class="declaration-show__like col" style="position:relative; z-index:100;">
                                 <!-- 認証ユーザーの場合 -->
                                 @auth
-                                    <!-- 終了期間を過ぎていなければDo it!を表示、それ以外はGood work!を表示 -->
-                                    @if (strtotime(date('Y/m/d')) < strtotime($declaration->end_date))
+                                    <!-- レポートがnullであればDo it!を表示、それ以外はGood work!を表示 -->
+                                    @if ($declaration->report == null)
                                         <!-- 認証ユーザーが宣言にDo it!を押しているか？ -->
                                         @if (!$declaration->isDoItBy(Auth::user()))
                                             <span class="likes">
@@ -162,7 +162,7 @@
                 </div>
             </div>
 
-            @if (Auth::check() && strtotime(date('Y/m/d')) < strtotime($declaration->end_date))
+            @if (Auth::check() && $declaration->report == null)
                 <input id="id" type="hidden" name="id" value="{{ $declaration->id }}">
 
                 <div class="row">
