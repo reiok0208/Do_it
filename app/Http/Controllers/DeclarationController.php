@@ -129,9 +129,12 @@ class DeclarationController extends Controller
     {
         $declaration = Declaration::whereId($id)->withCount('do_it')->withCount('good_work')->first();
 
-        // Gate権限
-        if(! Gate::allows('del_flg_gate', $declaration)){
-            abort(403);
+        if($declaration->del_flg == 1){
+            if(Auth::check() && Auth::user()->admin != 1){
+                abort(403);
+            }else if(Auth::guest()){
+                abort(403);
+            }
         }
 
         $comments = Declaration_comment::latest()->whereDeclarationId($id)->get();
@@ -316,9 +319,12 @@ class DeclarationController extends Controller
         $report = Report::whereId($id)->first();
         $declaration = Declaration::whereId($report->declaration_id)->first();
 
-        // Gate権限
-        if(! Gate::allows('del_flg_gate', $declaration)){
-            abort(403);
+        if($declaration->del_flg == 1){
+            if(Auth::check() && Auth::user()->admin != 1){
+                abort(403);
+            }else if(Auth::guest()){
+                abort(403);
+            }
         }
 
         $comments = Report_comment::latest()->whereReportId($id)->get();

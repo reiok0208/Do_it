@@ -29,7 +29,13 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "exclude-from-classmap": [
+            "vendor\\useredit\\laravelui\\src\\UserEdit_Operation_DB.php"
+        ],
+        "files":[
+            "app\\VendorOverrides\\UserEdit_Operation_DB.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

@@ -88,9 +88,11 @@ class DeclarationTest extends DuskTestCase
 
     public function test_コメント投稿、削除()
     {
+        $this->declaration = Declaration::factory()->create(['user_id' => $this->user->id]);
+
         $this->browse(function ($browser) {
             $browser->loginAs($this->user)
-                    ->visitRoute('declaration.show',['id' => '5'])
+                    ->visitRoute('declaration.show',['id' => $this->declaration->id])
                     ->assertSee('コメントがありません！応援しましょう！')
                     ->type('body', 'テストコメント内容')
                     ->press('コメント投稿')
@@ -100,8 +102,8 @@ class DeclarationTest extends DuskTestCase
                     ->waitForDialog($seconds = null)
                     ->assertDialogOpened('本当によろしいですか？')
                     ->acceptDialog()
-                    ->assertRouteIs('declaration.show',['id' => '5'])
-                    ->assertSee('コメントを削除しました！');
+                    ->pause(3000);
+            $this->assertDatabaseMissing('declaration_comments', ['body' => 'テストコメント内容']);
         });
     }
 }

@@ -49,8 +49,5 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('report_gate', function(User $user, Declaration $declaration) {
             return $user->id == $declaration->user_id && $declaration->report == null && strtotime(date('Y/m/d')) > strtotime($declaration->end_date);
         });
-        Gate::define('del_flg_gate', function(User $user, Declaration $declaration) {
-            return $user->admin == 1 || $declaration->del_flg != 1;
-        });
     }
 }
