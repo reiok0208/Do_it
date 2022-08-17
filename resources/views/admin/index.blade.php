@@ -23,6 +23,9 @@
                 <div class="row mb-5 mt-3">
                     <a class="btn btn-outline-secondary col-6 offset-3" href="{{ route('admin.user.frozen.index') }}">凍結ユーザー管理</a>
                 </div>
+                <div class="row mb-5 mt-3">
+                    <a class="btn btn-outline-secondary col-6 offset-3" href="{{ route('admin.tag.index') }}">タグ管理</a>
+                </div>
             </div>
         </div>
     </div>

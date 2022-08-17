@@ -97,4 +97,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::get('/user/frozen', [App\Http\Controllers\AdminController::class, 'user_frozen_index'])->name('user.frozen.index');
     Route::post('/user/frozen/{id}', [App\Http\Controllers\AdminController::class, 'user_frozen'])->name('user.frozen');
     Route::post('/user/lift/{id}', [App\Http\Controllers\AdminController::class, 'user_lift'])->name('user.lift');
+    Route::get('/tag', [App\Http\Controllers\TagController::class, 'index'])->name('tag.index');
+    Route::delete('/tag/delete/{id}', [App\Http\Controllers\TagController::class, 'destroy'])->name('tag.destroy');
 });
