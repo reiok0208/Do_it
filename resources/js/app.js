@@ -191,3 +191,34 @@ $(function () {
         });
     });
 });
+
+
+// ユーザー検索
+$(function () {
+    let search = $('#user_search_by_button');
+    let searchValue;
+    search.on('click', function () {
+        let $this = $(this);
+        searchValue = $('#user_search_by').val();
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            },
+            url: '/user/search_by',
+            method: 'POST',
+            data: {
+                'search_by': searchValue
+            },
+        })
+        //通信成功時
+        .done(function (data) {
+            $('#user_search_by').attr('placeholder','ユーザー名から検索');
+            $(".user_search_result").empty();
+            $(".user_search_result").append(data);
+        })
+        //通信失敗時
+        .fail(function (error) {
+            $('#user_search_by').attr('placeholder',error.responseJSON.errors.search_by);
+        });
+    });
+});

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\SearchValidationRequest;
 use App\Models\User;
 use App\Models\Declaration;
 use App\Models\Relationship;
@@ -94,6 +95,17 @@ class UserController extends Controller
             $request->session()->flash('follow', 'フォロワーがいません！');
         }
         return view('user.follow', compact('user','follows'));
+    }
+
+    /************************************************************************************************************
+     * ユーザー検索
+     *
+     */
+    public function search_by(SearchValidationRequest $request){
+        $pat = '%' . addcslashes(e($request->search_by), '%_\\') . '%';
+        $users = User::where('name', 'LIKE', $pat)->get(['id', 'name']);
+
+        return view('include.user_search', compact('users'));
     }
 
 }

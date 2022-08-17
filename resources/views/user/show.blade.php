@@ -4,6 +4,19 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+            <!-- ユーザー検索 -->
+            <div class="form-group row mb-3 text-end">
+                <label for="user_search_by" class="col-form-label col-md-2 offset-md-5 col-lg-3 offset-lg-5">ユーザー検索</label>
+                <div class="col-md-3 col-lg-3">
+                    <input type="text" id="user_search_by" name="user_search_by" class="form-control @error('user_search_by') is-invalid @enderror" placeholder="ユーザー名から検索"  style="background-color: white;">
+                </div>
+                <div class="col-md-1 text-right h-100">
+                    <button id="user_search_by_button" class="btn btn-primary h-25 mt-1 mt-md-0" style="width: 70px;">検索</button>
+                </div>
+            </div>
+            <div class="form-group row mb-3 text-end">
+                <div class="user_search_result col-md-3 col-lg-3 offset-md-7 offset-lg-8"></div>
+            </div>
             <div class="card">
                 <div class="card-header">{{ __('ユーザー詳細') }}</div>
 

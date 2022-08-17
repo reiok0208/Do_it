@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'user', 'as' => 'user.'], fu
     Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('show');
     Route::get('/{id}/follows', [App\Http\Controllers\UserController::class, 'user_follows'])->name('follows');
     Route::get('/{id}/followers', [App\Http\Controllers\UserController::class, 'user_followers'])->name('followers');
+    Route::post('/search_by', [App\Http\Controllers\UserController::class, 'search_by'])->name('search_by');
     Route::post('/follow', [App\Http\Controllers\UserController::class, 'follow'])->name('follow');
     Route::post('/unfollow', [App\Http\Controllers\UserController::class, 'unfollow'])->name('unfollow');
 });

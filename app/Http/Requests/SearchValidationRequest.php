@@ -36,7 +36,7 @@ class SearchValidationRequest extends FormRequest
     public function messages()
     {
         return [
-            "search_by.required" => "宣言検索は必須入力です。",
+            "search_by.required" => "検索は必須入力です。",
         ];
     }
 }
