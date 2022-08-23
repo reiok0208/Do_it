@@ -84,6 +84,11 @@ class AdminController extends Controller
         $user->del_flg = 1;
         $user->update();
 
+        foreach($user->declaration as $dec){
+            $dec->del_flg = 1;
+            $dec->update();
+        }
+
 
         return redirect()->back()->with('status', 'ユーザーを凍結しました！');
 
@@ -94,6 +99,11 @@ class AdminController extends Controller
         $user = User::find($id);
         $user->del_flg = 0;
         $user->update();
+
+        foreach($user->declaration as $dec){
+            $dec->del_flg = 0;
+            $dec->update();
+        }
 
         return redirect()->back()->with('status', 'ユーザーを凍結解除しました！');
 
