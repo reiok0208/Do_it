@@ -28,7 +28,7 @@ class DeclarationController extends Controller
     public function index(Request $request)
     {
         $declarations = Declaration::withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
-        $request->session()->forget(['_old_input','record']);
+        $request->session()->forget(['_old_input','record','search_by','sort_by','tag_by']);
 
         // 終了日が過ぎていてレポート未提出であったら詳細画面に遷移
         foreach($declarations as $dec){
@@ -415,12 +415,9 @@ class DeclarationController extends Controller
      *
      */
     public function sort_by(Request $request){
-        if(empty($request->sort_by)){
-            $sort = $request->session()->get('sort_by');
-        }else{
-            $request->session()->put('sort_by',$request->sort_by);
-            $sort = $request->sort_by;
-        }
+
+        $sort = $request->sort_by;
+
         if($sort == "宣言が新しい順"){
             $declarations = Declaration::withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
         }else if($sort == "宣言が古い順"){
@@ -446,19 +443,15 @@ class DeclarationController extends Controller
      *
      */
     public function search_by(SearchValidationRequest $request){
-        if(empty($request->search_by)){
-            $search = $request->session()->get('search_by');
-        }else{
-            $request->session()->put('search_by',$request->search_by);
-            $search = e($request->search_by) ?? '';
-        }
+
+        $search = e($request->search_by);
 
         $pat = '%' . addcslashes($search, '%_\\') . '%';
         $declarations = Declaration::where('title', 'LIKE', $pat)
                                     ->orWhere('body', 'LIKE', $pat)
                                     ->orWhereHas('tags', function ($query) use ($pat){
                                         $query->where('name', 'LIKE', $pat);
-                                    })->latest('created_at')->paginate(20);
+                                    })->withCount('do_it')->withCount('good_work')->latest('created_at')->paginate(20);
         if ($declarations->isEmpty()){
             return redirect()->route('declaration.index')->with('record', 'Oops！検索条件にあった宣言がありませんでした！');
         }
@@ -472,12 +465,8 @@ class DeclarationController extends Controller
      *
      */
     public function tag_by(Request $request){
-        if(empty($request->tag_by)){
-            $tag = $request->session()->get('tag_by');
-        }else{
-            $request->session()->put('tag_by',$request->tag_by);
-            $tag = e($request->tag_by) ?? '';
-        }
+
+        $tag = e($request->tag_by);
 
         $pat = addcslashes($tag, '%_\\');
         $declarations = Declaration::WhereHas('tags', function ($query) use ($pat){

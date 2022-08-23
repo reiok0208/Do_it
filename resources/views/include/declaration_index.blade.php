@@ -96,7 +96,7 @@
                             <!-- 認証ユーザーの場合 -->
                             @auth
                                 <!-- レポートがnullであればDo it!を表示、それ以外はGood work!を表示 -->
-                                @if ($dec->report == null)
+                                @if (strtotime(date('Y/m/d')) < strtotime($dec->end_date))
                                     <!-- 認証ユーザーが宣言にDo it!を押しているか？ -->
                                     @if (!$dec->isDoItBy(Auth::user()))
                                         <span class="likes">
