@@ -9,7 +9,8 @@
         @if (preg_match("/user/", url()->current())){{ __('ユーザー宣言一覧') }}
         @elseif(preg_match("/admin\/declaration/", url()->current())){{ __('凍結宣言一覧') }}
         @else{{ __('全宣言一覧') }}
-            @if(!empty($sort))　　{{ $sort }}
+            @if(!empty($sort) && !empty($search))　　ワード検索：{{ $search }}　並び替え：{{ $sort }}
+            @elseif(!empty($sort))　　並び替え：{{ $sort }}
             @elseif(!empty($search))　　ワード検索：{{ $search }}
             @elseif(!empty($tag))　　タグ検索：{{ $tag }}
             @endif

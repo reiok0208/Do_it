@@ -6,6 +6,9 @@
         <div class="col-md-12">
             <!-- 並び替え -->
             <form class="sort_by_form" method="get" action="{{ route('declaration.sort_by') }}">
+                @if(!empty($search))
+                    <input type="hidden" name="search" value="{{ $search ?? "" }}">
+                @endif
                 <div class="form-group row mb-3 text-end">
                     <label for="sort_by" class="col-form-label col-md-2 offset-md-5 col-lg-3 offset-lg-5">並び替え<br>絞り込み</label>
                     <div class="col-md-3 col-lg-3" style="position:relative; top:12px;">

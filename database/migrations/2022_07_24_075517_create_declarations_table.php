@@ -18,8 +18,8 @@ class CreateDeclarationsTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('body');
-            $table->dateTime('start_date');
-            $table->dateTime('end_date');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->integer('del_flg')->default(0);
             $table->timestamps();
             $table->charset = 'utf8mb4';
