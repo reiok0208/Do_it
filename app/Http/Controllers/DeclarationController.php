@@ -501,7 +501,7 @@ class DeclarationController extends Controller
         $pat = addcslashes($tag, '%_\\');
         $declarations = Declaration::WhereHas('tags', function ($query) use ($pat){
                                         $query->where('name', $pat);
-                                    })->latest('created_at')->paginate(20);
+                                    })->withCount('do_it')->withCount('good_work')->latest('created_at')->paginate(20);
 
         return view('declaration.index', compact('declarations','tag'));
 
