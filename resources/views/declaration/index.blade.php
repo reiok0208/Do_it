@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <!-- 並び替え -->
-            <form class="sort_by_form" method="get" action="{{ route('declaration.sort_by') }}">
+            {{-- <form class="sort_by_form" method="get" action="{{ route('declaration.sort_by') }}">
                 @if(!empty($search))
                     <input type="hidden" name="search" value="{{ $search ?? "" }}">
                 @endif
@@ -24,7 +24,7 @@
                         </select>
                     </div>
                 </div>
-            </form>
+            </form> --}}
             <!-- 宣言検索 -->
             <form method="get" action="{{ route('declaration.search_by') }}">
                 <div class="form-group row mb-3 text-end">

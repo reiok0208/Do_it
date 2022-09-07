@@ -23,6 +23,13 @@
 
 
 // 共通CSS
+.navbar{
+    position: fixed;
+    top:0;
+    width:100%;
+    z-index:1000;
+}
+
 .nav_content{
     a{
         margin: 5px 60px 5px 0;

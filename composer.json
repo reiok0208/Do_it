@@ -9,6 +9,7 @@
         "barryvdh/laravel-debugbar": "^3.7",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "kyslik/column-sortable": "^6.4",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
@@ -32,10 +33,12 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "exclude-from-classmap": [
-            "vendor\\useredit\\laravelui\\src\\UserEdit_Operation_DB.php"
+            "vendor\\useredit\\laravelui\\src\\UserEdit_Operation_DB.php",
+            "vendor\\kyslik\\column-sortable\\src\\ColumnSortable\\SortableLink.php"
         ],
         "files":[
-            "app\\VendorOverrides\\UserEdit_Operation_DB.php"
+            "app\\VendorOverrides\\UserEdit_Operation_DB.php",
+            "app\\VendorOverrides\\SortableLink.php"
         ]
     },
     "autoload-dev": {

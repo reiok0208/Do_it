@@ -27,7 +27,7 @@ class DeclarationController extends Controller
      */
     public function index(Request $request)
     {
-        $declarations = Declaration::withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
+        $declarations = Declaration::sortable()->withCount('do_it')->withCount('good_work')->paginate(20);
         $request->session()->forget(['_old_input','record','search_by','sort_by','tag_by']);
 
         // 終了日が過ぎていてレポート未提出であったら詳細画面に遷移
@@ -414,59 +414,59 @@ class DeclarationController extends Controller
      * ソート
      *
      */
-    public function sort_by(Request $request){
+    // public function sort_by(Request $request){
 
-        $sort = $request->sort_by;
+    //     $sort = $request->sort_by;
 
-        // 検索($request->search)を保持している場合、検索結果から並び替えを行う
-        if(!empty($request->search)){
-            $search = e($request->search);
-            $pat = '%' . addcslashes($search, '%_\\') . '%';
+    //     // 検索($request->search)を保持している場合、検索結果から並び替えを行う
+    //     if(!empty($request->search)){
+    //         $search = e($request->search);
+    //         $pat = '%' . addcslashes($search, '%_\\') . '%';
 
-            $declarations = Declaration::query()
-                                        ->where(function($query) use ($pat){ // functionで条件を括弧で囲える 例：((title LIKE 文字列) or (body LIKE 文字列))
-                                            $query->where('title', 'LIKE', $pat)
-                                            ->orWhere('body', 'LIKE', $pat)
-                                            ->orWhereHas('tags', function ($query) use ($pat){
-                                                $query->where('name', 'LIKE', $pat);
-                                            });
-                                        });
-            if($sort == "宣言が新しい順"){
-                $declarations = $declarations->withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
-            }else if($sort == "宣言が古い順"){
-                $declarations = $declarations->withCount('do_it')->withCount('good_work')->oldest('id')->paginate(20);
-            }else if($sort == "Do_it数順"){
-                $declarations = $declarations->where('end_date','>',date("Y/m/d"))->withCount('do_it')->withCount('good_work')->orderBy('do_it_count', 'desc')->paginate(20);
-            }else if($sort == "Good_work数順"){
-                $declarations = $declarations->where('end_date','<',date("Y/m/d"))->withCount('do_it')->withCount('good_work')->orderBy('good_work_count', 'desc')->paginate(20);
-            }else if($sort == "フォロー中"){
-                $declarations = $declarations->whereIn('user_id', Auth::user()->follows()->pluck('user_id'))->withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
-            }
-            if ($declarations->isEmpty()){
-                $request->session()->flash('record', 'Oops！宣言がありませんでした！');
-            }
+    //         $declarations = Declaration::query()
+    //                                     ->where(function($query) use ($pat){ // functionで条件を括弧で囲える 例：((title LIKE 文字列) or (body LIKE 文字列))
+    //                                         $query->where('title', 'LIKE', $pat)
+    //                                         ->orWhere('body', 'LIKE', $pat)
+    //                                         ->orWhereHas('tags', function ($query) use ($pat){
+    //                                             $query->where('name', 'LIKE', $pat);
+    //                                         });
+    //                                     });
+    //         if($sort == "宣言が新しい順"){
+    //             $declarations = $declarations->withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
+    //         }else if($sort == "宣言が古い順"){
+    //             $declarations = $declarations->withCount('do_it')->withCount('good_work')->oldest('id')->paginate(20);
+    //         }else if($sort == "Do_it数順"){
+    //             $declarations = $declarations->where('end_date','>',date("Y/m/d"))->withCount('do_it')->withCount('good_work')->orderBy('do_it_count', 'desc')->paginate(20);
+    //         }else if($sort == "Good_work数順"){
+    //             $declarations = $declarations->where('end_date','<',date("Y/m/d"))->withCount('do_it')->withCount('good_work')->orderBy('good_work_count', 'desc')->paginate(20);
+    //         }else if($sort == "フォロー中"){
+    //             $declarations = $declarations->whereIn('user_id', Auth::user()->follows()->pluck('user_id'))->withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
+    //         }
+    //         if ($declarations->isEmpty()){
+    //             $request->session()->flash('record', 'Oops！宣言がありませんでした！');
+    //         }
 
-            return view('declaration.index', compact('declarations','sort','search'));
-        }else{ // 並び替えのみの場合
-            if($sort == "宣言が新しい順"){
-                $declarations = Declaration::withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
-            }else if($sort == "宣言が古い順"){
-                $declarations = Declaration::withCount('do_it')->withCount('good_work')->oldest('id')->paginate(20);
-            }else if($sort == "Do_it数順"){
-                $declarations = Declaration::where('end_date','>',date("Y/m/d"))->withCount('do_it')->withCount('good_work')->orderBy('do_it_count', 'desc')->paginate(20);
-            }else if($sort == "Good_work数順"){
-                $declarations = Declaration::where('end_date','<',date("Y/m/d"))->withCount('do_it')->withCount('good_work')->orderBy('good_work_count', 'desc')->paginate(20);
-            }else if($sort == "フォロー中"){
-                $declarations = Declaration::whereIn('user_id', Auth::user()->follows()->pluck('user_id'))->withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
-            }
-            if ($declarations->isEmpty()){
-                $request->session()->flash('record', 'Oops！宣言がありませんでした！');
-            }
+    //         return view('declaration.index', compact('declarations','sort','search'));
+    //     }else{ // 並び替えのみの場合
+    //         if($sort == "宣言が新しい順"){
+    //             $declarations = Declaration::withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
+    //         }else if($sort == "宣言が古い順"){
+    //             $declarations = Declaration::withCount('do_it')->withCount('good_work')->oldest('id')->paginate(20);
+    //         }else if($sort == "Do_it数順"){
+    //             $declarations = Declaration::where('end_date','>',date("Y/m/d"))->withCount('do_it')->withCount('good_work')->orderBy('do_it_count', 'desc')->paginate(20);
+    //         }else if($sort == "Good_work数順"){
+    //             $declarations = Declaration::where('end_date','<',date("Y/m/d"))->withCount('do_it')->withCount('good_work')->orderBy('good_work_count', 'desc')->paginate(20);
+    //         }else if($sort == "フォロー中"){
+    //             $declarations = Declaration::whereIn('user_id', Auth::user()->follows()->pluck('user_id'))->withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
+    //         }
+    //         if ($declarations->isEmpty()){
+    //             $request->session()->flash('record', 'Oops！宣言がありませんでした！');
+    //         }
 
-            return view('declaration.index', compact('declarations','sort'));
-        }
+    //         return view('declaration.index', compact('declarations','sort'));
+    //     }
 
-    }
+    // }
 
     /************************************************************************************************************
      * 文字検索
@@ -481,7 +481,7 @@ class DeclarationController extends Controller
                                     ->orWhere('body', 'LIKE', $pat)
                                     ->orWhereHas('tags', function ($query) use ($pat){
                                         $query->where('name', 'LIKE', $pat);
-                                    })->withCount('do_it')->withCount('good_work')->latest('created_at')->paginate(20);
+                                    })->sortable()->withCount('do_it')->withCount('good_work')->paginate(20);
         if ($declarations->isEmpty()){
             return redirect()->route('declaration.index')->with('record', 'Oops！検索条件にあった宣言がありませんでした！');
         }
@@ -501,7 +501,7 @@ class DeclarationController extends Controller
         $pat = addcslashes($tag, '%_\\');
         $declarations = Declaration::WhereHas('tags', function ($query) use ($pat){
                                         $query->where('name', $pat);
-                                    })->withCount('do_it')->withCount('good_work')->latest('created_at')->paginate(20);
+                                    })->sortable()->withCount('do_it')->withCount('good_work')->paginate(20);
 
         return view('declaration.index', compact('declarations','tag'));
 
