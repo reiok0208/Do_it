@@ -6,18 +6,17 @@
 @endif
 <div class="card">
     <div class="card-header">
-        @if (preg_match("/user/", url()->current())){{ __('ユーザー宣言一覧') }}
-        @elseif(preg_match("/admin\/declaration/", url()->current())){{ __('凍結宣言一覧') }}
+        @if (preg_match("/user/", url()->current())){{ __('ユーザー宣言一覧') }}　
+            @include('include.declaration_sortable')
+        @elseif(preg_match("/admin\/declaration/", url()->current())){{ __('凍結宣言一覧') }}　
+            @include('include.declaration_sortable')
         @else{{ __('全宣言一覧　') }}
             @if(!empty($search))ワード検索：{{ $search }}　
             @endif
-            <span>@sortablelink('title', 'タイトル名')</span>　
-            <span>@sortablelink('start_date', '開始時間')</span>　
-            <span>@sortablelink('end_date', '終了時間')</span>　
-            <span>@sortablelink('created_at', '宣言日')</span>　
-            <span>@sortablelink('doIt', 'do_it数順')</span>　
-            <span>@sortablelink('goodWork', 'good_work数順')</span>　
-            <span>@sortablelink('follow', 'フォロー中')</span>
+            @include('include.declaration_sortable')
+            @auth
+                <span>@sortablelink('follow', 'フォロー中')</span>
+            @endauth
         @endif
     </div>
     <div class="card-body">
