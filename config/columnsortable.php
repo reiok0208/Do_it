@@ -100,12 +100,12 @@ return [
     /*
     default direction for: $user->sortable('id') usage
      */
-    'default_direction'             => 'desc',
+    'default_direction'             => 'asc',
 
     /*
     default direction for non-sorted columns
      */
-    'default_direction_unsorted'    => 'desc',
+    'default_direction_unsorted'    => 'asc',
 
     /*
     use the first defined sortable column (Model::$sortable) as default

@@ -34,7 +34,7 @@ class AdminController extends Controller
 
     public function declaration_frozen_index(Request $request)
     {
-        $declarations = Declaration::where('del_flg','1')->sortable()->withCount('do_it')->withCount('good_work')->paginate(20);
+        $declarations = Declaration::where('del_flg','1')->sortable()->withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
         $request->session()->forget('_old_input');
 
         if ($declarations->isEmpty()){

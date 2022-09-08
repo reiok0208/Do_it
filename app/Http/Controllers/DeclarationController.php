@@ -27,7 +27,7 @@ class DeclarationController extends Controller
      */
     public function index(Request $request)
     {
-        $declarations = Declaration::sortable()->withCount('do_it')->withCount('good_work')->paginate(20);
+        $declarations = Declaration::sortable()->withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
         $request->session()->forget(['_old_input','record','search_by','sort_by','tag_by']);
 
         // 終了日が過ぎていてレポート未提出であったら詳細画面に遷移

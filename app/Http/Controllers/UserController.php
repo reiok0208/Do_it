@@ -35,7 +35,7 @@ class UserController extends Controller
     public function show(Request $request, $id)
     {
         $user = User::whereId($id)->first();
-        $declarations = Declaration::whereUserId($id)->sortable()->withCount('do_it')->withCount('good_work')->paginate(20);
+        $declarations = Declaration::whereUserId($id)->sortable()->withCount('do_it')->withCount('good_work')->latest('id')->paginate(20);
         $followed = Relationship::where('following_user_id', \Auth::user()->id)->where('user_id', $id)->first();
 
         // 終了日が過ぎていてレポート未提出であったら詳細画面に遷移
